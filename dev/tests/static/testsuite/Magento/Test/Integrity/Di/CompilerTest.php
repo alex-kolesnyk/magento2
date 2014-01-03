@@ -102,7 +102,12 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
                 $instanceName = \Magento\TestFramework\Utility\Classes::resolveVirtualType($instanceName);
             }
             $parameters = $parameters['parameters'];
+
             if (!class_exists($instanceName)) {
+                // check for generated factory
+                if (substr($instanceName, -7) == 'Factory' && class_exists(substr($instanceName, 0, -7))) {
+                    continue;
+                }
                 $this->fail('Detected configuration of non existed class: ' . $instanceName);
             }
 
