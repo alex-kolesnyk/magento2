@@ -386,6 +386,7 @@ abstract class AbstractCarrier extends \Magento\Shipping\Model\Carrier\AbstractC
     /**
      * Do request to shipment
      *
+     * @throws \Magento\Core\Exception if there are no packages in request
      * @param \Magento\Shipping\Model\Shipment\Request $request
      * @return array
      */
@@ -434,6 +435,7 @@ abstract class AbstractCarrier extends \Magento\Shipping\Model\Carrier\AbstractC
     /**
      * Do request to RMA shipment
      *
+     * @throws \Magento\Core\Exception if there are no packages in request
      * @param $request
      * @return array
      */
