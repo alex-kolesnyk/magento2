@@ -60,7 +60,6 @@ class Element extends \Magento\Simplexml\Element
      */
     public function xmlentities($value = null)
     {
-        $value = parent::xmlentities($value);
         $value = str_replace('&amp;', '&', $value);
         $value = str_replace('&', '&amp;', $value);
         return $value;
