@@ -953,7 +953,7 @@ class International
     /**
      * Build qoutes request XML object
      *
-     * @return SimpleXMLElement
+     * @return \SimpleXMLElement
      */
     protected function _buildQuotesRequestXml()
     {

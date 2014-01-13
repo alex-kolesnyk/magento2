@@ -12,7 +12,8 @@
 namespace Magento\Usa\Model\Shipping\Carrier;
 
 
-class DhlTest extends \PHPUnit_Framework_TestCase {
+class DhlTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var \Magento\TestFramework\Helper\ObjectManager
      */

@@ -31,16 +31,12 @@ class InternationalTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->_helper = new \Magento\TestFramework\Helper\ObjectManager($this);
-
         $coreStoreConfig = $this->getMockBuilder('\Magento\Core\Model\Store\Config')
             ->setMethods(array('getConfigFlag', 'getConfig'))
             ->disableOriginalConstructor()
             ->getMock();
-        $coreStoreConfig->expects($this->any())
-            ->method('getConfigFlag')
-            ->will($this->returnValue(true));
-        $coreStoreConfig->expects($this->any())
-            ->method('getConfig')
+        $coreStoreConfig->expects($this->any())->method('getConfigFlag')->will($this->returnValue(true));
+        $coreStoreConfig->expects($this->any())->method('getConfig')
             ->will($this->returnCallback(array($this, 'coreStoreConfigGetConfig')));
 
         // xml element factory
@@ -60,94 +56,57 @@ class InternationalTest extends \PHPUnit_Framework_TestCase
             );
 
         // rate factory
-        $rateFactory = $this->getMockBuilder('\Magento\Shipping\Model\Rate\ResultFactory')
-            ->disableOriginalConstructor()
+        $rateFactory = $this->getMockBuilder('\Magento\Shipping\Model\Rate\ResultFactory')->disableOriginalConstructor()
             ->setMethods(array('create'))
             ->getMock();
-        $rateResult = $this->getMockBuilder('\Magento\Shipping\Model\Rate\Result')
-            ->disableOriginalConstructor()
+        $rateResult = $this->getMockBuilder('\Magento\Shipping\Model\Rate\Result')->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();
-        $rateFactory->expects($this->any())
-            ->method('create')
-            ->will($this->returnValue($rateResult));
+        $rateFactory->expects($this->any())->method('create')->will($this->returnValue($rateResult));
 
         // rate method factory
         $rateMethodFactory = $this->getMockBuilder('\Magento\Shipping\Model\Rate\Result\MethodFactory')
             ->disableOriginalConstructor()
             ->setMethods(array('create'))
             ->getMock();
-        $rateMethod = $this->getMockBuilder('Magento\Shipping\Model\Rate\Result\Method')
-            ->disableOriginalConstructor()
+        $rateMethod = $this->getMockBuilder('Magento\Shipping\Model\Rate\Result\Method')->disableOriginalConstructor()
             ->setMethods(array('setPrice'))
             ->getMock();
-        $rateMethod->expects($this->any())
-            ->method('setPrice')
-            ->will($this->returnSelf());
+        $rateMethod->expects($this->any())->method('setPrice')->will($this->returnSelf());
 
-        $rateMethodFactory->expects($this->any())
-            ->method('create')
-            ->will($this->returnValue($rateMethod));
+        $rateMethodFactory->expects($this->any())->method('create')->will($this->returnValue($rateMethod));
 
         // http client
-        $this->_httpResponse = $this->getMockBuilder('\Zend_Http_Response')
-            ->disableOriginalConstructor()
+        $this->_httpResponse = $this->getMockBuilder('\Zend_Http_Response')->disableOriginalConstructor()
             ->setMethods(array('getBody'))
             ->getMock();
 
-        $httpClient = $this->getMockBuilder('\Zend_Http_Client')
-            ->disableOriginalConstructor()
+        $httpClient = $this->getMockBuilder('\Zend_Http_Client')->disableOriginalConstructor()
             ->setMethods(array('request'))
             ->getMock();
-        $httpClient->expects($this->any())
-            ->method('request')
-            ->will($this->returnValue($this->_httpResponse));
+        $httpClient->expects($this->any())->method('request')->will($this->returnValue($this->_httpResponse));
 
-        $httpClientFactory = $this->getMockBuilder('\Zend_Http_ClientFactory')
-            ->disableOriginalConstructor()
+        $httpClientFactory = $this->getMockBuilder('\Zend_Http_ClientFactory')->disableOriginalConstructor()
             ->setMethods(array('create'))
             ->getMock();
-        $httpClientFactory->expects($this->any())
-            ->method('create')
-            ->will($this->returnValue($httpClient));
-
-        $modulesDirectory = $this->getMockBuilder('\Magento\Filesystem\Directory\Read')
-            ->disableOriginalConstructor()
+        $httpClientFactory->expects($this->any())->method('create')->will($this->returnValue($httpClient));
+        $modulesDirectory = $this->getMockBuilder('\Magento\Filesystem\Directory\Read')->disableOriginalConstructor()
             ->setMethods(array('getRelativePath', 'readFile'))
             ->getMock();
-        $modulesDirectory->expects($this->any())
-            ->method('readFile')
+        $modulesDirectory->expects($this->any())->method('readFile')
             ->will($this->returnValue(file_get_contents(__DIR__ . '/_files/countries.xml')));
-
-        $filesystem = $this->getMockBuilder('\Magento\Filesystem')
-            ->disableOriginalConstructor()
+        $filesystem = $this->getMockBuilder('\Magento\Filesystem')->disableOriginalConstructor()
             ->setMethods(array('getDirectoryRead'))
             ->getMock();
-        $filesystem->expects($this->any())
-            ->method('getDirectoryRead')
-            ->will($this->returnValue($modulesDirectory));
-
-        $storeManager = $this->getMockBuilder('\Magento\Core\Model\StoreManager')
-            ->disableOriginalConstructor()
+        $filesystem->expects($this->any())->method('getDirectoryRead')->will($this->returnValue($modulesDirectory));
+        $storeManager = $this->getMockBuilder('\Magento\Core\Model\StoreManager')->disableOriginalConstructor()
             ->setMethods(array('getWebsite'))
             ->getMock();
-        $website = $this->getMockBuilder('\Magento\Core\Model\Website')
-            ->disableOriginalConstructor()
+        $website = $this->getMockBuilder('\Magento\Core\Model\Website')->disableOriginalConstructor()
             ->setMethods(array('getBaseCurrencyCode', '__wakeup'))
             ->getMock();
-
-        $website->expects($this->any())
-            ->method('getBaseCurrencyCode')
-            ->will($this->returnValue('USD'));
-        $storeManager->expects($this->any())
-            ->method('getWebsite')
-            ->will($this->returnValue($website));
-
-
-        $data = array(
-            'id' => 'dhlint',
-            'store' => '1'
-        );
+        $website->expects($this->any())->method('getBaseCurrencyCode')->will($this->returnValue('USD'));
+        $storeManager->expects($this->any())->method('getWebsite')->will($this->returnValue($website));
 
         $arguments = array(
             'coreStoreConfig' => $coreStoreConfig,
@@ -157,9 +116,8 @@ class InternationalTest extends \PHPUnit_Framework_TestCase
             'httpClientFactory' => $httpClientFactory,
             'filesystem' => $filesystem,
             'storeManager' => $storeManager,
-            'data' => $data
+            'data' => array('id' => 'dhlint', 'store' => '1')
         );
-
         $this->_model = $this->_helper->getObject('Magento\Usa\Model\Shipping\Carrier\Dhl\International', $arguments);
     }
 
@@ -170,27 +128,18 @@ class InternationalTest extends \PHPUnit_Framework_TestCase
      */
     public function coreStoreConfigGetConfig($path)
     {
-        switch ($path) {
-            case 'carriers/dhlint/shipment_days':
-            case 'carriers/dhlint/intl_shipment_days':
-                return 'Mon,Tue,Wed,Thu,Fri,Sat';
-            case 'carriers/dhlint/allowed_methods':
-                return 'IE';
-            case 'carriers/dhlint/international_searvice':
-                return 'IE';
-            case 'carriers/dhlint/gateway_url':
-                return 'https://xmlpi-ea.dhl.com/XMLShippingServlet';
-            case 'carriers/dhlint/id':
-                return 'some ID';
-            case 'carriers/dhlint/password':
-                return 'some password';
-            case 'carriers/dhlint/content_type':
-                return 'N';
-            case 'carriers/dhlint/nondoc_methods':
-                return '1,3,4,8,P,Q,E,F,H,J,M,V,Y';
-            default:
-                return null;
-        }
+        $pathMap = array(
+            'carriers/dhlint/shipment_days' => 'Mon,Tue,Wed,Thu,Fri,Sat',
+            'carriers/dhlint/intl_shipment_days' => 'Mon,Tue,Wed,Thu,Fri,Sat',
+            'carriers/dhlint/allowed_methods' => 'IE',
+            'carriers/dhlint/international_searvice' => 'IE',
+            'carriers/dhlint/gateway_url' => 'https://xmlpi-ea.dhl.com/XMLShippingServlet',
+            'carriers/dhlint/id' => 'some ID',
+            'carriers/dhlint/password' => 'some password',
+            'carriers/dhlint/content_type' => 'N',
+            'carriers/dhlint/nondoc_methods' => '1,3,4,8,P,Q,E,F,H,J,M,V,Y'
+        );
+        return (isset($pathMap[$path])) ? $pathMap[$path] : null;
     }
 
     public function testPrepareShippingLabelContent()
