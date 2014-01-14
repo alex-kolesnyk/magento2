@@ -200,7 +200,7 @@ class Orders
     public function getTabUrl()
     {
         $recurringProfile = $this->_coreRegistry->registry('current_recurring_profile');
-        return $this->getUrl('adminhtml/*/orders', array('profile' => $recurringProfile->getId()));
+        return $this->getUrl('*/*/orders', array('profile' => $recurringProfile->getId()));
     }
 
     /**
