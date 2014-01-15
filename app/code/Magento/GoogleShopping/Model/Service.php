@@ -188,7 +188,6 @@ class Service extends \Magento\Object
     {
         $accountId = $this->getConfig()->getAccountId($storeId);
         $client = $this->getClient($storeId);
-        //$service = new \Magento\Gdata\Gshopping\Content($client, $accountId);
         $service = $this->_contentFactory->create(
             array(
                 'client' => $client,
