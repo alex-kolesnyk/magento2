@@ -23,6 +23,9 @@
   * Updated comments for eliminating redirect when secure url is used
   * Fixed 3D secure validation
   * Fixed attribute types for configurable product variations
+  * Fixed an issue when order was sent to Paypal without defined currency
+  * Fixed an issue with 404 error when trying to return back to grid from Recurring Billing Profile
+  * Fixed an issue with synchronization with google shopping on product update caused by missed service property
 * Consolidated a few 3rd-party JavaScript libraries under `pub/lib` directory and specified their original license notice texts
 * Service Layer Implementation:
   * Implemented initial set of services for the Customer module
