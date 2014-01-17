@@ -48,6 +48,11 @@ class Directpost extends \Magento\Paygate\Model\Authorizenet
     protected $_response;
 
     /**
+     * @var \Magento\Authorizenet\Helper\HelperInterface
+     */
+    protected $_helper;
+
+    /**
      * @param \Magento\Event\ManagerInterface $eventManager
      * @param \Magento\Payment\Helper\Data $paymentData
      * @param \Magento\Core\Model\Store\Config $coreStoreConfig
@@ -66,6 +71,7 @@ class Directpost extends \Magento\Paygate\Model\Authorizenet
      * @param \Magento\Sales\Model\QuoteFactory $quoteFactory
      * @param \Magento\Authorizenet\Model\Directpost\RequestFactory $directRequestFactory
      * @param \Magento\Authorizenet\Model\Directpost\Response $response
+     * @param \Magento\Authorizenet\Helper\HelperInterface $helper
      * @param array $data
      * 
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -89,6 +95,7 @@ class Directpost extends \Magento\Paygate\Model\Authorizenet
         \Magento\Sales\Model\QuoteFactory $quoteFactory,
         \Magento\Authorizenet\Model\Directpost\RequestFactory $directRequestFactory,
         \Magento\Authorizenet\Model\Directpost\Response $response,
+        \Magento\Authorizenet\Helper\HelperInterface $helper,
         array $data = array()
     ) {
         parent::__construct(
@@ -112,6 +119,7 @@ class Directpost extends \Magento\Paygate\Model\Authorizenet
         $this->_quoteFactory = $quoteFactory;
         $this->_requestFactory = $directRequestFactory;
         $this->_response = $response;
+        $this->_helper = $helper;
     }
 
     /**
@@ -358,8 +366,7 @@ class Directpost extends \Magento\Paygate\Model\Authorizenet
         if ($storeId == null && $this->getStore()) {
             $storeId = $this->getStore();
         }
-        return $this->_storeManager->getStore($storeId)->getBaseUrl(\Magento\Core\Model\Store::URL_TYPE_LINK)
-            . 'authorizenet/directpost_payment/response';
+        return $this->_helper->getRelyUrl($storeId);
     }
 
     /**
