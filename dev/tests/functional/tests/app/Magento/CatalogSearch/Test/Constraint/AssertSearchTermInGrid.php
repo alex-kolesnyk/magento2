@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogSearch\Test\Constraint;
 
 use Magento\CatalogSearch\Test\Fixture\CatalogSearchQuery;
 use Magento\CatalogSearch\Test\Page\Adminhtml\CatalogSearchIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertSearchTermInGrid
@@ -15,10 +16,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertSearchTermInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'high';
-    /* end tags */
-
     /**
      * Assert that after save a term search on edit term search page displays:
      *  - correct Search Query field passed from fixture
@@ -46,6 +43,7 @@ class AssertSearchTermInGrid extends AbstractConstraint
             'display_in_terms' => strtolower($searchTerm->getDisplayInTerms()),
         ];
 
+        $filters = array_filter($filters);
         $grid->search($filters);
         unset($filters['store_id']);
         \PHPUnit_Framework_Assert::assertTrue(

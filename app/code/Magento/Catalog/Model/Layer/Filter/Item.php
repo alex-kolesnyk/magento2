@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Filter item model
@@ -47,13 +50,15 @@ class Item extends \Magento\Framework\Object
      * Get filter instance
      *
      * @return \Magento\Catalog\Model\Layer\Filter\AbstractFilter
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getFilter()
     {
         $filter = $this->getData('filter');
         if (!is_object($filter)) {
-            throw new \Magento\Framework\Model\Exception(__('The filter must be an object. Please set correct filter.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('The filter must be an object. Please set correct filter.')
+            );
         }
         return $filter;
     }

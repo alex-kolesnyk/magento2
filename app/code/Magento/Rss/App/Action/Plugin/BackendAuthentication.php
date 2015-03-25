@@ -2,13 +2,15 @@
 /**
  * RSS Backend Authentication plugin
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Rss\App\Action\Plugin;
 
 use Magento\Backend\App\AbstractAction;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\AuthenticationException;
 
 /**
  * Class BackendAuthentication
@@ -22,7 +24,7 @@ class BackendAuthentication extends \Magento\Backend\App\Action\Plugin\Authentic
     protected $httpAuthentication;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
@@ -43,7 +45,7 @@ class BackendAuthentication extends \Magento\Backend\App\Action\Plugin\Authentic
      * @param \Magento\Framework\App\ActionFlag $actionFlag
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param \Magento\Framework\HTTP\Authentication $httpAuthentication
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\AuthorizationInterface $authorization
      * @param array $aclResources
      */
@@ -54,7 +56,7 @@ class BackendAuthentication extends \Magento\Backend\App\Action\Plugin\Authentic
         \Magento\Framework\App\ActionFlag $actionFlag,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         \Magento\Framework\HTTP\Authentication $httpAuthentication,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\AuthorizationInterface $authorization,
         array $aclResources
     ) {
@@ -98,8 +100,8 @@ class BackendAuthentication extends \Magento\Backend\App\Action\Plugin\Authentic
             list($login, $password) = $this->httpAuthentication->getCredentials();
             try {
                 $this->_auth->login($login, $password);
-            } catch (\Magento\Backend\Model\Auth\Exception $e) {
-                $this->logger->logException($e);
+            } catch (AuthenticationException $e) {
+                $this->logger->critical($e);
             }
         }
 

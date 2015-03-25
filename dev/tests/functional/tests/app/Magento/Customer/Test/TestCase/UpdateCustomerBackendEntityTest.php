@@ -1,15 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\TestCase;
 
-use Magento\Customer\Test\Fixture\AddressInjectable;
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Address;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Customer\Test\Page\Adminhtml\CustomerIndex;
 use Magento\Customer\Test\Page\Adminhtml\CustomerIndexEdit;
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
  * Test Creation for UpdateCustomerBackendEntity
@@ -26,6 +27,11 @@ use Mtf\TestCase\Injectable;
  */
 class UpdateCustomerBackendEntityTest extends Injectable
 {
+    /* tags */
+    const MVP = 'yes';
+    const DOMAIN = 'CS';
+    /* end tags */
+
     /**
      * @var CustomerIndex
      */
@@ -49,14 +55,14 @@ class UpdateCustomerBackendEntityTest extends Injectable
     }
 
     /**
-     * @param CustomerInjectable $initialCustomer
-     * @param CustomerInjectable $customer
-     * @param AddressInjectable $address
+     * @param Customer $initialCustomer
+     * @param Customer $customer
+     * @param Address $address
      */
     public function testUpdateCustomerBackendEntity(
-        CustomerInjectable $initialCustomer,
-        CustomerInjectable $customer,
-        AddressInjectable $address
+        Customer $initialCustomer,
+        Customer $customer,
+        Address $address
     ) {
         // Prepare data
         $address = $address->hasData() ? $address : null;

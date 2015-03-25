@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Controller\Adminhtml\Rate;
 
@@ -16,7 +17,7 @@ class Save extends \Magento\Tax\Controller\Adminhtml\Rate
      */
     public function execute()
     {
-        $ratePost = $this->getRequest()->getPost();
+        $ratePost = $this->getRequest()->getPostValue();
         if ($ratePost) {
             $rateId = $this->getRequest()->getParam('tax_calculation_rate_id');
             if ($rateId) {

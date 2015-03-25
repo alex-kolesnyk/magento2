@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -49,6 +50,6 @@ class Label
      */
     public function getLabelsCollectionForSystemConfiguration()
     {
-        return $this->getLabelsCollection(__('-- No Theme --'));
+        return $this->getLabelsCollection((string)new \Magento\Framework\Phrase('-- No Theme --'));
     }
 }

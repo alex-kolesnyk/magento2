@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Constraint;
 
 use Magento\Customer\Test\Page\CustomerAccountCreate;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomerSuccessRegisterMessage
@@ -14,10 +15,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertCustomerSuccessRegisterMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     const SUCCESS_MESSAGE = 'Thank you for registering with Main Website Store.';
 
     /**

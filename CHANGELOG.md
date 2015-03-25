@@ -1,3 +1,548 @@
+0.74.0-beta1
+=============
+* Various
+    * Inline JS code is eliminated
+    * Fixed XSS vulnerability issues
+    * "Last login time" functionality is moved from Magento_Log module to Magento_Customer module
+    * Implemented two-strategies JS translation
+    * Improved backend menu keyboard accessibility
+    * Accessibility improvements: WAI-ARIA in product item on category page and related products
+    * Checkout flow code can work with separate DB storage
+    * Unit tests moved to component directories
+    * Addressed naming inconsistencies in REST routes
+    * Added Advanced Developer Workflow for frontend developers
+* Setup
+    * Utilized Magento error handler in Setup application to convert errors and warnings to exceptions
+    * Fixed error when private content handling doesn't work when HTML profiler and developer mode are on
+    * Fixed error with packages uninstall using Magento Composer Installer failed for the last package
+    * Fixed fatal error in Setup application, after ran composer install with --no-dev option
+    * Fixed JS error when expanding list of modules at "Customize Your Store" step in installation wizard
+    * Fixed JS error when going back to "Customize Your Store" step from "Create Admin Account" step in installation wizard
+* Framework
+    * New module Magento_MediaStorage is created and holds components from Magento_Core module
+    * New module Magento_MediaStorage is created and holds components from Magento_Core module
+    * Implemented JS resources bundling (server side pre-processing)
+    * Zend_Locale replaced with Native PHP Implementation
+    * Zend_Date replaced with native PHP DateTime object/functions
+    * Magento\Framework\Exception\LocalizedException constructor is refactored
+    * Magento\Framework\Validator\ValidatorException is renamed
+    * Magento\Framework\Controller\Result\JSON is renamed to meet PSR standard
+    * Library oyejorge/less.php is updated to the latest version
+    * Refactored WebApi framework to support concrete types for custom attributes
+    * Version used in SOAP declarations is now taken from routes declared in webapi.xml
+    * Added ability to extend API data interfaces using extension attributes
+    * Magento_Core module is removed
+* Web API Framework
+    * Factories are used instead of builders
+    * Removed auto generation of builders
+    * Made interfaceName a required parameter in Magento\Framework\Api\DataObjectHelper::populateWithArray method
+* Performance
+    * Increased caching coverage of Magento storefront pages: Cart, Register, Login, My Account
+    * finished work around HHVM Compatibility
+    * Fixed EAV caching on storefront
+    * Optimized DI compilation for interception
+* Design
+    * New design in Backend
+    * New messages design in Installation Wizard
+    * New design for MAP on Catalog Frontend Pages
+* Fixed bugs
+    * Catch syntax error in module.xml files
+    * Profiling of cache operations was permanently disabled
+    * Session was not cleared when layout is cached
+    * Page cache was invalidated by cron jobs after reindexing, even in case nothing is changed
+    * Typo in method name in Adminhtml/Index/Grid.php
+    * Missing validation of table prefix in 'Step 2: Add a Database' of Web Setup wizard
+    * User hint of password strength validator in Web Setup wizard to be consistent with the algorithm used
+    * New Logger cannot format exception and debug info correctly
+    * Wrong styles structure
+    * Customer is redirected to shopping cart by clicking on mini shopping cart after adding product
+    * Gift Message information for Order level is not presented on frontend/backend orders
+    * Wrong "customer_id" value for GiftMessages created using API service
+    * No ability to place order for guest customer using API service
+    * Shopping Cart was displayed partly broken if contained a Product with an image as a custom option
+    * Impossible to add product to the shopping cart with Custom option of type="file"
+    * Adding to cart dialog widget with MSRP price on product page is broken
+    * Copy and Paste detector is run against test files that are blacklisted
+    * Displaying the wrong price on product page when selecting an option for configurable product
+    * Tax amount (tax on full shipping) is refunded, when partial shipping amount is refunded
+    * Tax Calculation Based On Shipping Address, when the discount coupon is applied
+    * Price (including tax) is shown on product page when configuration is set to display excluding tax
+    * FPT is not applied in shopping cart and order for registered user
+    * FPT not applied for registered users when FPC is disabled
+    * "All categoryName" menu link is absent, subcategories are shown on hover of parent category
+    * Horizontal scrolling appears when browser width is resized to mobile size
+    * Broken design for "select store" element in CMS grid filter
+    * Attribute value uniqueness isn't checked for custom product template
+    * Category tree is not displayed in conditions for Catalog Price Rules
+    * Remove hard coded IDs from catalog API code
+    * Bottom margin for "Wishlist Search" Widget
+    * Custom option image with limits view for frontend
+    * Category page displayed outdated prices after catalog price rule was deleted
+    * Cart quantity is more than in stock amount
+    * Page layout configuration: not being possible to extend/override on the theme level
+    * Page layout with custom set of containers causing fatal error
+    * Reset password e-mails requested from second store view has link and name of the first main store
+    * There is no ability to place order for virtual product with customer address attribute from backend
+    * Specified details for Bundle product are lost after adding to wishlist
+    * Customer address is set to non default after changing account information
+    * Unable to save newsletter subscription information of customer in backend
+    * Guest can't add product to wishlist while registering
+    * Cron job for Shipping
+    * Solution for issue with attributes with list of countries
+    * Unable to generate variations while creating configurable product
+    * Variations are created with Out of Stock status if configurable product has been switched from simple product
+    * Impossible search Downloadable product using file title
+    * Change order of loading integration tests (load config annotations before fixtures)
+    * Impossible to upload files in Configuration
+    * Creating shipment for an order
+    * Price displaying on product page for bundle product
+    * Display bug for tier prices
+    * Required marker is displayed on wrong line in Backend
+    * Categories' titles in Frontend navigation Menu overlap "expand" button on mobile
+    * Backend Login form alignment for ie9
+    * JS loader position for Backend
+    * Display checkboxes on Update Attributes page via Mass Action
+    * Removed Test\Unit from cached DI configuration, as it brings performance degradation
+    * Impossible to place order with DHL EU shipping method
+    * Updates while tables recreation in setup process
+    * Pagination on downloadable products tab in customer account
+    * Adding existing attribute on New Product page
+    * "Manage Stock" is not saving for bundle product
+    * Filter did not work for Order Total report
+    * Error on reports for Order Totals if grouped by Year
+    * Customer can't find Order on Frontend
+    * Postal code is still mandatory for Non-US addresses that don't use it
+    * Price of simple product isn't recalculated after selecting options on product page
+    * Don't load bundle quantity from options on bundle page
+    * It's impossible to remove added row from "Minimum Qty Allowed in Shopping Cart" in config
+    * It's impossible to add Product with required Custom Options of "Field" and/or "Area" type to Shopping Cart
+    * Syntax error in New Shipment email template
+    * Removed admin only web service route for using customer user password reset tokens and setting new passwords
+    * Remove the relevant URL Rewrites configuration after removing a category
+    * Static obsolete code test did not recognize partial namespaces
+    * Magento breaks when set specific locale
+    * An error on Shipping Method page which appeared on MultiAddress Checkout
+    * Impossible to update Gift Message from backend
+    * Impossible to create configurable product
+    * Impossible to create new attribute through Product Creation page
+    * Product Template page did not work in IE9 and FF
+    * Product image could added only after double click in IE9
+    * Inconsistent timestamp return for Magento admin panel timezone
+    * Few problems with HTML minification
+    * 404 page is displayed on any action with order that it viewed under guest
+    * "500 Internal Server Error" in case of excess "Maximum Qty Allowed in Shopping Cart" value
+    * MAP link is displayed for a product on category page after delete Catalog Price Rule
+    * Deploy script modifies LESS files with "@urls-resolved: true"
+    * Zip code field is missing in customers addresses on backend
+    * Impossible to add bundle product with required option to shopping cart without selecting all available options
+    * Empty email is sent when a registered user changes password in the front end
+    * Tabs widget does not initialize sometimes on Product Creation page
+    * Fatal error when trying to send notify customer by email about shipment
+* Tests
+    * Fixed an issue with WebDriverException for iframes in functional tests
+    * Added functional test for backend menu navigation
+    * Replaced end-to-end test for online one-page checkout with injectable test
+    * Replaced end-to-end test for admin user with injectable test
+    * Replaced end-to-end test for catalog price rule with injectable test
+    * Replaced end-to-end test for store view with injectable test
+    * Increased integration tests coverage for Magento_Indexer module
+    * Increased unit test coverage for Magento_Cms, Magento_Email and Magento_Sales module
+* GitHub issues and requests:
+    * [#533] (https://github.com/magento/magento2/issues/533) -- Remove Allow all access in .htaccess
+    * [#850] (https://github.com/magento/magento2/issues/850) -- HTML Profiler and pub/static Resources
+    * [#919] (https://github.com/magento/magento2/issues/919) -- System information error when error is fixed but page wasn't refreshed
+    * [#987] (https://github.com/magento/magento2/pull/987) -- Fix mod_expires for dynamic content
+    * [#1004] (https://github.com/magento/magento2/issues/1004) -- Problem with template luma
+    * [#1014] (https://github.com/magento/magento2/issues/1014) -- php index.php update - Class Magento\Store\Model\StoreManagerInterface does not exist
+    * [#1015] (https://github.com/magento/magento2/issues/1015) -- After success setup/index.php update - "Missing required argument $engines of Magento\Framework\View\TemplateEngineFactory"
+    * [#1016] (https://github.com/magento/magento2/issues/1016) -- Backend Javascript Errors (new instalation)
+    * [#1020] (https://github.com/magento/magento2/issues/1020) -- Bug generating Sitemap Cron expression
+    * [#1029] (https://github.com/magento/magento2/issues/1029) -- Admin dashboard Most Viewed Products Tab issue (without product list)
+    * [#1035] (https://github.com/magento/magento2/issues/1035) -- Bug in Magento\Framework\Simplexml\Element::appendChild
+    * [#1042] (https://github.com/magento/magento2/issues/1042) -- Lost catalog rewrite url after page/list-mode/limit changed
+    * [#1045] (https://github.com/magento/magento2/issues/1045) -- Bad rendering frontend category menu
+    * [#1048] (https://github.com/magento/magento2/pull/1048) -- Make possible to upload SVG logo by admin
+    * [#1052] (https://github.com/magento/magento2/pull/1052) -- Fix history cleanup for missed cron jobs
+    * [#1062] (https://github.com/magento/magento2/pull/1062) -- Add check to see if PHP > 5.6 and always_populate_raw_post_data = -1
+    * [#1082] (https://github.com/magento/magento2/pull/1082) -- Fix incorrect variable name ($schema -> $scheme)
+    * [#1086] (https://github.com/magento/magento2/issues/1086) -- Email message containing non English character is displayed incorrectly on the receiver
+    * [#1088] (https://github.com/magento/magento2/pull/1088) -- Add developer mode example to .htaccess
+    * [#1107] (https://github.com/magento/magento2/issues/1107) -- Serious security issue in Customer Address edit section
+
+0.42.0-beta11
+=============
+* Various improvements:
+    * Added LICENSE to Developer module
+    * Refactored Catalog and related module to use mutable data object interface
+    * Refactored Sales and related modules to use mutable data interfaces
+* Setup:
+    * Added styles for new module enabling / disabling section in Installation wizard
+    * Modules Install and upgrade capabilities are refactored to implement interfaces used by Setup application
+* Framework:
+    * Moved/refactored Magento\IO\Sftp adapter into Filesystem library
+    * Removed Magento IO library
+    * Implemented Dynamic Types Binding in SOAP
+    * Implemented Extensible Attributes generation
+    * Improved Web API Related Code Quality
+    * Moved Specific Helper Components From the Magento/Core Module to Magento/Framework
+* Performance:
+    * Inline JS code is eliminated
+    * Created fixture for changing Magento config update via Performance Toolkit Generator
+* Fixed bugs:
+    * Issue with  multiple addresses checkout
+    * Issue with catalog page update after a product status changes
+    * Issue with distance between "Log in" & "or" & "Register" in Frontend header
+    * Issue with tax details and amounts in frontend and backend order
+    * JavaScript error when clicking on toggle arrow to show FPT in shopping cart
+    * PHP Warning when trying to checkout with Multiple Addresses on review order page
+* Functional tests:
+    * Refactored end-to-end test for order placement from backend and for OnePageCheckout
+* GitHub requests:
+    * [#1035] (https://github.com/magento/magento2/issues/1035) -- Bug in Magento\Framework\Simplexml\Element::appendChild
+    * [#1053] (https://github.com/magento/magento2/issues/1053) -- #865: add getParams/setParam to RequestInterface
+    * [#1066] (https://github.com/magento/magento2/issues/1066) -- PHP 5.5.16-1+deb.sury.org~precise+1
+
+0.42.0-beta10
+=============
+* Framework
+    * Replaced \Magento\Framework\Model\Exception with LocalizedException
+    * Replaced obsolete exceptions
+    * Config components are moved to new Magento_Config module
+    * Variables components are moved to new Magento_Variable module
+    * Preferences, shared instance creation and compiled factory accelerated by 3%
+    * Fixed "HEADERS ALREADY SENT" error when controller action outputs directly
+* Setup
+    * Added ability to install and upgrade components in Setup Tool (CLI)
+    * Added ability to manage list of modules in Setup Wizard
+    * Fixed error after "Start Readiness Check" button press in Setup Wizard
+    * Fixed error with Base URL change after "Previous" button press on Step 4 in Setup Wizard
+    * Fixed error with HTTPS options related to auto-filled Base URL on Step 3 of Setup Wizard
+    * Fixed error in "app\design\frontend\Magento\luma\composer.json"
+* LESS Compiler
+    * Added automatic update in "pub/static" of changed "css/js/images" after materialization
+    * Variable names are renamed to meet Magento Code Standards
+    * Added client-side LESS files compilation to reduce page load time in developer mode
+* Widgets
+    * Fixed fatal error on page which contain a widget with a condition based on "Category"
+* GitHub requests
+    * [#899](https://github.com/magento/magento2/issues/899) -- When accessing any category - error report generated
+    * [#986](https://github.com/magento/magento2/pull/986) -- Make it possible to exclude classes (directories) for compilation
+    * [#1054](https://github.com/magento/magento2/pull/1054) -- Fix typo in MAGE_MODE
+
+0.42.0-beta9
+=============
+* Framework Improvements:
+    * Layout Models are moved from Core module to appropriate modules
+    * View components are moved from Core to Theme module
+    * Rest of theme related configuration files are refactored
+    * StoreManagerInterface is moved from Framework to App folder
+    * ZF1 controller libraries are updated
+    * Class definitions in multi-tenant mode are removed
+    * DI configuration became more optimal: OM cached configuration uses the general pattern for all argument types in application
+    * Varnish 4 configuration is updated
+    * Layout Processing became more fast
+    * HTML response minified
+    * App Components and Specific Helper Components are moved from the Magento_Core Module
+* UI improvements:
+    * Add to cart operation became asynchronous and doesn`t reload page (AJAX call)
+* Fixed Defects:
+    * When Inline Translation is enabled, JQuery buttons for translate were broken
+    * Base URL has invalid place inside Magento Admin Address on "Web Configuration" step of installation wizard
+    * Inability of submit Product from keyboard while Product Creation
+    * Sold products aren't displayed in Bestsellers
+    * Compiled definitions can cause unexpected errors compared to runtime definitions
+* Accessibility improvements:
+    * WAI-ARIA attributes are added to Frontend Layered Navigation and Customer Dropdown, Frontend Product Page Tabs, Frontend Cart Summary collapsible panels, Frontend forms and notifications, Frontend Checkout pages
+* Tests improvements:
+    * Added mechanism of replacing 3-rd party credentials in functional tests
+    * Update of end-to-end tests for create product, update product, promoted product, out of stock product, create product with new category, unassign products on category, create backend customer with injectable test
+* Various improvements:
+    * JS template engine became unified on Backend and Frontend
+    * Increased unit test coverage for Magento/Indexer module
+    * Version number info became accessible at a public URL
+* GitHub requests:
+    * [#1027](https://github.com/magento/magento2/issues/1027) -- Can't add new subcategory
+    * [#921](https://github.com/magento/magento2/issues/921) -- Change resource ids from Magento_Adminhtml::* to Magento_Backend
+
+0.42.0-beta8
+=============
+* Various improvements:
+    * Existing Builders were replaced with DataFactories in Customer and Tax modules
+    * Refactored controller actions in the Checkout and CMS modules
+    * Increased coverage with static tests for `.phtml` files
+    * Moved Cookie related functionality from `Theme` and `Core` modules into a new `Cookie` module
+    * Moved minfication configuration settings to the `View` library level
+* UI improvements:
+    * Restyled installation wizard
+    * Prepared styles for Dashboard in the Backend area
+* Framework improvements:
+    * Added `setCustomAttribute` and `setCustomAttributes` methods to `ExtensibleDataInterface`
+    * Added setter methods to data object interfaces
+    * Replaced `Builders` with `Factories`
+    * Added `DataObjectHelper.php` which contains the common set of methods of all builders
+    * Refactored `__()` to return `Phrase` object
+    * Allowed usage of `LocalizedException` on the framework's library level
+    * Added expiration/lifetime management of frontend resources
+    * Unified MTF configurations format for Framework, TestCase variations and TestCase scenario configurations
+* Fixed bugs:
+    * Fixed an issue with product reviews list paging
+    * Fixed an issue where sold products were not displayed in Bestsellers
+    * Fixed an issue with image rendering on the CMS page on Frontend when `webserver rewrites = no`
+* GitHub requests:
+    * [#790](https://github.com/magento/magento2/issues/790) -- Magento API fails in a CGI env (zf1 issue)
+    * [#909](https://github.com/magento/magento2/issues/909) -- Manage Titles in popup window front-end issue
+    * [#996](https://github.com/magento/magento2/issues/996) -- Pager block should support url "fragment".
+    * [#985](https://github.com/magento/magento2/pull/985) -- Allow camelcase in vendorname for menus
+    * [#1025](https://github.com/magento/magento2/pull/1025) -- Wrong parameter for getting base url for 'media' path in "Image" form element.
+
+0.42.0-beta7
+=============
+* Various improvements:
+    * Added Varnish 4 support
+    * Added CSS minification
+    * Improved the performance toolkit
+* Fixed bugs:
+    * Fixed an issue where the compiler for the single tenant mode did not resolve Repositories
+    * Fixed an issue where the "Select all" mass action on the Customers page did not select all customers
+    * Fixed an issue where values for a customer  attribute of multiple-select type were not saved
+    * Fixed an issue where the parental wakeup() method was not called in interceptors
+    * Fixed an issue where bundle products with the same configurations added from different pages were displayed in the wishlist as separate items
+    * Fixed an issue where the number of items added to the wishlist was not displayed on certain pages
+    * Fixed an issue where logging was broken
+    * Fixed an issue where it was impossible to use \Magento\Customer\Model\Resource\AddressRepository::getList with predefined direction(sortOrder)
+    * Fixed an issue where editing a product from wishlist led caused a fatal error
+    * Fixed an issue where the redirect link to continue shopping was absent in the success message after adding product to a wishlist
+    * Fixed an issue where HTML tags where displayed in product prices on the Customer's Wishlist page in Admin
+    * Fixed an issue where the Name and Email fields were not automatically when creating an email using the Email to Friend functionality
+    * Fixed an issue with the redirect after searching product in a customer wishlist in Admin
+    * Fixed an issue where a configurable product did not go out of stock when last subitem of some option was sold
+    * Fixed an issue with varnish config generation for multiple IPs in access list field
+    * Fixed the wrong di.xml in the Magento_Developer module
+    * Fixed an issue where changes were not saved when default billing/shipping address was not selected in customer addresses
+    * Fixed the issue where the Update Qty button looked disabled during a partial invoice creation
+    * Fixed an issue where the creation date was not displayed in invoices and credit memo grids
+    * Fixed an issue where it was impossible to install Magento_Quote on PHP 5.6
+    * Fixed an issue that changes are not saved when default billing/shipping address is unchecked in customer addresses
+    * Fixed an issue where "Update Qty" button looks disabled while creating partial invoice
+    * Fixed an issue where date created column is not populated in invoices and credit memo grid
+    * Fixed an issue with installation of Magento_Quote module on PHP 5.6
+    * Fixed an issue with wrong link "File Permission Help"
+    * Fixed an issue where dev/tools are broken when DI compiler is used due to skipped by the compiler dev/tools/Magento folder
+* Framework improvements:
+    * JavaScript testsuites divided into frontend, backend and lib suites
+    * Implemented image compression on server side upload
+    * Implemented frontend page resources sorting
+    * Removed the Magic __call method usage in templates
+    * Introduced Jasmine + PhantomJS JavaScript testing infrastructure
+    * Removed support of PHP 5.4
+* Setup Tool improvements:
+    * Added tools for enabling/disabling modules: "module-enable --modules=Module_One,Module_Two, module-disable --modules=Module_One,Module_Two"
+    * Added help option for displaying list of available modules: "help module-list"
+* GitHub requests :
+    * [#593](https://github.com/magento/magento2/issues/593) -- Allow to use "0" as customer group
+    * [#804](https://github.com/magento/magento2/issues/804) -- Comment about VAT number displayed under different field in Customer Configuration
+
+0.42.0-beta6
+=============
+* Various improvements:
+    * Implemented caching for WebAPI configuration
+    * Improved tests coverage of the CurrencySymbol module
+    * Table catalogsearch_fulltext is setting up with ENGINE=InnoDB
+    * Improved unit test coverage of the Catalog related functionality
+    * Optimized JS dependencies
+    * Refactored controller actions in the Sales module
+    * Refactored controller actions in the Customer module
+    * Removed the assertion for the exact number of attributes in API-functional tests for customer metadata.
+    * Refactored API code for the CheckoutAgreements module
+    * Refactored API code for the GiftMessage module
+    * Refactored API for the Checkout module
+* Fixed bugs:
+    * Fixed an where issue were WebAPI generated the wrong WSDL
+    * Fixed an issue where Catalog, Checkout, Customer API ACLs did not support AJAX use case(s)
+    * Fixed an issue where SOAP tests failed after upgrading to ZF 1.12.9
+    * Fixed an issue where the 'There is no data for export' message was displayed permanently after invalid search
+    * Fixed an issue where there was no ability to set category position during creation it
+    * Fixed a CSS issue where certain images were absent on banners ()
+    * Fixed an issue where the 'Date Of Birth' value was i reset to current date on the customer form)
+    * Fixed an issue where the behavior of the "Terms and Conditions" validation on multiple address checkout was different from the one for the onepage checkout
+    * Fixed an issue where it was impossible to checkout with multiple addresses
+    * Fixed an issue where the 'This is a required field ' message was not displayed for "Terms and Conditions" if the latter  was not selected
+* GitHub Requests:
+    * [#963](https://github.com/magento/magento2/pull/963) -- Default Accept header
+    * [#995](https://github.com/magento/magento2/pull/995) -- Prevent a warning in activated developer mode when 'plugins' is no array
+    * [#866](https://github.com/magento/magento2/issues/866) -- Configurable product attribute scope
+    * [#965](https://github.com/magento/magento2/pull/965) -- extra tests for current interception behavior
+* Service Contracts:
+    * The Downloadable module basic implementation
+* Framework improvements:
+    * Refactored and covered with tests the classes with high CRAP value (>50)
+    * Moved Theme Management changes, Design changes, Design\Backend modules, and Observer components from the Core module to the Theme module
+    * Moved Debug Hints models from the Core module to the newly added Developer module
+    * Moved URL components, Factory, and EntityFactory from the Core module to the Magento Framework
+* UI improvements:
+    * Compressed and resized images
+    * Added new base styles for the Admin re-design
+    * Added the WAI-ARIA attributes are to the Search Autocomplete on the storefront
+    * Added visual style for the 'skip to content' attribute on the storefront
+    * Fixed the style of persistent login messages on the storefront for all themes
+    * Fixed the style of scrolling for Categories with long names in the Admin
+    * Fixed the "css/print.css" file path on the storefront pages for all themes
+* Tests improvements:
+    * Converted all fixtures/repositories for functional tests to .xml files
+    * Improved interaction between webdriver and the new Magento JS forms
+    * Increased unit and integration tests coverage
+
+0.42.0-beta5
+=============
+* UI improvements:
+    * Updated the design of Enable Cookies CMS page
+    * Implemented UI improvements for Widgets
+    * Fixed the "Help Us to Keep Magento Healthy Report All Bugs (ver. #)" link Magento Admin
+    * Various UI improvements
+* Various improvements:
+    * Implemented Sales Quote as a standalone Magento module
+    * Performed custom EAV entities code and DB tables cleanup
+    * Eliminating remnants of the Core module:
+        * Moved Application Emulation from the Magento_Core module to the Magento_Store module
+        * Moved Validator Factory from the Magento_Core module to the Magento Framework
+    * Added static integrity test for composer.json files
+    * Added PHPMD and PHPCS annotations to the codebase
+* Tests improvements:
+    * Added MVP tag to the functional tests
+    * Created acceptance functional test suite
+    * Replaced end-to-end tests for url rewrite creation, CMS page creation, category creation, review creation, customer frontend creation, and tax rule creation with injectable tests
+    * Automated test cases for downloadable products with taxes
+* Fixed bugs:
+    * Fixed an issue where the Discounts and Coupons RSS Feed had incorrect title
+    * Fixed an issue where a wrong special price expiration date was displayed in RSS
+    * Fixed an issue in the Import functionality where imported files disappeared after the Check Data operation
+    * Fixed an issue where the Unsubscribe link in the Newsletter was broken
+    * Fixed an issue where stock status changed incorrectly after import
+    * Fixed an issue where selected filters and exclude did not work during Export
+    * Fixed an issue where tax details order was different on order/invoice/refund create and view pages (
+    * Fixed a typo in the getCalculationAlgorithm public function
+    * Fixed an issue where the incorrect value of Subtotal Including Tax was displayed in invoices
+    * Fixed an issue where tax details were not displayed on a new order
+    * Improved pricing performance using caching
+    * Fixed an issue where CsvImportHandler tests still referring to links from Tax module instead of TaxImportExport module
+    * Fixed an issue where an exception was thrown instead of 404 if altering the url for a product with required configuration on the storefront
+    * Fixed an issue where the title of successfully placed order page (was empty
+    * Fixed an issue where certain fields were not disabled by default on the website scope in System configuration as expected
+    * Fixed an issue where third party interfaces were not supported by single-tenant compiler
+    * Eliminated the 'protocol' parameter from the ReadInterface and WriteInterface
+* GitHub requests:
+    * [#979](https://github.com/magento/magento2/pull/979) -- Adding OSL license file name
+    * [#978](https://github.com/magento/magento2/pull/978) -- Added ignore rule for media assets in wysiwyg directory
+    * [#877](https://github.com/magento/magento2/pull/877) -- Made Topmenu HTML Editable
+    * [#906](https://github.com/magento/magento2/pull/906) -- Add tests for View\Layout\Reader\Block and slight refactoring
+    * [#682](https://github.com/magento/magento2/issues/682) -- \Magento\Framework\Pricing\PriceCurrencyInterface depends on Magento application code
+    * [#581](https://github.com/magento/magento2/issues/581) -- About ByPercent.php under different currencies
+    * [#964](https://github.com/magento/magento2/pull/964) -- Improving documentation for jMeter performance tests
+    * [#871](https://github.com/magento/magento2/issues/871) -- Replace Symfony2/Yaml in composer
+    * [#990](https://github.com/magento/magento2/pull/990) -- add @see annotation before class to make it recognizable by IDE
+    * [#988](https://github.com/magento/magento2/pull/988) -- Prevent Varnish from creating cache variations of static files
+* Framework improvements:
+    * Improved unit and integration tests coverage
+
+0.42.0-beta4
+=============
+* Various improvements:
+    * Updated Copyright Notice and provided reference to the license file
+    * Updated test framework to support stores other than default
+    * Removed version information from theme.xml files leaving it only in composer.json files
+* Fixed bugs:
+    * Fixed an issue where coupon code was reported to be invalid if it has been removed from reorder in backend and then re-applied
+    * Fixed an issue where the 'Guide to Using Sample Data' link was incorrect in the web setup UI
+    * Fixed an issue where the link to System Requirements in bootstrap.php was incorrect
+    * Fixed an issue where Compiler could not verify case sensitive dependency
+    * Fixed an issue where the Recently Compared Products and Recently Viewed Products widgets were not displayed in sidebars
+    * Fixed an issue where the Orders and Returns widget type contained unnecessary tab
+    * Fixed an issue where an image added to a CMS page using the WYSIWYG editor was displayed as a broken link after turning off the allow_url_fopen parameter in php.ini
+    * Fixed an issue where it was impossible to log in to the backend from the first attempt after changing Base URL
+    * Fixed an issue where it was impossible to set back the default English (United States) interface locale for the admin user after changing it so an other value
+    * Fixed an issue where it was possible to execute malicious JavaScript code in the context of website via the Sender Email parameter
+    * Fixed an issue where the Product Stock Alert email was sent to a customer from a store view different than a customer account was created in
+    * Fixed an issue where the "Server cannot understand Accept HTTP header media type" error message was not informative enough
+    * Fixed an issue where unit tests did not work as expected after installing Magento 2
+    * Fixed an issue where the password change email notification was sent after saving admin account settings even if password was not changed
+    * Fixed an issue where static tests failed as a result of adding  API functional tests
+    * Fixed API functional tests after merging pull request [#927](https://github.com/magento/magento2/pull/927)
+    * Fixed an issue where the Edit button was present for invoiced orders
+    * Fixed an issue where function _underscore did not work with keys like SKeyName ('s_key_name')
+    * Fixed an issue where a fatal error occurred when browsing categories if web server did not have write permissions for media/catalog/product
+* Github requests:
+    * [#792](https://github.com/magento/magento2/issues/792) -- Failed to set ini option "session.save_path" to value
+    * [#796](https://github.com/magento/magento2/issues/796) -- install.log cannot be created with open_basedir restriction
+    * [#823](https://github.com/magento/magento2/issues/823) -- Installation bug
+    * [#920](https://github.com/magento/magento2/issues/920) -- "web setup wizard is not accessible" error message but the setup wizard is actually accessible
+    * [#829](https://github.com/magento/magento2/issues/829) -- [API] OAuth1.0 request token request failing / Consumer key has expired
+    * [#658](https://github.com/magento/magento2/issues/658) -- Inline translate malfunctioning
+    * [#950](https://github.com/magento/magento2/pull/950) -- Fix for the missed trailing end of line in indexer.php usage help text
+    * [#932](https://github.com/magento/magento2/pull/932) -- Migration tool - not all input has comments
+    * [#959](https://github.com/magento/magento2/pull/959) -- Replace UTF8 'en dash' with minus in error message
+    * [#911](https://github.com/magento/magento2/pull/911) -- Fix test assertion and slight cleanup refactoring
+    * [#936](https://github.com/magento/magento2/pull/936) -- Bugfix for regions with single quote in name
+    * [#902](https://github.com/magento/magento2/pull/902) -- Add integration test for View\Page\Config\Reader\Html
+    * [#925](https://github.com/magento/magento2/pull/925) -- Failed test due to Class not following the naming conventions
+    * [#943](https://github.com/magento/magento2/pull/943) -- magento2-925 Failed Test due to Class not following the naming conventions
+    * [#968](https://github.com/magento/magento2/pull/968) -- Apply pattern matching datasource config files
+    * [#949](https://github.com/magento/magento2/pull/949) -- Added 'status' command for cache cli script / Also improved readability
+* PHP 5.6 in composer.json:
+    * Added PHP 5.6.0 to the list of required PHP versions in all composer.json files
+    * Updated Travis CI configuration to include PHP 5.6 builds
+* Framework improvements:
+    * Removed TODOs in the Integration and Authorization modules
+    * Removed leading backslash from the 'use' statement throughout the code base
+
+0.42.0-beta3
+=============
+* Fixed bugs:
+    * Fixed an issue where malicious JavaScript could be executed when adding new User Roles in the backend
+    * Fixed an issue where incorrect output format was returned when invoking the Customer service
+    * Fixed an issue where it was impossible to activate an integration after editing the URLs
+    * Fixed an issue where incorrect class path was used in the ObjectManager calls
+    * Fixed an issue where inconsistent Reflection classes were used for WebApi applications
+    * Fixed an issue where the parent element was removed from theme.xml by mistake
+* API functional tests changes:
+    * Moved API functional tests to CE repository
+* Various improvements:
+    * Removed include-path from composer.json
+* GitHub requests:
+    * [#876](https://github.com/magento/magento2/pull/876) -- [BUGFIX] Fixed german translation "Warenkorbrn"
+    * [#880](https://github.com/magento/magento2/pull/880) -- Naming fix in DI compiler.php - rename binary to igbinary to stay consistent
+    * [#913](https://github.com/magento/magento2/pull/913) -- Specify date fixture and fix expectations
+    * [#874](https://github.com/magento/magento2/pull/874) -- Prevent special characters finding their way into layout handle due to SKU being used
+    * [#903](https://github.com/magento/magento2/pull/903) -- Small cleanup refactoring
+    * [#905](https://github.com/magento/magento2/pull/905), [#907](https://github.com/magento/magento2/pull/907), [#908](https://github.com/magento/magento2/pull/908) -- Change interpret() return value to conform with Layout\ReaderInterface
+    * [#913](https://github.com/magento/magento2/pull/913) -- Specify date fixture and fix expectations
+
+0.42.0-beta2
+=============
+* Framework improvements:
+    * Added composer.lock to the repository
+* Various improvements:
+    * Magento PSR-3 compliance
+    * Updated file iterators to work with symlinks
+    * Replaced end-to-end test for advanced search with injectable test
+    * Replaced end-to-end test for quick search with injectable test
+* Fixed bugs:
+    * Fixed an issue where an exception occurred when adding configurable products to cart from the wishlist
+    * Modify .gitignore CE according to new repos structure
+    * Fixed an issue where the 'Not %Username%?' link was displayed for a logged in user while pages were loaded
+    * Fixed an issue where Shopping Cart Price Rules based on product attributes were not applied to configurable products
+    * Fixed an issue where the Tax Class drop-down field on New Customer Group page contained the 'none' value when a tax class already existed
+    * Fixed an issue where the 'Credit Memo' button was absent on the Invoice page for payments
+    * Fixed an issue where incorrect totals were shown in the Coupon Usage report
+    * Fixed an issue where an error occurred and the "Append Comments" checkbox was cleared when submitting an order in the backend
+    * Fixed an issue where the Transactions tab appeared in the backend for orders where offline payment methods were used
+    * Fixed an issue with the extra empty line appearing in the Customer Address template
+* Github requests:
+    * [#853](https://github.com/magento/magento2/pull/853) -- Fix spelling error in Customer module xml
+    * [#858](https://github.com/magento/magento2/pull/858) -- Clicking CMS page in backend takes you to the dashboard
+    * [#858](https://github.com/magento/magento2/issues/816) -- Clicking CMS page takes you to the dashboard
+    * [#859](https://github.com/magento/magento2/pull/859) -- Fix email template creation date not being persisted
+    * [#860](https://github.com/magento/magento2/pull/860) -- Fix currency and price renderer
+
 0.42.0-beta1
 =============
 * Fixed bugs:
@@ -30,7 +575,7 @@
     * Fixed an issue with the absence of JS validation for the Zip/Postal code field
     * Fixed an issue with a 1 cent difference in the tax summary and detail on an invoice and a credit memo for a partial invoice when a discount and fixed product tax are applied
     * Fixed an issue with throwing validation error for the State field when saving a product with FPT
-    * Fixed an issue with throwing an error when trying to save a timezone 
+    * Fixed an issue with throwing an error when trying to save a timezone
     * Fixed an issue with Exploited Session ID in second browser leading to Error
     * Fixed an issue with session loss on page 404 when using the Varnish caching
     * Fixed an issue with integration test not resetting static properties to correct default values after each test suite
@@ -72,7 +617,7 @@
     * Fixed an issue with tax rate not being saved if all states were chosen for any non-default country
     * Fixed an issue with multi-select fail on the Customer add/edit form
     * Added exception handling for required fields for REST APIs
-    * Fixed an issue with success message missing after the signup for price alert 
+    * Fixed an issue with success message missing after the signup for price alert
     * Fixed an issue with inability to create a return order from the Admin panel
     * Fixed an issue with incorrect work of the Default Value for Disable Automatic Group Changes Based on VAT ID setting
     * Fixed an issue with fatal error on the I18n tools launch due to incorrect bootstrap/autoload
@@ -505,11 +1050,11 @@
 * Performance improvements:
     * Introduced CatalogRule indexers based on Mview
     * Significantly decreased the amount of unused objects, mostly in category and product view scenarios:
-		* Got rid of non-shared indexer instances all over the code introducing Magento\Indexer\Model\IndexerRegistry
-		* Magento\Catalog\Pricing\Price\BasePrice being created on demand only, instead of unconditioned creation in constructor
-		* Created proxies for unused objects with big amount of dependencies
-		* Fixed \Magento\Review\Block\Product\Review block which injected backend block context by mistake
-		* A customer model in \Magento\Customer\Model\Layout\DepersonalizePlugin being created on demand only, instead of constructor
+        * Got rid of non-shared indexer instances all over the code introducing Magento\Indexer\Model\IndexerRegistry
+        * Magento\Catalog\Pricing\Price\BasePrice being created on demand only, instead of unconditioned creation in constructor
+        * Created proxies for unused objects with big amount of dependencies
+        * Fixed \Magento\Review\Block\Product\Review block which injected backend block context by mistake
+        * A customer model in \Magento\Customer\Model\Layout\DepersonalizePlugin being created on demand only, instead of constructor
     * Introduced caching for product attribute metadata loading procedure
     * Improved SavePayment Checkout step to save only payment related data
     * Speed up all Checkout steps of the One Page Checkout
@@ -585,48 +1130,48 @@
 0.1.0-alpha102
 =============
 * Fixed bugs:
-	* Fixed an issue where the categories tree was not displayed when adding a new category during product creation
-	* Fixed an issue where the Template field on the New Email Template page was labeled as required
-	* Fixed minor UI issues in Multiple Addresses Checkout for a desktop
-	* Fixed minor UI issues with Widgets on the storefront
-	* Fixed minor UI issues with pages printing view on the storefront
-	* Fixed minor UI issues in items Gift message on the Order View frontend page
-	* Fixed an issue in the Admin panel where no message was displayed after adding a product to cart with quantity exceeding the available quantity)
+    * Fixed an issue where the categories tree was not displayed when adding a new category during product creation
+    * Fixed an issue where the Template field on the New Email Template page was labeled as required
+    * Fixed minor UI issues in Multiple Addresses Checkout for a desktop
+    * Fixed minor UI issues with Widgets on the storefront
+    * Fixed minor UI issues with pages printing view on the storefront
+    * Fixed minor UI issues in items Gift message on the Order View frontend page
+    * Fixed an issue in the Admin panel where no message was displayed after adding a product to cart with quantity exceeding the available quantity)
 * Framework improvements:
-	* To enhance the readability of tables for screen readers, added the <caption> tag and the “scope” attribute for tables
-	* Added customer module interfaces
-	* Created the ability to generate API documentation
+    * To enhance the readability of tables for screen readers, added the <caption> tag and the “scope” attribute for tables
+    * Added customer module interfaces
+    * Created the ability to generate API documentation
 * Added the following functional tests:
-	* Create gift message in the Admin panel
-	* Delete term
-	* Product type switching when editing
-	* Re-authorize tokens for the Integration
-	* Revoke all access tokens for admin without tokens
-	* Update custom order status
-	* Update a product from a mini shopping cart
+    * Create gift message in the Admin panel
+    * Delete term
+    * Product type switching when editing
+    * Re-authorize tokens for the Integration
+    * Revoke all access tokens for admin without tokens
+    * Update custom order status
+    * Update a product from a mini shopping cart
 * WebApi Framework improvements:
-	* Added Web API support to add/override matching identifier parameter in the body from URL
+    * Added Web API support to add/override matching identifier parameter in the body from URL
 * Documentation:
-	* Added README files with module description for the following modules:
-		* Authorizenet
-		* Centinel
-		* Customer
-		* CustomerImportExport
-		* Dhl
-		* Fedex
-		* OfflinePayments
-		* OfflineShipping
-		* Ogone
-		* PayPalRecurringPayment
-		* Payment
-		* Paypal
-		* ProductAlert
-		* RecurringPayment
-		* Sendfriend
-		* Shipping
-		* Ups
-		* Usps
-		* Wishlist
+    * Added README files with module description for the following modules:
+        * Authorizenet
+        * Centinel
+        * Customer
+        * CustomerImportExport
+        * Dhl
+        * Fedex
+        * OfflinePayments
+        * OfflineShipping
+        * Ogone
+        * PayPalRecurringPayment
+        * Payment
+        * Paypal
+        * ProductAlert
+        * RecurringPayment
+        * Sendfriend
+        * Shipping
+        * Ups
+        * Usps
+        * Wishlist
 * Container-Based Page Layout:
     * Distributed the responsibility of View\Layout between three classes (PageLayout, PageConfig, GenericLayout)
     * Refactored controller actions to use ResultInterface objects:
@@ -640,20 +1185,20 @@
   * Added new base classes in the Service infrastructure lib to support extensible Data Interfaces
   * Updated the WebApi framework serialization (for SOAP and REST) to process requests based on Data Interfaces and removed dependency on Data Objects
   * Added base class for Data Interface based builders and implemented a code generator for the same
- * File system improvements: 
+ * File system improvements:
    * List of available application directories is complete now and defined in the \Magento\Framework\Filesystem\DirectoryList and the \Magento\Framework\App\Filesystem\DirectoryList classes. There is no ability to extend the list in configuration
    * Directory paths  can be changed using environment/bootstrap
    * Information about necessary permissions (writable, readable) belongs to Setup Application, Magento Application does not possess this info and does not verify. Setup Application performs permissions validation
    * Unnecessary writable permissions are validated by Setup Application after installation and corresponding message is displayed to the user
  * Functional tests:
-  * Configure a product in a customer wishlist  in the Admin panel 
-  * Configure a product in a customer wishlist on the storefront 
-  * Create terms and conditions 
-  * Manage products stock 
-  * Move a product from a shopping card to a wishlist 
-  * Un-assign custom order status 
-  * Update terms and conditions 
-  * Update URL rewrites after moving/deleting a category 
+  * Configure a product in a customer wishlist  in the Admin panel
+  * Configure a product in a customer wishlist on the storefront
+  * Create terms and conditions
+  * Manage products stock
+  * Move a product from a shopping card to a wishlist
+  * Un-assign custom order status
+  * Update terms and conditions
+  * Update URL rewrites after moving/deleting a category
   * Update URL rewrites after changing category assignment for a product
   * View customer wishlist  in the Admin panel
   * Tax calculation test
@@ -703,44 +1248,44 @@
     * Magento\Framework\Stdlib
     * Magento\Framework\Validator
  * Performance improvements:
-  * Reduced checkout response time by loading only current checkout step 
-  * Reduced the number of AJAX calls on checkout steps 
-  * Improved performance on the billing and shipping checkout steps 
-  * Improved performance in certain areas by loading translation data from cache 
-  * Removed transactions from visitors logging 
-  * Fixed classmap generator to consider namespaces 
-  * Eliminated a redundant query for category tree rendering 
-  * Optimized StoreManager and Storage performance 
-  * Optimized Object Manager 
+  * Reduced checkout response time by loading only current checkout step
+  * Reduced the number of AJAX calls on checkout steps
+  * Improved performance on the billing and shipping checkout steps
+  * Improved performance in certain areas by loading translation data from cache
+  * Removed transactions from visitors logging
+  * Fixed classmap generator to consider namespaces
+  * Eliminated a redundant query for category tree rendering
+  * Optimized StoreManager and Storage performance
+  * Optimized Object Manager
  * Fixed bugs:
-  * Fixed an issue where partial invoices and partial credit memos contained incorrect customer's tax details 
-  * Fixed an issue where a PHP fatal error occurred when logging in during checkout to order a product with FPT 
-  * Fixed an issue where FPT was not calculated in reorders 
-  * Fixed an issue where there was a duplicated Administrator role after installation 
-  * Fixed an issue where the Try Again button was disabled after entering the incorrect data during installation 
+  * Fixed an issue where partial invoices and partial credit memos contained incorrect customer's tax details
+  * Fixed an issue where a PHP fatal error occurred when logging in during checkout to order a product with FPT
+  * Fixed an issue where FPT was not calculated in reorders
+  * Fixed an issue where there was a duplicated Administrator role after installation
+  * Fixed an issue where the Try Again button was disabled after entering the incorrect data during installation
   * Fixed an issue where the "Application is not installed yet" error was thrown instead of redirecting to the Installation Wizard in the developer mode
-  * Fixed an issue where an error was thrown during installation with db_prefix option 
+  * Fixed an issue where an error was thrown during installation with db_prefix option
   * Fixed an issue where the SQL query was not optimized for product search ('catalogsearch_query')
-  * Fixed an issue where the wrong message was displayed after changing customer password on the storefront 
-  * Fixed an issue where Newsletter preview led to an empty page 
-  * Fixed an issue where a new search term was not displayed in suggested results 
-  * Fixed an issue where no results were found for the Products Viewed report 
-  * Fixed an issue where no results were found for Coupons reports 
-  * Fixed an issue with incremental Qty setting 
-  * Fixed an issue with allowing importing of negative weight values 
-  * Fixed an issue with Inventory - Only X left Treshold being not dependent on Qty for Item's Status to Become Out of Stock 
-  * Fixed an issue where the "Catalog Search Index index was rebuilt." message was displayed when reindexing the Catalog Search index  
+  * Fixed an issue where the wrong message was displayed after changing customer password on the storefront
+  * Fixed an issue where Newsletter preview led to an empty page
+  * Fixed an issue where a new search term was not displayed in suggested results
+  * Fixed an issue where no results were found for the Products Viewed report
+  * Fixed an issue where no results were found for Coupons reports
+  * Fixed an issue with incremental Qty setting
+  * Fixed an issue with allowing importing of negative weight values
+  * Fixed an issue with Inventory - Only X left Treshold being not dependent on Qty for Item's Status to Become Out of Stock
+  * Fixed an issue where the "Catalog Search Index index was rebuilt." message was displayed when reindexing the Catalog Search index
  * Search module:
-  * Integrated the Search library to the advanced search functionality 
-    * Substituted the old logic of the EAV attributes search by Advanced Search 
-    * Introduced mappers for MySQL adapter 
-    * Restored  the currency calculation functionality 
-    * Fixed sorting by relevance in quick search and advanced search 
-  * Integrated the Search library into the search widget functionality 
-    * Removed the dependency on the catalogsearch_result table 
-    * Substituted the old logic of EAV attributes by Quick search APIs 
-  * Search modularity: 
-    * Removed circular dependency between Catalog and  Catalog Search 
+  * Integrated the Search library to the advanced search functionality
+    * Substituted the old logic of the EAV attributes search by Advanced Search
+    * Introduced mappers for MySQL adapter
+    * Restored  the currency calculation functionality
+    * Fixed sorting by relevance in quick search and advanced search
+  * Integrated the Search library into the search widget functionality
+    * Removed the dependency on the catalogsearch_result table
+    * Substituted the old logic of EAV attributes by Quick search APIs
+  * Search modularity:
+    * Removed circular dependency between Catalog and  Catalog Search
     * Removed exceeded dependencies of the Search module
 
 0.1.0-alpha100

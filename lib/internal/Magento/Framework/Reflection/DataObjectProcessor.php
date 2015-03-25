@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Reflection;
 
+use Magento\Framework\Phrase;
 use Magento\Framework\Api\AttributeValue;
-use Magento\Framework\Api\ExtensibleDataInterface;
+use Magento\Framework\Api\CustomAttributesDataInterface;
 use Magento\Framework\Api\SimpleDataObjectConverter;
 use Zend\Code\Reflection\ClassReflection;
 use Zend\Code\Reflection\MethodReflection;
@@ -106,15 +108,15 @@ class DataObjectProcessor
                     continue;
                 }
                 $key = SimpleDataObjectConverter::camelCaseToSnakeCase(substr($methodName, 3));
-                if ($key === ExtensibleDataInterface::CUSTOM_ATTRIBUTES) {
+                if ($key === CustomAttributesDataInterface::CUSTOM_ATTRIBUTES) {
                     $value = $this->convertCustomAttributes($value, $dataObjectType);
-                } elseif (is_object($value)) {
+                } elseif (is_object($value) && !($value instanceof Phrase)) {
                     $value = $this->buildOutputDataArray($value, $returnType);
                 } elseif (is_array($value)) {
                     $valueResult = [];
                     $arrayElementType = substr($returnType, 0, -2);
                     foreach ($value as $singleValue) {
-                        if (is_object($singleValue)) {
+                        if (is_object($singleValue) && !($singleValue instanceof Phrase)) {
                             $singleValue = $this->buildOutputDataArray($singleValue, $arrayElementType);
                         }
                         $valueResult[] = $this->castValueToType($singleValue, $arrayElementType);
@@ -302,10 +304,7 @@ class DataObjectProcessor
         $isSuitableMethodType = !($method->isConstructor() || $method->isFinal()
             || $method->isStatic() || $method->isDestructor());
 
-        $isExcludedMagicMethod = in_array(
-            $method->getName(),
-            ['__sleep', '__wakeup', '__clone']
-        );
+        $isExcludedMagicMethod = strpos($method->getName(), '__') === 0;
         return $isSuitableMethodType && !$isExcludedMagicMethod;
     }
 }

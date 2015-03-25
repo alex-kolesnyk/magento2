@@ -1,11 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Integration\Test\Block\Adminhtml\Integration\IntegrationGrid;
 
-use Mtf\Block\Form;
+use Magento\Mtf\Block\BlockFactory;
+use Magento\Mtf\Block\Form;
+use Magento\Mtf\Block\Mapper;
+use Magento\Mtf\Client\BrowserInterface;
+use Magento\Mtf\Client\Element\SimpleElement;
 
 /**
  * Class ResourcesPopup
@@ -26,6 +31,46 @@ class ResourcesPopup extends Form
      * @var string
      */
     protected $reauthorizeButtonSelector = '[data-row-dialog="tokens"][data-row-is-reauthorize="1"]';
+
+    /**
+     * API content selector.
+     *
+     * @var string
+     */
+    protected $content = '#integrations-activate-permissions-content';
+
+    /**
+     * @constructor
+     * @param SimpleElement $element
+     * @param BlockFactory $blockFactory
+     * @param Mapper $mapper
+     * @param BrowserInterface $browser
+     */
+    public function __construct(
+        SimpleElement $element,
+        BlockFactory $blockFactory,
+        Mapper $mapper,
+        BrowserInterface $browser
+    ) {
+        parent::__construct($element, $blockFactory, $mapper, $browser);
+        $this->waitPopupToLoad();
+    }
+
+    /**
+     * Wait until API content is loaded.
+     *
+     * @return void
+     */
+    protected function waitPopupToLoad()
+    {
+        $context = $this->_rootElement;
+        $selector = $this->content;
+        $context->waitUntil(
+            function () use ($context, $selector) {
+                return $context->find($selector)->isVisible() ? true : null;
+            }
+        );
+    }
 
     /**
      * Click allow button in integration resources popup window.

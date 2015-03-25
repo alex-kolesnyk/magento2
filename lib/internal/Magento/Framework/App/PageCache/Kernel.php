@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\PageCache;
 
@@ -60,12 +61,12 @@ class Kernel
      */
     public function process(\Magento\Framework\App\Response\Http $response)
     {
-        if (preg_match('/public.*s-maxage=(\d+)/', $response->getHeader('Cache-Control')['value'], $matches)) {
+        if (preg_match('/public.*s-maxage=(\d+)/', $response->getHeader('Cache-Control')->getFieldValue(), $matches)) {
             $maxAge = $matches[1];
             $response->setNoCacheHeaders();
             if ($response->getHttpResponseCode() == 200 && ($this->request->isGet() || $this->request->isHead())) {
                 $tagsHeader = $response->getHeader('X-Magento-Tags');
-                $tags = $tagsHeader ? explode(',', $tagsHeader['value']) : [];
+                $tags = $tagsHeader ? explode(',', $tagsHeader->getFieldValue()) : [];
 
                 $response->clearHeader('Set-Cookie');
                 $response->clearHeader('X-Magento-Tags');

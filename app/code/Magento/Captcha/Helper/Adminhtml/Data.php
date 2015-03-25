@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -20,7 +21,6 @@ class Data extends \Magento\Captcha\Helper\Data
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Store\Model\StoreManager $storeManager
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Captcha\Model\CaptchaFactory $factory
      * @param \Magento\Backend\App\ConfigInterface $backendConfig
@@ -28,13 +28,12 @@ class Data extends \Magento\Captcha\Helper\Data
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Store\Model\StoreManager $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Captcha\Model\CaptchaFactory $factory,
         \Magento\Backend\App\ConfigInterface $backendConfig
     ) {
         $this->_backendConfig = $backendConfig;
-        parent::__construct($context, $storeManager, $config, $filesystem, $factory);
+        parent::__construct($context, $storeManager, $filesystem, $factory);
     }
 
     /**

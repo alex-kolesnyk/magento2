@@ -2,7 +2,8 @@
 /**
  * Plugin configuration storage. Provides list of plugins configured for type.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Interception\PluginList;
 
@@ -18,6 +19,9 @@ use Magento\Framework\ObjectManager\DefinitionInterface as ClassDefinitions;
 use Magento\Framework\ObjectManagerInterface;
 use Zend\Soap\Exception\InvalidArgumentException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class PluginList extends Scoped implements InterceptionPluginList
 {
     /**
@@ -83,6 +87,7 @@ class PluginList extends Scoped implements InterceptionPluginList
      * @param ClassDefinitions $classDefinitions
      * @param array $scopePriorityScheme
      * @param string $cacheId
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         ReaderInterface $reader,
@@ -112,9 +117,11 @@ class PluginList extends Scoped implements InterceptionPluginList
      * @return array
      * @throws InvalidArgumentException
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _inheritPlugins($type)
     {
+        $type = ltrim($type, '\\');
         if (!array_key_exists($type, $this->_inherited)) {
             $realType = $this->_omConfig->getOriginalInstanceType($type);
 
@@ -144,6 +151,7 @@ class PluginList extends Scoped implements InterceptionPluginList
             $this->_inherited[$type] = null;
             if (is_array($plugins) && count($plugins)) {
                 uasort($plugins, [$this, '_sort']);
+                $this->trimInstanceStartingBackslash($plugins);
                 $this->_inherited[$type] = $plugins;
                 $lastPerMethod = [];
                 foreach ($plugins as $key => $plugin) {
@@ -175,6 +183,19 @@ class PluginList extends Scoped implements InterceptionPluginList
             return $plugins;
         }
         return $this->_inherited[$type];
+    }
+
+    /**
+     * Trims starting backslash from plugin instance name
+     *
+     * @param array $plugins
+     * @return void
+     */
+    private function trimInstanceStartingBackslash(&$plugins)
+    {
+        foreach ($plugins as &$plugin) {
+            $plugin['instance'] = ltrim($plugin['instance'], '\\');
+        }
     }
 
     /**
@@ -277,7 +298,7 @@ class PluginList extends Scoped implements InterceptionPluginList
                     }
                 }
                 foreach ($virtualTypes as $class) {
-                    $this->_inheritPlugins(ltrim($class, '\\'));
+                    $this->_inheritPlugins($class);
                 }
                 foreach ($this->getClassDefinitions() as $class) {
                     $this->_inheritPlugins($class);

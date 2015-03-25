@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Column\Renderer;
 
@@ -47,7 +48,7 @@ class Checkbox extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
      */
     public function getValues()
     {
-        if (is_null($this->_values)) {
+        if ($this->_values === null) {
             $this->_values = $this->getColumn()->getData('values') ? $this->getColumn()->getData('values') : [];
         }
         return $this->_values;
@@ -69,6 +70,8 @@ class Checkbox extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstra
      *
      * @param   \Magento\Framework\Object $row
      * @return  string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function render(\Magento\Framework\Object $row)
     {

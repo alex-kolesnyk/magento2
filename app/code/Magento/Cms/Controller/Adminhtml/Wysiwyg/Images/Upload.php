@@ -1,16 +1,36 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Wysiwyg\Images;
 
 class Upload extends \Magento\Cms\Controller\Adminhtml\Wysiwyg\Images
 {
     /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
+    protected $resultJsonFactory;
+
+    /**
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Registry $coreRegistry
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Registry $coreRegistry,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+    ) {
+        $this->resultJsonFactory = $resultJsonFactory;
+        parent::__construct($context, $coreRegistry);
+    }
+
+    /**
      * Files upload processing
      *
-     * @return void
+     * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
@@ -21,8 +41,8 @@ class Upload extends \Magento\Cms\Controller\Adminhtml\Wysiwyg\Images
         } catch (\Exception $e) {
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
-        $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
-        );
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+        $resultJson = $this->resultJsonFactory->create();
+        return $resultJson->setData($result);
     }
 }

@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\Di\Code\Scanner;
+
+use Magento\Framework\ObjectManager\Code\Generator\Proxy as ProxyGenerator;
 
 class XmlScanner implements ScannerInterface
 {
@@ -56,10 +59,18 @@ class XmlScanner implements ScannerInterface
      */
     protected function _filterEntities(array $output)
     {
+        $entitySuffix = '\\' . ucfirst(ProxyGenerator::ENTITY_TYPE);
         $filteredEntities = [];
         foreach ($output as $className) {
-            $entityName = substr($className, -6) === '\Proxy' ? substr($className, 0, -6) : $className;
-            if (false === class_exists($className)) {
+            $entityName = substr($className, -strlen($entitySuffix)) === $entitySuffix
+                ? substr($className, 0, -strlen($entitySuffix))
+                : $className;
+            $isClassExists = false;
+            try {
+                $isClassExists = class_exists($className);
+            } catch (\Magento\Framework\Exception $e) {
+            }
+            if (false === $isClassExists) {
                 if (class_exists($entityName) || interface_exists($entityName)) {
                     array_push($filteredEntities, $className);
                 } else {

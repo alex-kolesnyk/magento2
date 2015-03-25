@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Simplexml;
 
@@ -183,6 +184,7 @@ class Config
      * Enter description here...
      *
      * @return boolean
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getCacheSaved()
     {
@@ -487,10 +489,9 @@ class Config
      * @param \DOMNode $dom
      * @return bool
      */
-    public function loadDom($dom)
+    public function loadDom(\DOMNode $dom)
     {
         $xml = simplexml_import_dom($dom, $this->_elementClass);
-
         if ($xml) {
             $this->_xml = $xml;
             return true;

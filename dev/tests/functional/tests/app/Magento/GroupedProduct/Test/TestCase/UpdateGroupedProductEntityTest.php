@@ -1,20 +1,17 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GroupedProduct\Test\TestCase;
 
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductEdit;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductIndex;
-use Magento\GroupedProduct\Test\Fixture\GroupedProductInjectable;
-use Mtf\TestCase\Injectable;
+use Magento\GroupedProduct\Test\Fixture\GroupedProduct;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Test Creation for Update GroupedProductEntity
- *
- * Test Flow:
- *
  * Preconditions:
  * 1. Create Grouped Product.
  *
@@ -31,22 +28,27 @@ use Mtf\TestCase\Injectable;
  */
 class UpdateGroupedProductEntityTest extends Injectable
 {
+    /* tags */
+    const MVP = 'no';
+    const DOMAIN = 'MX';
+    /* end tags */
+
     /**
-     * Page product on backend
+     * Page product on backend.
      *
      * @var CatalogProductIndex
      */
     protected $catalogProductIndex;
 
     /**
-     * Edit page on backend
+     * Edit page on backend.
      *
      * @var CatalogProductEdit
      */
     protected $catalogProductEdit;
 
     /**
-     * Filling objects of the class
+     * Filling objects of the class.
      *
      * @param CatalogProductIndex $catalogProductIndexNewPage
      * @param CatalogProductEdit $catalogProductEditPage
@@ -61,13 +63,13 @@ class UpdateGroupedProductEntityTest extends Injectable
     }
 
     /**
-     * Test update grouped product
+     * Test update grouped product.
      *
-     * @param GroupedProductInjectable $product
-     * @param GroupedProductInjectable $originalProduct
+     * @param GroupedProduct $product
+     * @param GroupedProduct $originalProduct
      * @return void
      */
-    public function test(GroupedProductInjectable $product, GroupedProductInjectable $originalProduct)
+    public function test(GroupedProduct $product, GroupedProduct $originalProduct)
     {
         // Precondition
         $originalProduct->persist();

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Webapi\Model\Rest;
 
@@ -96,7 +97,7 @@ class Config
     /**
      * Get service base URL
      *
-     * @param \Magento\Webapi\Controller\Rest\Request $request
+     * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return string|null
      */
     protected function _getServiceBaseUrl($request)
@@ -110,11 +111,11 @@ class Config
     /**
      * Generate the list of available REST routes. Current HTTP method is taken into account.
      *
-     * @param \Magento\Webapi\Controller\Rest\Request $request
+     * @param \Magento\Framework\Webapi\Rest\Request $request
      * @return Route[] matched routes
-     * @throws \Magento\Webapi\Exception
+     * @throws \Magento\Framework\Webapi\Exception
      */
-    public function getRestRoutes(\Magento\Webapi\Controller\Rest\Request $request)
+    public function getRestRoutes(\Magento\Framework\Webapi\Rest\Request $request)
     {
         $requestHttpMethod = $request->getHttpMethod();
         $servicesRoutes = $this->_config->getServices()[Converter::KEY_ROUTES];

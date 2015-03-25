@@ -1,14 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Checkout\Test\TestStep;
 
 use Magento\Checkout\Test\Page\CheckoutOnepage;
-use Magento\Customer\Test\Fixture\AddressInjectable;
-use Magento\Customer\Test\Fixture\CustomerInjectable;
-use Mtf\TestStep\TestStepInterface;
+use Magento\Customer\Test\Fixture\Address;
+use Magento\Customer\Test\Fixture\Customer;
+use Magento\Mtf\TestStep\TestStepInterface;
 
 /**
  * Class FillBillingInformationStep
@@ -26,14 +27,14 @@ class FillBillingInformationStep implements TestStepInterface
     /**
      * Address fixture
      *
-     * @var AddressInjectable
+     * @var Address
      */
     protected $billingAddress;
 
     /**
      * Customer fixture
      *
-     * @var CustomerInjectable
+     * @var Customer
      */
     protected $customer;
 
@@ -47,14 +48,14 @@ class FillBillingInformationStep implements TestStepInterface
     /**
      * @constructor
      * @param CheckoutOnepage $checkoutOnepage
-     * @param AddressInjectable $billingAddress
-     * @param CustomerInjectable $customer
+     * @param Address $billingAddress
+     * @param Customer $customer
      * @param string $checkoutMethod
      */
     public function __construct(
         CheckoutOnepage $checkoutOnepage,
-        AddressInjectable $billingAddress,
-        CustomerInjectable $customer,
+        Address $billingAddress,
+        Customer $customer,
         $checkoutMethod
     ) {
         $this->checkoutOnepage = $checkoutOnepage;

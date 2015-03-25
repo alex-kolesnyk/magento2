@@ -2,26 +2,28 @@
 /**
  * No such entity service exception
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Exception;
 
-class NoSuchEntityException extends \Magento\Framework\Exception\LocalizedException
+use Magento\Framework\Phrase;
+
+class NoSuchEntityException extends LocalizedException
 {
     const MESSAGE_SINGLE_FIELD = 'No such entity with %fieldName = %fieldValue';
     const MESSAGE_DOUBLE_FIELDS = 'No such entity with %fieldName = %fieldValue, %field2Name = %field2Value';
 
     /**
-     * @param string $message
-     * @param array $params
+     * @param \Magento\Framework\Phrase $phrase
      * @param \Exception $cause
      */
-    public function __construct(
-        $message = 'No such entity.',
-        array $params = [],
-        \Exception $cause = null
-    ) {
-        parent::__construct($message, $params, $cause);
+    public function __construct(Phrase $phrase = null, \Exception $cause = null)
+    {
+        if ($phrase === null) {
+            $phrase = new Phrase('No such entity.');
+        }
+        parent::__construct($phrase, $cause);
     }
 
     /**
@@ -29,16 +31,18 @@ class NoSuchEntityException extends \Magento\Framework\Exception\LocalizedExcept
      *
      * @param string $fieldName
      * @param string|int $fieldValue
-     * @return NoSuchEntityException
+     * @return \Magento\Framework\Exception\NoSuchEntityException
      */
     public static function singleField($fieldName, $fieldValue)
     {
-        return new NoSuchEntityException(
-            self::MESSAGE_SINGLE_FIELD,
-            [
-                'fieldName' => $fieldName,
-                'fieldValue' => $fieldValue,
-            ]
+        return new self(
+            new Phrase(
+                self::MESSAGE_SINGLE_FIELD,
+                [
+                    'fieldName' => $fieldName,
+                    'fieldValue' => $fieldValue
+                ]
+            )
         );
     }
 
@@ -49,18 +53,20 @@ class NoSuchEntityException extends \Magento\Framework\Exception\LocalizedExcept
      * @param string|int $fieldValue
      * @param string $secondFieldName
      * @param string|int $secondFieldValue
-     * @return NoSuchEntityException
+     * @return \Magento\Framework\Exception\NoSuchEntityException
      */
     public static function doubleField($fieldName, $fieldValue, $secondFieldName, $secondFieldValue)
     {
-        return new NoSuchEntityException(
-            self::MESSAGE_DOUBLE_FIELDS,
-            [
-                'fieldName' => $fieldName,
-                'fieldValue' => $fieldValue,
-                'field2Name' => $secondFieldName,
-                'field2Value' => $secondFieldValue,
-            ]
+        return new self(
+            new Phrase(
+                self::MESSAGE_DOUBLE_FIELDS,
+                [
+                    'fieldName' => $fieldName,
+                    'fieldValue' => $fieldValue,
+                    'field2Name' => $secondFieldName,
+                    'field2Value' => $secondFieldValue,
+                ]
+            )
         );
     }
 }

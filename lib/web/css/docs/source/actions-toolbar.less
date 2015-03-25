@@ -1,5 +1,6 @@
 // /**
-//  * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+//  * Copyright © 2015 Magento. All rights reserved.
+//  * See COPYING.txt for license details.
 //  */
 
 //  # Actions toolbar
@@ -82,7 +83,7 @@
 //      </tr>
 //      <tr>
 //        <th>@_actions-toolbar-primary-actions-margin</th>
-//        <td class="vars_value">0 @indent-xs-base 0 0</td>
+//        <td class="vars_value">0 @indent__xs 0 0</td>
 //        <td class="vars_value">'' | false | value</td>
 //        <td>Margins of primary .actions in the Actions toolbar</td>
 //      </tr>
@@ -368,7 +369,7 @@
     .actions-toolbar();
 }
 
-@media only screen and (max-width: @screen-m) {
+@media only screen and (max-width: @screen__m) {
     .example-actions-toolbar-12 {
        .actions-toolbar-clear-floats();
     }

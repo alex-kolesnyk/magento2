@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Export\Entity;
 
@@ -13,6 +14,7 @@ use Magento\Store\Model\Store;
  * Export EAV entity abstract model
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEntity
 {
@@ -22,13 +24,6 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEn
      * @var array
      */
     protected $_attributeValues = [];
-
-    /**
-     * Attribute code to its values. Only attributes with options and only default store values used
-     *
-     * @var array
-     */
-    protected $_attributeCodes = null;
 
     /**
      * Entity type id.
@@ -43,13 +38,6 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEn
      * @var string[]
      */
     protected $_indexValueAttributes = [];
-
-    /**
-     * Permanent entity columns
-     *
-     * @var string[]
-     */
-    protected $_permanentAttributes = [];
 
     /**
      * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
@@ -85,43 +73,6 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEn
     }
 
     /**
-     * Get attributes codes which are appropriate for export
-     *
-     * @return array
-     */
-    protected function _getExportAttributeCodes()
-    {
-        if (null === $this->_attributeCodes) {
-            if (!empty($this->_parameters[Export::FILTER_ELEMENT_SKIP]) && is_array(
-                $this->_parameters[Export::FILTER_ELEMENT_SKIP]
-            )
-            ) {
-                $skippedAttributes = array_flip(
-                    $this->_parameters[Export::FILTER_ELEMENT_SKIP]
-                );
-            } else {
-                $skippedAttributes = [];
-            }
-            $attributeCodes = [];
-
-            /** @var $attribute AbstractAttribute */
-            foreach ($this->filterAttributeCollection($this->getAttributeCollection()) as $attribute) {
-                if (!isset(
-                    $skippedAttributes[$attribute->getAttributeId()]
-                ) || in_array(
-                    $attribute->getAttributeCode(),
-                    $this->_permanentAttributes
-                )
-                ) {
-                    $attributeCodes[] = $attribute->getAttributeCode();
-                }
-            }
-            $this->_attributeCodes = $attributeCodes;
-        }
-        return $this->_attributeCodes;
-    }
-
-    /**
      * Initialize attribute option values
      *
      * @return $this
@@ -153,6 +104,7 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEn
      *
      * @param AbstractCollection $collection
      * @return AbstractCollection
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function filterEntityCollection(AbstractCollection $collection)
     {
@@ -195,11 +147,11 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Export\AbstractEn
                         $to = array_shift($exportFilter[$attributeCode]);
 
                         if (is_scalar($from) && !empty($from)) {
-                            $date = $this->_localeDate->date($from, null, null, false)->toString('MM/dd/YYYY');
+                            $date = (new \DateTime($from))->format('m/d/Y');
                             $collection->addAttributeToFilter($attributeCode, ['from' => $date, 'date' => true]);
                         }
                         if (is_scalar($to) && !empty($to)) {
-                            $date = $this->_localeDate->date($to, null, null, false)->toString('MM/dd/YYYY');
+                            $date = (new \DateTime($to))->format('m/d/Y');
                             $collection->addAttributeToFilter($attributeCode, ['to' => $date, 'date' => true]);
                         }
                     }

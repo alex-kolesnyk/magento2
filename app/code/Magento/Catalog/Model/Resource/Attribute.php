@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Resource;
 
@@ -26,22 +27,24 @@ class Attribute extends \Magento\Eav\Model\Resource\Entity\Attribute
     protected $attrLockValidator;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Eav\Model\Resource\Entity\Type $eavEntityType
      * @param \Magento\Eav\Model\Config $eavConfig
      * @param LockValidatorInterface $lockValidator
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Eav\Model\Resource\Entity\Type $eavEntityType,
         \Magento\Eav\Model\Config $eavConfig,
-        LockValidatorInterface $lockValidator
+        LockValidatorInterface $lockValidator,
+        $resourcePrefix = null
     ) {
         $this->attrLockValidator = $lockValidator;
         $this->_eavConfig = $eavConfig;
-        parent::__construct($resource, $storeManager, $eavEntityType);
+        parent::__construct($context, $storeManager, $eavEntityType, $resourcePrefix);
     }
 
     /**
@@ -88,7 +91,6 @@ class Attribute extends \Magento\Eav\Model\Resource\Entity\Attribute
             $attributeStoreIds = array_keys($this->_storeManager->getStores());
             if (!empty($attributeStoreIds)) {
                 $delCondition = [
-                    'entity_type_id=?' => $object->getEntityTypeId(),
                     'attribute_id = ?' => $object->getId(),
                     'store_id IN(?)' => $attributeStoreIds,
                 ];
@@ -104,7 +106,7 @@ class Attribute extends \Magento\Eav\Model\Resource\Entity\Attribute
      *
      * @param \Magento\Framework\Model\AbstractModel $object
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function deleteEntity(\Magento\Framework\Model\AbstractModel $object)
     {
@@ -128,9 +130,9 @@ class Attribute extends \Magento\Eav\Model\Resource\Entity\Attribute
 
             try {
                 $this->attrLockValidator->validate($attribute, $result['attribute_set_id']);
-            } catch (\Magento\Framework\Model\Exception $exception) {
-                throw new \Magento\Framework\Model\Exception(
-                    __("Attribute '%1' is locked. ", $attribute->getAttributeCode()) . $exception->getMessage()
+            } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Attribute \'%1\' is locked. %2', $attribute->getAttributeCode(), $exception->getMessage())
                 );
             }
 
@@ -145,7 +147,6 @@ class Attribute extends \Magento\Eav\Model\Resource\Entity\Attribute
                 );
 
                 $clearCondition = [
-                    'entity_type_id =?' => $attribute->getEntityTypeId(),
                     'attribute_id =?' => $attribute->getId(),
                     'entity_id IN (?)' => $select,
                 ];

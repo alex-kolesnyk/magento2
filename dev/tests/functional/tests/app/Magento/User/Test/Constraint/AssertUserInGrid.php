@@ -1,42 +1,35 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\User\Test\Constraint;
 
 use Magento\User\Test\Fixture\User;
 use Magento\User\Test\Page\Adminhtml\UserIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class AssertUserInGrid
+ * Asserts that user is present in User Grid.
  */
 class AssertUserInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Asserts that user is present in User Grid.
      *
      * @param UserIndex $userIndex
      * @param User $user
-     * @param User $customAdmin
      * @return void
      */
-    public function processAssert(
-        UserIndex $userIndex,
-        User $user,
-        User $customAdmin = null
-    ) {
-        $adminUser = ($user->hasData('password') || $user->hasData('username')) ? $user : $customAdmin;
-        $filter = ['username' => $adminUser->getUsername()];
+    public function processAssert(UserIndex $userIndex, User $user)
+    {
+        $filter = ['username' => $user->getUsername()];
+
         $userIndex->open();
         \PHPUnit_Framework_Assert::assertTrue(
             $userIndex->getUserGrid()->isRowVisible($filter),
-            'User with name \'' . $adminUser->getUsername() . '\' is absent in User grid.'
+            'User with name \'' . $user->getUsername() . '\' is absent in User grid.'
         );
     }
 

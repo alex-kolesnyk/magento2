@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Block\Product;
 
@@ -89,7 +90,7 @@ abstract class AbstractProduct extends \Magento\Catalog\Block\Product\AbstractPr
         try {
             $model = $this->_indexFactory->get($this->_indexType);
         } catch (\InvalidArgumentException $e) {
-            new \Magento\Framework\Model\Exception(__('Index type is not valid'));
+            new \Magento\Framework\Exception\LocalizedException(__('Index type is not valid'));
         }
 
         return $model;
@@ -112,7 +113,7 @@ abstract class AbstractProduct extends \Magento\Catalog\Block\Product\AbstractPr
      */
     public function getItemsCollection()
     {
-        if (is_null($this->_collection)) {
+        if ($this->_collection === null) {
             $attributes = $this->_catalogConfig->getProductAttributes();
 
             $this->_collection = $this->_getModel()->getCollection()->addAttributeToSelect($attributes);

@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Form time element
@@ -44,6 +47,8 @@ class Time extends AbstractElement
 
     /**
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getElementHtml()
     {
@@ -63,7 +68,7 @@ class Time extends AbstractElement
         }
 
         $html = '<input type="hidden" id="' . $this->getHtmlId() . '" ' . $this->_getUiId() . '/>';
-        $html .= '<select name="' . $this->getName() . '" style="width:50px" ' . $this->serialize(
+        $html .= '<select name="' . $this->getName() . '" style="width:80px" ' . $this->serialize(
             $this->getHtmlAttributes()
         ) . $this->_getUiId(
             'hour'
@@ -75,7 +80,7 @@ class Time extends AbstractElement
         }
         $html .= '</select>' . "\n";
 
-        $html .= ':&nbsp;<select name="' . $this->getName() . '" style="width:50px" ' . $this->serialize(
+        $html .= ':&nbsp;<select name="' . $this->getName() . '" style="width:80px" ' . $this->serialize(
             $this->getHtmlAttributes()
         ) . $this->_getUiId(
             'minute'
@@ -87,7 +92,7 @@ class Time extends AbstractElement
         }
         $html .= '</select>' . "\n";
 
-        $html .= ':&nbsp;<select name="' . $this->getName() . '" style="width:50px" ' . $this->serialize(
+        $html .= ':&nbsp;<select name="' . $this->getName() . '" style="width:80px" ' . $this->serialize(
             $this->getHtmlAttributes()
         ) . $this->_getUiId(
             'second'

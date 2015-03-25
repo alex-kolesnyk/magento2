@@ -1,12 +1,32 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Page;
 
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
 class Index extends \Magento\Backend\App\Action
 {
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
+
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+    }
     /**
      * Check the permission to run it
      *
@@ -20,21 +40,17 @@ class Index extends \Magento\Backend\App\Action
     /**
      * Index action
      *
-     * @return void
+     * @return \Magento\Backend\Model\View\Result\Page
      */
     public function execute()
     {
-        $this->_view->loadLayout();
-        $this->_setActiveMenu(
-            'Magento_Cms::cms_page'
-        )->_addBreadcrumb(
-            __('CMS'),
-            __('CMS')
-        )->_addBreadcrumb(
-            __('Manage Pages'),
-            __('Manage Pages')
-        );
-        $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Pages'));
-        $this->_view->renderLayout();
+        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('Magento_Cms::cms_page');
+        $resultPage->addBreadcrumb(__('CMS'), __('CMS'));
+        $resultPage->addBreadcrumb(__('Manage Pages'), __('Manage Pages'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Pages'));
+
+        return $resultPage;
     }
 }

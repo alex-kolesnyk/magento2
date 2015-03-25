@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Image\Adapter;
 
@@ -129,7 +130,7 @@ class ImageMagick extends \Magento\Framework\Image\Adapter\AbstractAdapter
     public function getImage()
     {
         $this->_applyOptions();
-        return (string)$this->_imageHandler;
+        return $this->_imageHandler->getImageBlob();
     }
 
     /**
@@ -234,6 +235,8 @@ class ImageMagick extends \Magento\Framework\Image\Adapter\AbstractAdapter
      * @return void
      * @throws \LogicException
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function watermark($imagePath, $positionX = 0, $positionY = 0, $opacity = 30, $tile = false)
     {
@@ -313,7 +316,7 @@ class ImageMagick extends \Magento\Framework\Image\Adapter\AbstractAdapter
         }
 
         // merge layers
-        $this->_imageHandler->flattenImages();
+        $this->_imageHandler->mergeImageLayers(\Imagick::LAYERMETHOD_FLATTEN);
         $watermark->clear();
         $watermark->destroy();
     }

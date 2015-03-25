@@ -1,15 +1,16 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 define([
     'underscore',
     'mage/utils'
-], function(_, utils) {
+], function (_, utils) {
     'use strict';
 
-    function Events(storage){
+    function Events(storage) {
         this.id = 0,
-        
+
         this.requests   = {};
         this.map        = {};
         this.storage    = storage;
@@ -25,7 +26,7 @@ define([
          * @param {String} elem - Elements' name.
          * @returns {events} Chainable.
          */
-        resolve: function(elem) {
+        resolve: function (elem) {
             var pending = this.map[elem];
 
             if (Array.isArray(pending)) {
@@ -37,7 +38,6 @@ define([
             return this;
         },
 
-
         /**
          * Creates a new request for the specified set
                 of elements in case some of them wasn't registered yeat.
@@ -45,10 +45,10 @@ define([
          * @param {Array} elems - Requested elements.
          * @param {Function} callback -
                 Callback that will be triggered as soon as
-                all of the elements will be registered. 
+                all of the elements will be registered.
          * @returns {events} Chainable.
          */
-        wait: function(elems, callback) {
+        wait: function (elems, callback) {
             var storage = this.storage,
                 map     = this.map;
 
@@ -56,7 +56,7 @@ define([
                 return callback.apply(null, storage.get(elems));
             }
 
-            elems.forEach(function(elem) {
+            elems.forEach(function (elem) {
                 (map[elem] = map[elem] || []).push(this.id);
             }, this);
 
@@ -74,7 +74,7 @@ define([
          * @param {Number} id - Id of request.
          * @returns {Boolean} Whether specified request was successfully resolved.
          */
-        _resolve: function(id) {
+        _resolve: function (id) {
             var request     = this.requests[id],
                 elems       = request.deps,
                 storage     = this.storage,
@@ -94,11 +94,11 @@ define([
          * @private
          * @param {Number} id - Id of request.
          */
-        _clear: function(id) {
+        _clear: function (id) {
             var map     = this.map,
                 elems   = this.requests[id].deps;
 
-            elems.forEach(function(elem){
+            elems.forEach(function (elem) {
                 utils.remove(map[elem], id);
             });
 
@@ -108,4 +108,3 @@ define([
 
     return Events;
 });
-

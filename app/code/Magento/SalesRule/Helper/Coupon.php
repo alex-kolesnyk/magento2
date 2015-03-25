@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\SalesRule\Helper;
 
 /**
@@ -44,23 +48,13 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_couponParameters;
 
     /**
-     * Core store config
-     *
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $_scopeConfig;
-
-    /**
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param array $couponParameters
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         array $couponParameters
     ) {
-        $this->_scopeConfig = $scopeConfig;
         $this->_couponParameters = $couponParameters;
         parent::__construct($context);
     }
@@ -86,7 +80,7 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultLength()
     {
-        return (int)$this->_scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_LENGTH, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return (int)$this->scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_LENGTH, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -96,7 +90,7 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultFormat()
     {
-        return $this->_scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_FORMAT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_FORMAT, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -106,7 +100,7 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultPrefix()
     {
-        return $this->_scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_PREFIX, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_PREFIX, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -116,7 +110,7 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultSuffix()
     {
-        return $this->_scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_SUFFIX, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return $this->scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_SUFFIX, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -126,7 +120,7 @@ class Coupon extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getDefaultDashInterval()
     {
-        return (int)$this->_scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_DASH_INTERVAL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return (int)$this->scopeConfig->getValue(self::XML_PATH_SALES_RULE_COUPON_DASH_INTERVAL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**

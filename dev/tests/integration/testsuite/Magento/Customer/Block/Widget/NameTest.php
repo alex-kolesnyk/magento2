@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Widget;
 
@@ -30,11 +31,12 @@ class NameTest extends \PHPUnit_Framework_TestCase
      */
     public function testToHtmlSimpleName()
     {
-        /** @var \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder */
-        $customerBuilder = Bootstrap::getObjectManager()->get('Magento\Customer\Api\Data\CustomerDataBuilder');
-        $customerBuilder->setFirstname('Jane');
-        $customerBuilder->setLastname('Doe');
-        $this->_block->setObject($customerBuilder->create());
+        /** @var \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory */
+        $customerFactory = Bootstrap::getObjectManager()->get('Magento\Customer\Api\Data\CustomerInterfaceFactory');
+        $customerDataObject = $customerFactory->create();
+        $customerDataObject->setFirstname('Jane');
+        $customerDataObject->setLastname('Doe');
+        $this->_block->setObject($customerDataObject);
 
         $html = $this->_block->toHtml();
 
@@ -53,9 +55,10 @@ class NameTest extends \PHPUnit_Framework_TestCase
      */
     public function testToHtmlFancyName()
     {
-        /** @var \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder */
-        $customerBuilder = Bootstrap::getObjectManager()->get('Magento\Customer\Api\Data\CustomerDataBuilder');
-        $customerBuilder->setPrefix(
+        /** @var \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory */
+        $customerFactory = Bootstrap::getObjectManager()->get('Magento\Customer\Api\Data\CustomerInterfaceFactory');
+        $customerDataObject = $customerFactory->create();
+        $customerDataObject->setPrefix(
             'Dr.'
         )->setFirstname(
             'Jane'
@@ -66,7 +69,7 @@ class NameTest extends \PHPUnit_Framework_TestCase
         )->setSuffix(
             'Ph.D.'
         );
-        $this->_block->setObject($customerBuilder->create());
+        $this->_block->setObject($customerDataObject);
 
         $html = $this->_block->toHtml();
 

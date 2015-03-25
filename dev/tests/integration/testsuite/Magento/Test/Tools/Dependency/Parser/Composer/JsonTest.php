@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Tools\Dependency\Parser\Composer;
 
@@ -31,7 +32,6 @@ class JsonTest extends \PHPUnit_Framework_TestCase
             [
                 'name' => 'magento/module-module1',
                 'dependencies' => [
-                    ['module' => 'magento/module-core', 'type' => 'hard'],
                     ['module' => 'magento/module-module2', 'type' => 'hard'],
                     ['module' => 'magento/module-backend', 'type' => 'soft'],
                 ],
@@ -39,7 +39,6 @@ class JsonTest extends \PHPUnit_Framework_TestCase
             [
                 'name' => 'magento/module-module2',
                 'dependencies' => [
-                    ['module' => 'magento/module-core', 'type' => 'hard'],
                     ['module' => 'magento/module-module3', 'type' => 'hard'],
                 ]
             ],

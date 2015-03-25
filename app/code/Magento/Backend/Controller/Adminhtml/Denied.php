@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml;
 
@@ -40,12 +41,12 @@ class Denied extends \Magento\Backend\App\Action
         if (!$this->_auth->isLoggedIn()) {
             /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
             $resultRedirect = $this->resultRedirectFactory->create();
-            $resultRedirect->setHeader('HTTP/1.1', '403 Forbidden');
+            $resultRedirect->setStatusHeader(403, '1.1', 'Forbidden');
             return $resultRedirect->setPath('*/auth/login');
         }
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
-        $resultPage->setHeader('HTTP/1.1', '403 Forbidden');
+        $resultPage->setStatusHeader(403, '1.1', 'Forbidden');
         $resultPage->addHandle('adminhtml_denied');
         return $resultPage;
     }

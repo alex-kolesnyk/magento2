@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Indexer\Model;
 
@@ -137,7 +138,7 @@ class Shell extends \Magento\Framework\App\AbstractShell
             try {
                 $indexer->{$method}();
                 echo $indexer->getTitle() . " indexer was successfully changed index mode" . PHP_EOL;
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 echo $e->getMessage() . PHP_EOL;
                 $this->hasErrors = true;
             } catch (\Exception $e) {
@@ -170,7 +171,7 @@ class Shell extends \Magento\Framework\App\AbstractShell
                 $resultTime = microtime(true) - $startTime;
                 echo $indexer->getTitle() . ' index has been rebuilt successfully in '
                     . gmdate('H:i:s', $resultTime) . PHP_EOL;
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 echo $e->getMessage() . PHP_EOL;
                 $this->hasErrors = true;
             } catch (\Exception $e) {
@@ -241,6 +242,7 @@ Usage:  php -f {$this->_entryPoint} -- [options]
   help                          This help
 
   <indexer>     Comma separated indexer codes or value "all" for all indexers
+
 USAGE;
     }
 }

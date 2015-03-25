@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -21,28 +22,38 @@ class Tax extends \Magento\Reports\Model\Resource\Report\AbstractReport
     protected $_updatedAtFactory;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
      * @param \Magento\Reports\Model\FlagFactory $reportsFlagFactory
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
      * @param \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator
      * @param \Magento\Tax\Model\Resource\Report\Tax\CreatedatFactory $createdAtFactory
      * @param \Magento\Tax\Model\Resource\Report\Tax\UpdatedatFactory $updatedAtFactory
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
         \Magento\Reports\Model\FlagFactory $reportsFlagFactory,
         \Magento\Framework\Stdlib\DateTime $dateTime,
         \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator,
         \Magento\Tax\Model\Resource\Report\Tax\CreatedatFactory $createdAtFactory,
-        \Magento\Tax\Model\Resource\Report\Tax\UpdatedatFactory $updatedAtFactory
+        \Magento\Tax\Model\Resource\Report\Tax\UpdatedatFactory $updatedAtFactory,
+        $resourcePrefix = null
     ) {
         $this->_createdAtFactory = $createdAtFactory;
         $this->_updatedAtFactory = $updatedAtFactory;
-        parent::__construct($resource, $logger, $localeDate, $reportsFlagFactory, $dateTime, $timezoneValidator);
+        parent::__construct(
+            $context,
+            $logger,
+            $localeDate,
+            $reportsFlagFactory,
+            $dateTime,
+            $timezoneValidator,
+            $resourcePrefix
+        );
     }
 
     /**

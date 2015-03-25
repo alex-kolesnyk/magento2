@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Constraint;
 
 use Magento\Sales\Test\Page\Adminhtml\OrderIndex;
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertOrderStatusIsCorrect
@@ -15,17 +16,13 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertOrderStatusIsCorrect extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that status is correct on order page in backend (same with value of orderStatus variable)
      *
      * @param string $status
      * @param string $orderId
      * @param OrderIndex $salesOrder
-     * @param OrderView $salesOrderView
+     * @param SalesOrderView $salesOrderView
      * @param string|null $statusToCheck
      * @return void
      */
@@ -33,7 +30,7 @@ class AssertOrderStatusIsCorrect extends AbstractConstraint
         $status,
         $orderId,
         OrderIndex $salesOrder,
-        OrderView $salesOrderView,
+        SalesOrderView $salesOrderView,
         $statusToCheck = null
     ) {
         $salesOrder->open();

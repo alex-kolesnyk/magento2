@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Column\Filter;
 
@@ -102,7 +103,7 @@ class Price extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
      */
     public function getDisplayCurrencySelect()
     {
-        if (!is_null($this->getColumn()->getData('display_currency_select'))) {
+        if ($this->getColumn()->getData('display_currency_select') !== null) {
             return $this->getColumn()->getData('display_currency_select');
         } else {
             return true;
@@ -116,7 +117,7 @@ class Price extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
      */
     public function getCurrencyAffect()
     {
-        if (!is_null($this->getColumn()->getData('currency_affect'))) {
+        if ($this->getColumn()->getData('currency_affect') !== null) {
             return $this->getColumn()->getData('currency_affect');
         } else {
             return true;
@@ -152,7 +153,7 @@ class Price extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
      */
     protected function _getCurrencyList()
     {
-        if (is_null($this->_currencyList)) {
+        if ($this->_currencyList === null) {
             $this->_currencyList = $this->_currencyModel->getConfigAllowCurrencies();
         }
         return $this->_currencyList;

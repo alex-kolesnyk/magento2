@@ -2,17 +2,18 @@
 /**
  * Soap API request.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Webapi\Controller\Soap;
 
-class Request extends \Magento\Webapi\Controller\Request
+class Request extends \Magento\Framework\Webapi\Request
 {
     /**
      * Identify versions of resources that should be used for API configuration generation.
      *
      * @return array
-     * @throws \Magento\Webapi\Exception When GET parameters are invalid
+     * @throws \Magento\Framework\Webapi\Exception When GET parameters are invalid
      */
     public function getRequestedServices()
     {
@@ -29,7 +30,7 @@ class Request extends \Magento\Webapi\Controller\Request
                 $wsdlParam,
                 $servicesParam
             );
-            throw new \Magento\Webapi\Exception($message);
+            throw new \Magento\Framework\Webapi\Exception($message);
         }
 
         $param = $this->getParam($servicesParam);
@@ -44,7 +45,7 @@ class Request extends \Magento\Webapi\Controller\Request
      *      'testModule1AllSoapAndRest' => 'V1',
      *       'testModule2AllSoapNoRest' => 'V1',
      *      )</pre>
-     * @throws \Magento\Webapi\Exception
+     * @throws \Magento\Framework\Webapi\Exception
      */
     protected function _convertRequestParamToServiceArray($param)
     {
@@ -54,7 +55,7 @@ class Request extends \Magento\Webapi\Controller\Request
         //Check if the $param is of valid format
         if (empty($param) || !preg_match($regexp, $param)) {
             $message = __('Incorrect format of WSDL request URI or Requested services are missing.');
-            throw new \Magento\Webapi\Exception($message);
+            throw new \Magento\Framework\Webapi\Exception($message);
         }
         //Split the $param string to create an array of 'service' => 'version'
         $serviceVersionArray = explode($serviceSeparator, $param);

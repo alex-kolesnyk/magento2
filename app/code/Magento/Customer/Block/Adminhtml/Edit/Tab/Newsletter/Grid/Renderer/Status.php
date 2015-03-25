@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab\Newsletter\Grid\Renderer;
 
@@ -33,7 +34,7 @@ class Status extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstract
 
     /**
      * @param \Magento\Framework\Object $row
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function render(\Magento\Framework\Object $row)
     {
@@ -42,7 +43,7 @@ class Status extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstract
 
     /**
      * @param string $status
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public static function getStatus($status)
     {

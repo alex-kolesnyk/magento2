@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Backend\Controller\Adminhtml\System;
 
 use Magento\Backend\App\Action;
@@ -86,7 +90,7 @@ class Store extends Action
      */
     protected function _isAllowed()
     {
-        return $this->_authorization->isAllowed('Magento_Adminhtml::store');
+        return $this->_authorization->isAllowed('Magento_Backend::store');
     }
 
     /**
@@ -111,7 +115,7 @@ class Store extends Action
                 ->setPath($filesystem->getDirectoryRead(DirectoryList::VAR_DIR)->getAbsolutePath('backups'));
             $backupDb->createBackup($backup);
             $this->messageManager->addSuccess(__('The database was backed up.'));
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
             return false;
         } catch (\Exception $e) {

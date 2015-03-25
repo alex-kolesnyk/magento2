@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\GiftMessage\Model;
 
@@ -79,6 +80,7 @@ class Save extends \Magento\Framework\Object
 
     /**
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getSaved()
     {
@@ -96,11 +98,9 @@ class Save extends \Magento\Framework\Object
             return $this;
         }
 
-        // types are 'quote', 'quote_item', etc
-        foreach ($giftMessages as $type => $giftMessageEntities) {
-            foreach ($giftMessageEntities as $entityId => $giftmessage) {
-                $this->_saveOne($entityId, $giftmessage, $type);
-            }
+        foreach ($giftMessages as $entityId => $giftMessage) {
+            $entityType = $this->getMappedType($giftMessage['type']);
+            $this->_saveOne($entityId, $giftMessage, $entityType);
         }
 
         return $this;
@@ -168,7 +168,7 @@ class Save extends \Magento\Framework\Object
      */
     protected function _deleteOne($entityModel, $giftmessageModel = null)
     {
-        if (is_null($giftmessageModel)) {
+        if ($giftmessageModel === null) {
             $giftmessageModel = $this->_messageFactory->create()->load($entityModel->getGiftMessageId());
         }
         $giftmessageModel->delete();
@@ -242,6 +242,7 @@ class Save extends \Magento\Framework\Object
      *
      * @param  \Magento\Framework\Object $item
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsAllowedQuoteItem($item)
     {
@@ -351,7 +352,7 @@ class Save extends \Magento\Framework\Object
     /**
      * Retrieve quote object
      *
-     * @return \Magento\Sales\Model\Quote
+     * @return \Magento\Quote\Model\Quote
      */
     protected function _getQuote()
     {

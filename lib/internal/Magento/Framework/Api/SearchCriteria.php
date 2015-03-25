@@ -1,15 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
 
-
 /**
  * Data Object for SearchCriteria
+ * @codeCoverageIgnore
  */
-class SearchCriteria extends AbstractExtensibleObject implements SearchCriteriaInterface
+class SearchCriteria extends AbstractSimpleObject implements SearchCriteriaInterface
 {
     /**#@+
      * Constants for Data Object keys
@@ -57,5 +58,49 @@ class SearchCriteria extends AbstractExtensibleObject implements SearchCriteriaI
     public function getCurrentPage()
     {
         return $this->_get(self::CURRENT_PAGE);
+    }
+
+    /**
+     * Set a list of filter groups.
+     *
+     * @param \Magento\Framework\Api\Search\FilterGroup[] $filterGroups
+     * @return $this
+     */
+    public function setFilterGroups(array $filterGroups = null)
+    {
+        return $this->setData(self::FILTER_GROUPS, $filterGroups);
+    }
+
+    /**
+     * Set sort order.
+     *
+     * @param \Magento\Framework\Api\SortOrder[] $sortOrders
+     * @return $this
+     */
+    public function setSortOrders(array $sortOrders = null)
+    {
+        return $this->setData(self::SORT_ORDERS, $sortOrders);
+    }
+
+    /**
+     * Set page size.
+     *
+     * @param int $pageSize
+     * @return $this
+     */
+    public function setPageSize($pageSize)
+    {
+        return $this->setData(self::PAGE_SIZE, $pageSize);
+    }
+
+    /**
+     * Set current page.
+     *
+     * @param int $currentPage
+     * @return $this
+     */
+    public function setCurrentPage($currentPage)
+    {
+        return $this->setData(self::CURRENT_PAGE, $currentPage);
     }
 }

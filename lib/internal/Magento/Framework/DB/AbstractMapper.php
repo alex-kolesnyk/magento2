@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB;
 
@@ -8,12 +9,13 @@ use Magento\Framework\Api\CriteriaInterface;
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
 use Magento\Framework\Data\ObjectFactory;
 use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\Logger;
+use Psr\Log\LoggerInterface as Logger;
 use Magento\Framework\Object;
 
 /**
  * Class AbstractMapper
  * @package Magento\Framework\DB
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractMapper implements MapperInterface
 {
@@ -288,7 +290,9 @@ abstract class AbstractMapper implements MapperInterface
     {
         if (!$conn instanceof \Magento\Framework\DB\Adapter\AdapterInterface) {
             throw new \InvalidArgumentException(
-                __('dbModel read resource does not implement \Magento\Framework\DB\Adapter\AdapterInterface')
+                (string)new \Magento\Framework\Phrase(
+                    'dbModel read resource does not implement \Magento\Framework\DB\Adapter\AdapterInterface'
+                )
             );
         }
         $this->conn = $conn;

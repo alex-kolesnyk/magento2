@@ -2,7 +2,8 @@
 /**
  * Resources and connections registry and factory
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App;
 
@@ -89,6 +90,17 @@ class Resource
     public function getConnection($resourceName)
     {
         $connectionName = $this->_config->getConnectionName($resourceName);
+        return $this->getConnectionByName($connectionName);
+    }
+
+    /**
+     * Retrieve connection by $connectionName
+     *
+     * @param string $connectionName
+     * @return bool|\Magento\Framework\DB\Adapter\AdapterInterface
+     */
+    public function getConnectionByName($connectionName)
+    {
         if (isset($this->_connections[$connectionName])) {
             return $this->_connections[$connectionName];
         }
@@ -114,9 +126,10 @@ class Resource
      * Get resource table name, validated by db adapter
      *
      * @param   string|string[] $modelEntity
+     * @param   string $connectionName
      * @return  string
      */
-    public function getTableName($modelEntity)
+    public function getTableName($modelEntity, $connectionName = self::DEFAULT_READ_RESOURCE)
     {
         $tableSuffix = null;
         if (is_array($modelEntity)) {
@@ -138,7 +151,7 @@ class Resource
         if ($tableSuffix) {
             $tableName .= '_' . $tableSuffix;
         }
-        return $this->getConnection(self::DEFAULT_READ_RESOURCE)->getTableName($tableName);
+        return $this->getConnection($connectionName)->getTableName($tableName);
     }
 
     /**

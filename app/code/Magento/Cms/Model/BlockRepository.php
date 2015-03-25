@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Model;
 
@@ -72,7 +73,7 @@ class BlockRepository
         try {
             $this->resource->save($block);
         } catch (\Exception $exception) {
-            throw new CouldNotSaveException($exception->getMessage());
+            throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $block;
     }
@@ -89,7 +90,7 @@ class BlockRepository
         $block = $this->blockFactory->create();
         $this->resource->load($block, $blockId);
         if (!$block->getId()) {
-            throw new NoSuchEntityException(sprintf('CMS Block with id "%s" does not exist.', $blockId));
+            throw new NoSuchEntityException(__('CMS Block with id "%1" does not exist.', $blockId));
         }
         return $block;
     }
@@ -122,7 +123,7 @@ class BlockRepository
         try {
             $this->resource->delete($block);
         } catch (\Exception $exception) {
-            throw new CouldNotDeleteException($exception->getMessage());
+            throw new CouldNotDeleteException(__($exception->getMessage()));
         }
         return true;
     }

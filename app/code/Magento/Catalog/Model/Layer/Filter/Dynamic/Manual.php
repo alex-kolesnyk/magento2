@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Layer\Filter\Dynamic;
 
@@ -48,6 +49,7 @@ class Manual implements AlgorithmInterface
      * @param int[] $intervals
      * @param string $additionalRequestData
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getItemsData(array $intervals = [], $additionalRequestData = '')
     {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Object;
@@ -18,9 +19,25 @@ interface KeyValueObjectInterface
     public function getKey();
 
     /**
+     * Set object key
+     *
+     * @param string $key
+     * @return $this
+     */
+    public function setKey($key);
+
+    /**
      * Get object value
      *
      * @return string
      */
     public function getValue();
+
+    /**
+     * Set object value
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setValue($value);
 }

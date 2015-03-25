@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model\Product\Type;
@@ -133,7 +134,7 @@ class Price
      */
     public function getFinalPrice($qty, $product)
     {
-        if (is_null($qty) && !is_null($product->getCalculatedFinalPrice())) {
+        if ($qty === null && $product->getCalculatedFinalPrice() !== null) {
             return $product->getCalculatedFinalPrice();
         }
 
@@ -156,6 +157,7 @@ class Price
      * @param Product $childProduct
      * @param float $childProductQty
      * @return float
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getChildFinalPrice($product, $productQty, $childProduct, $childProductQty)
     {
@@ -189,7 +191,7 @@ class Price
     {
         $groupPrices = $product->getData('group_price');
 
-        if (is_null($groupPrices)) {
+        if ($groupPrices === null) {
             $attribute = $product->getResource()->getAttribute('group_price');
             if ($attribute) {
                 $attribute->getBackend()->afterLoad($product);
@@ -197,7 +199,7 @@ class Price
             }
         }
 
-        if (is_null($groupPrices) || !is_array($groupPrices)) {
+        if ($groupPrices === null || !is_array($groupPrices)) {
             return $product->getPrice();
         }
 
@@ -224,7 +226,7 @@ class Price
      */
     protected function _applyTierPrice($product, $qty, $finalPrice)
     {
-        if (is_null($qty)) {
+        if ($qty === null) {
             return $finalPrice;
         }
 
@@ -242,13 +244,15 @@ class Price
      * @param   Product $product
      * @return  float|array
      * @deprecated (MAGETWO-31465)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getTierPrice($qty, $product)
     {
         $allGroups = $this->_groupManagement->getAllCustomersGroup()->getId();
         $prices = $product->getData('tier_price');
 
-        if (is_null($prices)) {
+        if ($prices === null) {
             $attribute = $product->getResource()->getAttribute('tier_price');
             if ($attribute) {
                 $attribute->getBackend()->afterLoad($product);
@@ -256,8 +260,8 @@ class Price
             }
         }
 
-        if (is_null($prices) || !is_array($prices)) {
-            if (!is_null($qty)) {
+        if ($prices === null || !is_array($prices)) {
+            if ($qty !== null) {
                 return $product->getPrice();
             }
             return [
@@ -329,7 +333,7 @@ class Price
      */
     protected function _getCustomerGroupId($product)
     {
-        if ($product->getCustomerGroupId()) {
+        if ($product->getCustomerGroupId() !== null) {
             return $product->getCustomerGroupId();
         }
         return $this->_customerSession->getCustomerGroupId();
@@ -409,6 +413,7 @@ class Price
      * @param float $finalPrice
      * @return float
      * @deprecated (MAGETWO-31469)
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _applyOptionsPrice($product, $qty, $finalPrice)
     {
@@ -472,8 +477,8 @@ class Price
         );
 
         if ($rulePrice === false) {
-            $storeTimestamp = $this->_localeDate->scopeTimeStamp($sId);
-            $rulePrice = $this->_ruleFactory->create()->getRulePrice($storeTimestamp, $wId, $gId, $productId);
+            $date = $this->_localeDate->scopeDate($sId);
+            $rulePrice = $this->_ruleFactory->create()->getRulePrice($date, $wId, $gId, $productId);
         }
 
         if ($rulePrice !== null && $rulePrice !== false) {
@@ -502,7 +507,7 @@ class Price
         $specialPriceTo,
         $store = null
     ) {
-        if (!is_null($specialPrice) && $specialPrice != false) {
+        if ($specialPrice !== null && $specialPrice != false) {
             if ($this->_localeDate->isScopeDateInInterval($store, $specialPriceFrom, $specialPriceTo)) {
                 $finalPrice = min($finalPrice, $specialPrice);
             }

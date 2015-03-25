@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Service\V1;
 
 use Magento\Integration\Model\Integration as IntegrationModel;
-use Magento\Integration\Model\Integration\Factory as IntegrationFactory;
+use Magento\Integration\Model\IntegrationFactory;
 use Magento\Integration\Service\V1\OauthInterface as IntegrationOauthService;
+use Magento\Framework\Exception\IntegrationException;
 
 /**
  * Integration Service.
@@ -44,7 +46,6 @@ class Integration implements \Magento\Integration\Service\V1\IntegrationInterfac
     {
         $this->_checkIntegrationByName($integrationData['name']);
         $integration = $this->_integrationFactory->create($integrationData);
-        // TODO: Think about double save issue
         $integration->save();
         $consumerName = 'Integration' . $integration->getId();
         $consumer = $this->_oauthService->createConsumer(['name' => $consumerName]);
@@ -122,13 +123,13 @@ class Integration implements \Magento\Integration\Service\V1\IntegrationInterfac
      *
      * @param string $name
      * @return void
-     * @throws \Magento\Integration\Exception
+     * @throws \Magento\Framework\Exception\IntegrationException
      */
     private function _checkIntegrationByName($name)
     {
         $integration = $this->_integrationFactory->create()->load($name, 'name');
         if ($integration->getId()) {
-            throw new \Magento\Integration\Exception(__("Integration with name '%1' exists.", $name));
+            throw new IntegrationException(__('Integration with name \'%1\' exists.', $name));
         }
     }
 
@@ -137,13 +138,13 @@ class Integration implements \Magento\Integration\Service\V1\IntegrationInterfac
      *
      * @param int $integrationId
      * @return IntegrationModel
-     * @throws \Magento\Integration\Exception
+     * @throws \Magento\Framework\Exception\IntegrationException
      */
     protected function _loadIntegrationById($integrationId)
     {
         $integration = $this->_integrationFactory->create()->load($integrationId);
         if (!$integration->getId()) {
-            throw new \Magento\Integration\Exception(__("Integration with ID '%1' does not exist.", $integrationId));
+            throw new IntegrationException(__('Integration with ID \'%1\' does not exist.', $integrationId));
         }
         return $integration;
     }
@@ -178,5 +179,20 @@ class Integration implements \Magento\Integration\Service\V1\IntegrationInterfac
                 $integration->setData('token_secret', $accessToken->getSecret());
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSelectedResources($integrationId)
+    {
+        $integration = $this->get($integrationId);
+        $data = $integration->getData();
+
+        $selectedResourceIds = [];
+        if ($data && isset($data['resource']) && is_array($data['resource'])) {
+            $selectedResourceIds = $data['resource'];
+        }
+        return $selectedResourceIds;
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework;
 
@@ -42,13 +43,13 @@ class Flag extends Model\AbstractModel
     /**
      * Processing object before save data
      *
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     public function beforeSave()
     {
-        if (is_null($this->_flagCode)) {
-            throw new \Magento\Framework\Model\Exception(__('Please define flag code.'));
+        if ($this->_flagCode === null) {
+            throw new Exception\LocalizedException(new \Magento\Framework\Phrase('Please define flag code.'));
         }
 
         $this->setFlagCode($this->_flagCode);
@@ -87,13 +88,13 @@ class Flag extends Model\AbstractModel
     /**
      * load self (load by flag code)
      *
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     public function loadSelf()
     {
-        if (is_null($this->_flagCode)) {
-            throw new \Magento\Framework\Model\Exception(__('Please define flag code.'));
+        if ($this->_flagCode === null) {
+            throw new Exception\LocalizedException(new \Magento\Framework\Phrase('Please define flag code.'));
         }
 
         return $this->load($this->_flagCode, 'flag_code');

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -62,7 +63,7 @@ interface FrontendInterface
     public function getBackend();
 
     /**
-     * Retrieve frontend instance compatible with \Zend_Locale_Data::setCache() to be used as a workaround
+     * Retrieve frontend instance compatible with Zend Locale Data setCache() to be used as a workaround
      *
      * @return \Zend_Cache_Core
      */

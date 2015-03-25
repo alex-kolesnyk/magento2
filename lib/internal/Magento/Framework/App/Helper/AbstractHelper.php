@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Helper;
 
@@ -36,7 +37,7 @@ abstract class AbstractHelper
     protected $_moduleManager;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -73,6 +74,11 @@ abstract class AbstractHelper
     protected $urlDecoder;
 
     /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * @param Context $context
      */
     public function __construct(Context $context)
@@ -88,6 +94,7 @@ abstract class AbstractHelper
         $this->_cacheConfig = $context->getCacheConfig();
         $this->urlEncoder = $context->getUrlEncoder();
         $this->urlDecoder = $context->getUrlDecoder();
+        $this->scopeConfig = $context->getScopeConfig();
     }
 
     /**

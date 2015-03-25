@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -19,16 +20,16 @@ class Settings extends Generic
     protected $_configurableType;
 
     /**
-     * @var \Magento\Core\Helper\Data
+     * @var \Magento\Framework\Json\Helper\Data
      */
-    protected $_coreHelper;
+    protected $jsonHelper;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
      * @param \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurableType
-     * @param \Magento\Core\Helper\Data $coreHelper
+     * @param \Magento\Framework\Json\Helper\Data $jsonHelper
      * @param array $data
      */
     public function __construct(
@@ -36,10 +37,10 @@ class Settings extends Generic
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
         \Magento\ConfigurableProduct\Model\Product\Type\Configurable $configurableType,
-        \Magento\Core\Helper\Data $coreHelper,
+        \Magento\Framework\Json\Helper\Data $jsonHelper,
         array $data = []
     ) {
-        $this->_coreHelper = $coreHelper;
+        $this->jsonHelper = $jsonHelper;
         $this->_configurableType = $configurableType;
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -51,7 +52,7 @@ class Settings extends Generic
      */
     protected function _prepareLayout()
     {
-        $onclick = "jQuery('[data-form=edit-product]').attr('action', " . $this->_coreHelper->jsonEncode(
+        $onclick = "jQuery('[data-form=edit-product]').attr('action', " . $this->jsonHelper->jsonEncode(
             $this->getContinueUrl()
         ) . ").addClass('ignore-validate').submit();";
         $this->addChild(

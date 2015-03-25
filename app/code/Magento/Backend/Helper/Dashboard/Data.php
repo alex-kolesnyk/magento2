@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Helper\Dashboard;
 
@@ -9,7 +10,7 @@ use Magento\Framework\App\DeploymentConfig;
 /**
  * Data helper for dashboard
  */
-class Data extends \Magento\Core\Helper\Data
+class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
      * @var \Magento\Framework\Data\Collection\Db
@@ -27,32 +28,25 @@ class Data extends \Magento\Core\Helper\Data
     const INSTALL_DATE = 'install/date';
 
     /**
+     * @var \Magento\Store\Model\StoreManagerInterface
+     */
+    private $_storeManager;
+
+    /**
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\App\State $appState
-     * @param \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency
      * @param DeploymentConfig $deploymentConfig
-     * @param bool $dbCompatibleMode
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\State $appState,
-        \Magento\Framework\Pricing\PriceCurrencyInterface $priceCurrency,
-        DeploymentConfig $deploymentConfig,
-        $dbCompatibleMode = true
+        DeploymentConfig $deploymentConfig
     ) {
         parent::__construct(
-            $context,
-            $scopeConfig,
-            $storeManager,
-            $appState,
-            $priceCurrency,
-            $dbCompatibleMode
+            $context
         );
         $this->_installDate = $deploymentConfig->get(self::INSTALL_DATE);
+        $this->_storeManager = $storeManager;
     }
 
     /**

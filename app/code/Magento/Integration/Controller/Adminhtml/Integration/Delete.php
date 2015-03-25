@@ -1,11 +1,13 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Controller\Adminhtml\Integration;
 
 use Magento\Integration\Block\Adminhtml\Integration\Edit\Tab\Info;
+use Magento\Framework\Exception\IntegrationException;
 
 class Delete extends \Magento\Integration\Controller\Adminhtml\Integration
 {
@@ -49,10 +51,10 @@ class Delete extends \Magento\Integration\Controller\Adminhtml\Integration
             } else {
                 $this->messageManager->addError(__('Integration ID is not specified or is invalid.'));
             }
-        } catch (\Magento\Integration\Exception $e) {
+        } catch (IntegrationException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
         }
         $this->_redirect('*/*/');
     }

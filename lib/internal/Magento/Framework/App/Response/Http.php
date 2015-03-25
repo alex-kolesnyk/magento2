@@ -2,7 +2,8 @@
 /**
  * HTTP response
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Response;
 
@@ -11,7 +12,7 @@ use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 
-class Http extends \Zend_Controller_Response_Http implements HttpInterface
+class Http extends \Magento\Framework\HTTP\PhpEnvironment\Response
 {
     /**
      * Cookie to store page vary string
@@ -34,9 +35,9 @@ class Http extends \Zend_Controller_Response_Http implements HttpInterface
     protected $context;
 
     /**
-     * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
-     * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
-     * @param \Magento\Framework\App\Http\Context $context
+     * @param CookieManagerInterface $cookieManager
+     * @param CookieMetadataFactory $cookieMetadataFactory
+     * @param Context $context
      */
     public function __construct(
         CookieManagerInterface $cookieManager,
@@ -49,21 +50,15 @@ class Http extends \Zend_Controller_Response_Http implements HttpInterface
     }
 
     /**
-     * Get header value by name.
-     * Returns first found header by passed name.
-     * If header with specified name was not found returns false.
+     * Send the response, including all headers, rendering exceptions if so
+     * requested.
      *
-     * @param string $name
-     * @return array|bool
+     * @return void
      */
-    public function getHeader($name)
+    public function sendResponse()
     {
-        foreach ($this->_headers as $header) {
-            if ($header['name'] == $name) {
-                return $header;
-            }
-        }
-        return false;
+        $this->sendVary();
+        parent::sendResponse();
     }
 
     /**
@@ -85,18 +80,6 @@ class Http extends \Zend_Controller_Response_Http implements HttpInterface
                 ->setPath('/');
             $this->cookieManager->deleteCookie(self::COOKIE_VARY_STRING, $cookieMetadata);
         }
-    }
-
-    /**
-     * Send the response, including all headers, rendering exceptions if so
-     * requested.
-     *
-     * @return void
-     */
-    public function sendResponse()
-    {
-        $this->sendVary();
-        parent::sendResponse();
     }
 
     /**
@@ -155,7 +138,7 @@ class Http extends \Zend_Controller_Response_Http implements HttpInterface
     public function representJson($content)
     {
         $this->setHeader('Content-Type', 'application/json', true);
-        return $this->setBody($content);
+        return $this->setContent($content);
     }
 
     /**
@@ -163,7 +146,7 @@ class Http extends \Zend_Controller_Response_Http implements HttpInterface
      */
     public function __sleep()
     {
-        return ['_body', '_exceptions', '_headers', '_headersRaw', '_httpResponseCode', 'context'];
+        return ['content', 'isRedirect', 'statusCode', 'context'];
     }
 
     /**

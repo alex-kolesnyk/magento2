@@ -1,11 +1,12 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor;
 
-use Magento\Framework\Model\Exception as CoreException;
+use Magento\Framework\Exception\LocalizedException as CoreException;
 use Magento\Framework\View\Design\ThemeInterface;
 
 class Launch extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor
@@ -28,8 +29,8 @@ class Launch extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Ed
         /** @var $cssTabBlock \Magento\DesignEditor\Block\Adminhtml\Editor\Tools\Code\Css */
         $cssTabBlock = $this->_view->getLayout()->getBlock('design_editor_tools_code_css');
         if ($cssTabBlock) {
-            /** @var $helper \Magento\Core\Helper\Theme */
-            $helper = $this->_objectManager->get('Magento\Core\Helper\Theme');
+            /** @var $helper \Magento\Theme\Helper\Theme */
+            $helper = $this->_objectManager->get('Magento\Theme\Helper\Theme');
             $assets = $helper->getCssAssets($theme);
             $cssTabBlock->setAssets($assets)
                 ->setThemeId($theme->getId());
@@ -154,12 +155,12 @@ class Launch extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Ed
             $this->_view->renderLayout();
         } catch (CoreException $e) {
             $this->messageManager->addException($e, $e->getMessage());
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             $this->_redirect('adminhtml/*/');
             return;
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('Sorry, there was an unknown error.'));
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             $this->_redirect('adminhtml/*/');
             return;
         }

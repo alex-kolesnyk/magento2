@@ -1,9 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Resource\Category;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Tree extends \Magento\Framework\Data\Tree\Dbp
 {
     const ID_FIELD = 'id';
@@ -156,6 +160,8 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
      * @param boolean $toLoad
      * @param boolean $onlyActive
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function addCollectionData(
         $collection = null,
@@ -164,7 +170,7 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
         $toLoad = true,
         $onlyActive = false
     ) {
-        if (is_null($collection)) {
+        if ($collection === null) {
             $collection = $this->getCollection($sorted);
         } else {
             $this->setCollection($collection);
@@ -323,6 +329,7 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
      *
      * @param int $id
      * @return boolean
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     protected function _getItemIsActive($id)
     {
@@ -340,7 +347,7 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
      */
     public function getCollection($sorted = false)
     {
-        if (is_null($this->_collection)) {
+        if ($this->_collection === null) {
             $this->_collection = $this->_getDefaultCollection($sorted);
         }
         return $this->_collection;
@@ -370,7 +377,7 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
      */
     public function setCollection($collection)
     {
-        if (!is_null($this->_collection)) {
+        if ($this->_collection !== null) {
             $this->_clean($this->_collection);
         }
         $this->_collection = $collection;
@@ -436,6 +443,8 @@ class Tree extends \Magento\Framework\Data\Tree\Dbp
      * @param bool $addCollectionData
      * @param bool $updateAnchorProductCount
      * @return $this|bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function loadByIds($ids, $addCollectionData = true, $updateAnchorProductCount = true)
     {

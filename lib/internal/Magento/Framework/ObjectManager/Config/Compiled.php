@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Config;
 
@@ -14,11 +15,6 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
      * @var array
      */
     private $arguments;
-
-    /**
-     * @var array
-     */
-    private $nonShared;
 
     /**
      * @var array
@@ -36,7 +32,6 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
     public function __construct($data)
     {
         $this->arguments = $data['arguments'];
-        $this->nonShared = $data['nonShared'];
         $this->virtualTypes = $data['instanceTypes'];
         $this->preferences = $data['preferences'];
     }
@@ -47,6 +42,8 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
      * @param RelationsInterface $relations
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setRelations(RelationsInterface $relations)
     {
@@ -58,6 +55,8 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
      * @param ConfigCacheInterface $cache
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setCache(ConfigCacheInterface $cache)
     {
@@ -77,7 +76,7 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
             }
             return $this->arguments[$type];
         } else {
-            return ['Magento\Framework\ObjectManagerInterface'];
+            return [['_i_' => 'Magento\Framework\ObjectManagerInterface']];
         }
     }
 
@@ -86,10 +85,11 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
      *
      * @param string $type
      * @return bool
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function isShared($type)
     {
-        return !isset($this->nonShared[$type]);
+        return true;
     }
 
     /**
@@ -130,7 +130,6 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
     public function extend(array $configuration)
     {
         $this->arguments = $configuration['arguments'];
-        $this->nonShared = $configuration['nonShared'];
         $this->virtualTypes = $configuration['instanceTypes'];
         $this->preferences = $configuration['preferences'];
     }
@@ -143,5 +142,15 @@ class Compiled implements \Magento\Framework\ObjectManager\ConfigInterface
     public function getVirtualTypes()
     {
         return $this->virtualTypes;
+    }
+
+    /**
+     * Returns list on preferences
+     *
+     * @return array
+     */
+    public function getPreferences()
+    {
+        return $this->preferences;
     }
 }

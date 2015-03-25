@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -35,8 +36,8 @@ class Condition extends \Magento\GoogleShopping\Model\Attribute\DefaultAttribute
         $availableConditions = [self::CONDITION_NEW, self::CONDITION_USED, self::CONDITION_REFURBISHED];
 
         $mapValue = $this->getProductAttributeValue($product);
-        $mapValue = !is_null($mapValue) ? mb_convert_case($mapValue, MB_CASE_LOWER) : $mapValue;
-        if (!is_null($mapValue) && in_array($mapValue, $availableConditions)) {
+        $mapValue = $mapValue !== null ? mb_convert_case($mapValue, MB_CASE_LOWER) : $mapValue;
+        if ($mapValue !== null && in_array($mapValue, $availableConditions)) {
             $condition = $mapValue;
         } else {
             $condition = self::CONDITION_NEW;

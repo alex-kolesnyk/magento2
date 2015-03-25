@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Store\Ui\DataProvider;
 
@@ -43,9 +44,10 @@ class Row implements RowInterface
      * Get data
      *
      * @param array $dataRow
+     * @param array $data
      * @return mixed
      */
-    public function getData(array $dataRow)
+    public function getData(array $dataRow, array $data = [])
     {
         $content = '';
         $origStores = $dataRow['store_id'];

@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\User\Model;
 
 /**
@@ -213,7 +217,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Backend\Model\Auth\Exception
+     * @expectedException \Magento\Framework\Exception\AuthenticationException
      * @magentoDbIsolation enabled
      */
     public function testAuthenticateInactiveUser()
@@ -227,7 +231,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Backend\Model\Auth\Exception
+     * @expectedException \Magento\Framework\Exception\AuthenticationException
      * @magentoDbIsolation enabled
      */
     public function testAuthenticateUserWithoutRole()
@@ -291,7 +295,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      * @expectedExceptionMessage User Name is a required field.
      * @expectedExceptionMessage First Name is a required field.
      * @expectedExceptionMessage Last Name is a required field.
@@ -341,7 +345,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      * @expectedExceptionMessage Your password confirmation must match your password.
      * @magentoDbIsolation enabled
      */
@@ -353,7 +357,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      * @expectedExceptionMessage Your password must include both numeric and alphabetic characters.
      * @magentoDbIsolation enabled
      */
@@ -365,7 +369,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider beforeSavePasswordInsecureDataProvider
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      * @expectedExceptionMessage Your password must include both numeric and alphabetic characters.
      * @magentoDbIsolation enabled
      * @param string $password
@@ -382,7 +386,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      * @expectedExceptionMessage A user with the same user name or email already exists.
      * @magentoDbIsolation enabled
      */

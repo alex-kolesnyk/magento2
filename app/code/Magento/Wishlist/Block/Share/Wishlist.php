@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -67,7 +68,7 @@ class Wishlist extends \Magento\Wishlist\Block\AbstractBlock
      */
     public function getWishlistCustomer()
     {
-        if (is_null($this->_customer)) {
+        if ($this->_customer === null) {
             $this->_customer = $this->customerRepository->getById($this->_getWishlist()->getCustomerId());
         }
 
@@ -77,7 +78,7 @@ class Wishlist extends \Magento\Wishlist\Block\AbstractBlock
     /**
      * Retrieve Page Header
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeader()
     {

@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Import\Entity;
 
 /**
  * Import EAV entity abstract model
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractEav extends \Magento\ImportExport\Model\Import\AbstractEntity
 {
@@ -71,7 +73,6 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Import\AbstractEn
     protected $_attributeCollection;
 
     /**
-     * @param \Magento\Core\Helper\Data $coreData
      * @param \Magento\Framework\Stdlib\String $string
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\ImportExport\Model\ImportFactory $importFactory
@@ -81,9 +82,10 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Import\AbstractEn
      * @param \Magento\ImportExport\Model\Export\Factory $collectionFactory
      * @param \Magento\Eav\Model\Config $eavConfig
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function __construct(
-        \Magento\Core\Helper\Data $coreData,
         \Magento\Framework\Stdlib\String $string,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\ImportExport\Model\ImportFactory $importFactory,
@@ -94,7 +96,7 @@ abstract class AbstractEav extends \Magento\ImportExport\Model\Import\AbstractEn
         \Magento\Eav\Model\Config $eavConfig,
         array $data = []
     ) {
-        parent::__construct($coreData, $string, $scopeConfig, $importFactory, $resourceHelper, $resource, $data);
+        parent::__construct($string, $scopeConfig, $importFactory, $resourceHelper, $resource, $data);
 
         $this->_storeManager = $storeManager;
         $this->_attributeCollection = isset(

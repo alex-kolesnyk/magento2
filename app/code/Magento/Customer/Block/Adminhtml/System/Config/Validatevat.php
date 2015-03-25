@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -10,7 +11,7 @@
  */
 namespace Magento\Customer\Block\Adminhtml\System\Config;
 
-class Validatevat extends \Magento\Backend\Block\System\Config\Form\Field
+class Validatevat extends \Magento\Config\Block\System\Config\Form\Field
 {
     /**
      * Merchant Country Field Name

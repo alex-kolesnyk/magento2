@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api;
 
@@ -18,11 +19,11 @@ abstract class AbstractSimpleObject
     /**
      * Initialize internal storage
      *
-     * @param SimpleBuilderInterface $builder
+     * @param array $data
      */
-    public function __construct(SimpleBuilderInterface $builder)
+    public function __construct(array $data = [])
     {
-        $this->_data = $builder->getData();
+        $this->_data = $data;
     }
 
     /**
@@ -34,6 +35,19 @@ abstract class AbstractSimpleObject
     protected function _get($key)
     {
         return isset($this->_data[$key]) ? $this->_data[$key] : null;
+    }
+
+    /**
+     * Set value for the given key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    protected function setData($key, $value)
+    {
+        $this->_data[$key] = $value;
+        return $this;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Adminhtml\Category;
 
@@ -120,14 +121,15 @@ class AbstractCategory extends \Magento\Backend\Block\Template
      * @param mixed|null $parentNodeCategory
      * @param int $recursionLevel
      * @return Node|array|null
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getRoot($parentNodeCategory = null, $recursionLevel = 3)
     {
-        if (!is_null($parentNodeCategory) && $parentNodeCategory->getId()) {
+        if ($parentNodeCategory !== null && $parentNodeCategory->getId()) {
             return $this->getNode($parentNodeCategory, $recursionLevel);
         }
         $root = $this->_coreRegistry->registry('root');
-        if (is_null($root)) {
+        if ($root === null) {
             $storeId = (int)$this->getRequest()->getParam('store');
 
             if ($storeId) {
@@ -174,7 +176,7 @@ class AbstractCategory extends \Magento\Backend\Block\Template
     {
         $storeId = $this->getRequest()->getParam('store', $this->_getDefaultStoreId());
         $collection = $this->getData('category_collection');
-        if (is_null($collection)) {
+        if ($collection === null) {
             $collection = $this->_categoryFactory->create()->getCollection();
 
             $collection->addAttributeToSelect(
@@ -276,7 +278,7 @@ class AbstractCategory extends \Magento\Backend\Block\Template
     public function getRootIds()
     {
         $ids = $this->getData('root_ids');
-        if (is_null($ids)) {
+        if ($ids === null) {
             $ids = [];
             foreach ($this->_storeManager->getGroups() as $store) {
                 $ids[] = $store->getRootCategoryId();

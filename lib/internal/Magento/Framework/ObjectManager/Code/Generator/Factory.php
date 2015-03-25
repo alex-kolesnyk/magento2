@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Code\Generator;
 
@@ -43,7 +44,7 @@ class Factory extends \Magento\Framework\Code\Generator\EntityAbstract
             'name' => '__construct',
             'parameters' => [
                 ['name' => 'objectManager', 'type' => '\Magento\Framework\ObjectManagerInterface'],
-                ['name' => 'instanceName', 'defaultValue' => $this->_getSourceClassName()],
+                ['name' => 'instanceName', 'defaultValue' => $this->getSourceClassName()],
             ],
             'body' => "\$this->_objectManager = \$objectManager;\n\$this->_instanceName = \$instanceName;",
             'docblock' => [
@@ -79,7 +80,7 @@ class Factory extends \Magento\Framework\Code\Generator\EntityAbstract
                     ['name' => 'param', 'description' => 'array $data'],
                     [
                         'name' => 'return',
-                        'description' => $this->_getFullyQualifiedClassName($this->_getSourceClassName())
+                        'description' => $this->getSourceClassName()
                     ],
                 ],
             ],
@@ -96,7 +97,7 @@ class Factory extends \Magento\Framework\Code\Generator\EntityAbstract
         $result = parent::_validateData();
 
         if ($result) {
-            $sourceClassName = $this->_getSourceClassName();
+            $sourceClassName = $this->getSourceClassName();
             $resultClassName = $this->_getResultClassName();
 
             if ($resultClassName !== $sourceClassName . 'Factory') {

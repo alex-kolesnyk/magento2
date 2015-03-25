@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Newsletter Template Edit Block
@@ -55,6 +58,7 @@ class Edit extends \Magento\Backend\Block\Widget
      * Preparing block layout
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareLayout()
     {
@@ -170,6 +174,7 @@ class Edit extends \Magento\Backend\Block\Widget
      * Return edit flag for block
      *
      * @return boolean
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getEditMode()
     {
@@ -182,7 +187,7 @@ class Edit extends \Magento\Backend\Block\Widget
     /**
      * Return header text for form
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -277,6 +282,7 @@ class Edit extends \Magento\Backend\Block\Widget
      * Getter for id of current store (the only one in single-store mode and current in multi-stores mode)
      *
      * @return boolean
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     protected function getStoreId()
     {

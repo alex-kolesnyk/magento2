@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Model\Resource\Report\Product\Viewed;
 
@@ -46,6 +47,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * @param $dateFrom
      * @param $dateTo
      * @param $isTotal
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function testTableSelection($period, $expectedTable, $dateFrom, $dateTo, $isTotal = false)
     {
@@ -69,7 +71,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('tableName', $from[$dbTableName]);
         } else {
             $union = $this->_collection->getSelect()->getPart('union');
-            if (!is_null($period) && !is_null($dateFrom) && !is_null($dateTo) && $period != 'month') {
+            if ($period !== null && $dateFrom !== null && $dateTo !== null && $period != 'month') {
                 $count = count($union);
                 if ($period == 'year') {
                     if ($dbTableName == "report_viewed_product_aggregated_daily") {
@@ -91,6 +93,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      * Data provider for testTableSelection
      *
      * @return array
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function tableForPeriodDataProvider()
     {

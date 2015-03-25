@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Address;
 
@@ -95,7 +96,7 @@ class Config extends \Magento\Framework\Config\Data
      */
     public function getStore()
     {
-        if (is_null($this->_store)) {
+        if ($this->_store === null) {
             $this->_store = $this->_storeManager->getStore();
         }
         return $this->_store;

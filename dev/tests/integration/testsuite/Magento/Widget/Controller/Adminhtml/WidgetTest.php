@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Widget\Controller\Adminhtml;
 
@@ -14,7 +15,7 @@ class WidgetTest extends \Magento\Backend\Utility\Controller
      */
     public function testLoadOptionsAction()
     {
-        $this->getRequest()->setPost(
+        $this->getRequest()->setPostValue(
             'widget',
             '{"widget_type":"Magento\\\\Cms\\\\Block\\\\Widget\\\\Page\\\\Link","values":{}}'
         );

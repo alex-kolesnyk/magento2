@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Reports\Test\Page\Adminhtml\AbandonedCarts;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertAbandonedCartCustomerInfoResult
@@ -15,10 +16,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertAbandonedCartCustomerInfoResult extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert customer info in Abandoned Carts report (Reports > Abandoned carts):
      * – name and email
@@ -27,10 +24,10 @@ class AssertAbandonedCartCustomerInfoResult extends AbstractConstraint
      *
      * @param AbandonedCarts $abandonedCarts
      * @param array $products
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @return void
      */
-    public function processAssert(AbandonedCarts $abandonedCarts, $products, CustomerInjectable $customer)
+    public function processAssert(AbandonedCarts $abandonedCarts, $products, Customer $customer)
     {
         $abandonedCarts->open();
         $qty = 0;

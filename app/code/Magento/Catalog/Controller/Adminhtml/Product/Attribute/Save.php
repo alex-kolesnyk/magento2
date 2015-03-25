@@ -1,12 +1,19 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Catalog\Controller\Adminhtml\Product\Attribute;
 
-use Magento\Catalog\Model\Product\AttributeSet\AlreadyExistsException;
+use \Magento\Framework\Exception\AlreadyExistsException;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Save extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
 {
     /**
@@ -56,6 +63,7 @@ class Save extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
      * @param \Magento\Catalog\Helper\Product $productHelper
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
@@ -82,10 +90,13 @@ class Save extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
 
     /**
      * @return \Magento\Backend\Model\View\Result\Redirect
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getPostValue();
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
             $setId = $this->getRequest()->getParam('set');
@@ -106,7 +117,7 @@ class Save extends \Magento\Catalog\Controller\Adminhtml\Product\Attribute
                     $this->messageManager->addError(__('Attribute Set with name \'%1\' already exists.', $name));
                     $this->messageManager->setAttributeData($data);
                     return $resultRedirect->setPath('catalog/*/edit', ['_current' => true]);
-                } catch (\Magento\Framework\Model\Exception $e) {
+                } catch (\Magento\Framework\Exception\LocalizedException $e) {
                     $this->messageManager->addError($e->getMessage());
                 } catch (\Exception $e) {
                     $this->messageManager->addException($e, __('Something went wrong saving the attribute.'));

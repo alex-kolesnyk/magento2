@@ -1,12 +1,14 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order\Shipment;
 
 use Magento\Sales\Model\Order\Email\Sender\ShipmentSender;
 use Magento\Backend\App\Action;
+use Magento\Framework\View\Result\LayoutFactory;
 
 class AddComment extends \Magento\Backend\App\Action
 {
@@ -21,17 +23,25 @@ class AddComment extends \Magento\Backend\App\Action
     protected $shipmentSender;
 
     /**
+     * @var LayoutFactory
+     */
+    protected $resultLayoutFactory;
+
+    /**
      * @param Action\Context $context
      * @param \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader
      * @param ShipmentSender $shipmentSender
+     * @param LayoutFactory $resultLayoutFactory
      */
     public function __construct(
         Action\Context $context,
         \Magento\Shipping\Controller\Adminhtml\Order\ShipmentLoader $shipmentLoader,
-        ShipmentSender $shipmentSender
+        ShipmentSender $shipmentSender,
+        LayoutFactory $resultLayoutFactory
     ) {
         $this->shipmentLoader = $shipmentLoader;
         $this->shipmentSender = $shipmentSender;
+        $this->resultLayoutFactory = $resultLayoutFactory;
         parent::__construct($context);
     }
 
@@ -54,7 +64,9 @@ class AddComment extends \Magento\Backend\App\Action
             $this->getRequest()->setParam('shipment_id', $this->getRequest()->getParam('id'));
             $data = $this->getRequest()->getPost('comment');
             if (empty($data['comment'])) {
-                throw new \Magento\Framework\Model\Exception(__("The comment text field cannot be empty."));
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __("The comment text field cannot be empty.")
+                );
             }
             $this->shipmentLoader->setOrderId($this->getRequest()->getParam('order_id'));
             $this->shipmentLoader->setShipmentId($this->getRequest()->getParam('shipment_id'));
@@ -69,17 +81,16 @@ class AddComment extends \Magento\Backend\App\Action
 
             $this->shipmentSender->send($shipment, !empty($data['is_customer_notified']), $data['comment']);
             $shipment->save();
-
-            $this->_view->loadLayout(false);
-            $this->_view->getPage()->getConfig()->getTitle()->prepend(__('Shipments'));
-            $response = $this->_view->getLayout()->getBlock('shipment_comments')->toHtml();
-        } catch (\Magento\Framework\Model\Exception $e) {
+            $resultLayout = $this->resultLayoutFactory->create();
+            $resultLayout->addDefaultHandle();
+            $response = $resultLayout->getLayout()->getBlock('shipment_comments')->toHtml();
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $response = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {
             $response = ['error' => true, 'message' => __('Cannot add new comment.')];
         }
         if (is_array($response)) {
-            $response = $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($response);
+            $response = $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($response);
             $this->getResponse()->representJson($response);
         } else {
             $this->getResponse()->setBody($response);

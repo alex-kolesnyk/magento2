@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Authorization\Model;
@@ -71,15 +72,15 @@ class CompositeUserContext implements \Magento\Authorization\Model\UserContextIn
      */
     protected function getUserContext()
     {
-        if (is_null($this->chosenUserContext)) {
+        if ($this->chosenUserContext === null) {
             /** @var UserContextInterface $userContext */
             foreach ($this->userContexts as $userContext) {
-                if ($userContext->getUserType() && !is_null($userContext->getUserId())) {
+                if ($userContext->getUserType() && $userContext->getUserId() !== null) {
                     $this->chosenUserContext = $userContext;
                     break;
                 }
             }
-            if (is_null($this->chosenUserContext)) {
+            if ($this->chosenUserContext === null) {
                 $this->chosenUserContext = false;
             }
         }

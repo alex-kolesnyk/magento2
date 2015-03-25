@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Observer;
 
@@ -48,7 +49,7 @@ class AggregateSalesReportInvoicedData
     {
         $this->localeResolver->emulate(0);
         $currentDate = $this->localeDate->date();
-        $date = $currentDate->subHour(25);
+        $date = $currentDate->sub(new \DateInterval('PT25H'));
         $this->invoicedFactory->create()->aggregate($date);
         $this->localeResolver->revert();
     }

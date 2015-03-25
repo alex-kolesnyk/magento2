@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Create;
 
@@ -31,7 +32,7 @@ class Comment extends \Magento\Sales\Block\Adminhtml\Order\Create\AbstractCreate
     /**
      * Get header text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -46,19 +47,5 @@ class Comment extends \Magento\Sales\Block\Adminhtml\Order\Create\AbstractCreate
     public function getCommentNote()
     {
         return $this->escapeHtml($this->getQuote()->getCustomerNote());
-    }
-
-    /**
-     * Get note notification
-     *
-     * @return bool
-     */
-    public function getNoteNotify()
-    {
-        $notify = $this->getQuote()->getCustomerNoteNotify();
-        if (is_null($notify) || $notify) {
-            return true;
-        }
-        return false;
     }
 }

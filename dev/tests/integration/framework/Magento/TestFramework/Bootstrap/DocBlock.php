@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework\Bootstrap;
 
@@ -52,6 +53,7 @@ class DocBlock
             new \Magento\TestFramework\Isolation\WorkingDirectory(),
             new \Magento\TestFramework\Isolation\DeploymentConfig(),
             new \Magento\TestFramework\Annotation\AppIsolation($application),
+            new \Magento\TestFramework\Annotation\ConfigFixture(),
             new \Magento\TestFramework\Event\Transaction(
                 new \Magento\TestFramework\EventManager(
                     [
@@ -62,7 +64,6 @@ class DocBlock
             ),
             new \Magento\TestFramework\Annotation\AppArea($application),
             new \Magento\TestFramework\Annotation\Cache($application),
-            new \Magento\TestFramework\Annotation\ConfigFixture(),
             new \Magento\TestFramework\Annotation\AdminConfigFixture()
         ];
     }

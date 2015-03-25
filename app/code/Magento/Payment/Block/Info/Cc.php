@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Block\Info;
 
@@ -72,13 +73,12 @@ class Cc extends \Magento\Payment\Block\Info
     /**
      * Retrieve CC expiration date
      *
-     * @return \Magento\Framework\Stdlib\DateTime\Date
+     * @return \DateTime
      */
     public function getCcExpDate()
     {
-        $date = $this->_localeDate->date(0);
-        $date->setYear($this->getInfo()->getCcExpYear());
-        $date->setMonth($this->getInfo()->getCcExpMonth());
+        $date = new \DateTime('now', new \DateTimeZone($this->_localeDate->getConfigTimezone()));
+        $date->setDate($this->getInfo()->getCcExpYear(), $this->getInfo()->getCcExpMonth(), $date->format('d'));
         return $date;
     }
 
@@ -96,19 +96,19 @@ class Cc extends \Magento\Payment\Block\Info
         $transport = parent::_prepareSpecificInformation($transport);
         $data = [];
         if ($ccType = $this->getCcTypeName()) {
-            $data[__('Credit Card Type')] = $ccType;
+            $data[(string)__('Credit Card Type')] = $ccType;
         }
         if ($this->getInfo()->getCcLast4()) {
-            $data[__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());
+            $data[(string)__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());
         }
         if (!$this->getIsSecureMode()) {
             if ($ccSsIssue = $this->getInfo()->getCcSsIssue()) {
-                $data[__('Switch/Solo/Maestro Issue Number')] = $ccSsIssue;
+                $data[(string)__('Switch/Solo/Maestro Issue Number')] = $ccSsIssue;
             }
             $year = $this->getInfo()->getCcSsStartYear();
             $month = $this->getInfo()->getCcSsStartMonth();
             if ($year && $month) {
-                $data[__('Switch/Solo/Maestro Start Date')] = $this->_formatCardDate($year, $month);
+                $data[(string)__('Switch/Solo/Maestro Start Date')] = $this->_formatCardDate($year, $month);
             }
         }
         return $transport->setData(array_merge($data, $transport->getData()));

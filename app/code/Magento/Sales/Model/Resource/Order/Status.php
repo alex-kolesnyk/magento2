@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Order;
 
 use Magento\Framework\App\Resource;
-use Magento\Framework\Logger as LogWriter;
-use Magento\Framework\Model\Exception;
+use Psr\Log\LoggerInterface as LogWriter;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Order status resource model
@@ -30,22 +31,24 @@ class Status extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $stateTable;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
     /**
      * Class constructor
      *
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param LogWriter $logger
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        Resource $resource,
-        LogWriter $logger
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        LogWriter $logger,
+        $resourcePrefix = null
     ) {
         $this->logger = $logger;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -172,7 +175,7 @@ class Status extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param string $status
      * @param string $state
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function unassignState($status, $state)
     {
@@ -202,7 +205,7 @@ class Status extends \Magento\Framework\Model\Resource\Db\AbstractDb
             $this->_getWriteAdapter()->commit();
         } catch (\Exception $e) {
             $this->_getWriteAdapter()->rollBack();
-            throw new Exception('Cannot unassing status from state');
+            throw new LocalizedException(__('Cannot unassign status from state'));
         }
 
         return $this;
@@ -265,6 +268,7 @@ class Status extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param string $state
      * @return string
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     protected function getStatusByState($state)
     {

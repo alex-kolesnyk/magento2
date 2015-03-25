@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -12,7 +13,7 @@ class ObsoleteAclTest extends \PHPUnit_Framework_TestCase
 {
     public function testAclDeclarations()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $aclFile
@@ -25,7 +26,7 @@ class ObsoleteAclTest extends \PHPUnit_Framework_TestCase
                     'Obsolete acl structure detected in file ' . $aclFile . '.'
                 );
             },
-            \Magento\Framework\Test\Utility\Files::init()->getMainConfigFiles()
+            \Magento\Framework\App\Utility\Files::init()->getMainConfigFiles()
         );
     }
 }

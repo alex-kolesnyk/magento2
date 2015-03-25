@@ -1,12 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Helper\Product\Flat;
 
 /**
  * Catalog Product Flat Indexer Helper
  *
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Indexer extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -129,6 +132,7 @@ class Indexer extends \Magento\Framework\App\Helper\AbstractHelper
      * @param bool $addFilterableAttrs
      * @param bool $addChildData
      * @param array $flatAttributeGroups
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
@@ -304,7 +308,7 @@ class Indexer extends \Magento\Framework\App\Helper\AbstractHelper
                     $attribute->getBackend();
                     $this->_attributes[$attributeCode] = $attribute;
                 } catch (\Exception $e) {
-                    $this->_logger->logException($e);
+                    $this->_logger->critical($e);
                 }
             }
         }
@@ -462,7 +466,7 @@ class Indexer extends \Magento\Framework\App\Helper\AbstractHelper
      * Retrieve loaded attribute by code
      *
      * @param string $attributeCode
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return \Magento\Eav\Model\Entity\Attribute
      */
     public function getAttribute($attributeCode)
@@ -472,7 +476,7 @@ class Indexer extends \Magento\Framework\App\Helper\AbstractHelper
             $attribute = $this->_attributeFactory->create();
             $attribute->loadByCode($this->getEntityTypeId(), $attributeCode);
             if (!$attribute->getId()) {
-                throw new \Magento\Framework\Model\Exception(__('Invalid attribute %1', $attributeCode));
+                throw new \Magento\Framework\Exception\LocalizedException(__('Invalid attribute %1', $attributeCode));
             }
             $entity = $this->_eavConfig->getEntityType($this->getEntityType())->getEntity();
             $attribute->setEntity($entity);

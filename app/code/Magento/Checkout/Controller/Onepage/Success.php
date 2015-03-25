@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Controller\Onepage;
 
@@ -10,23 +11,22 @@ class Success extends \Magento\Checkout\Controller\Onepage
     /**
      * Order success action
      *
-     * @return void
+     * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
         $session = $this->getOnepage()->getCheckout();
-        if (!$this->_objectManager->get('Magento\Checkout\Model\Session\SuccessValidator')->isValid($session)) {
-            $this->_redirect('checkout/cart');
-            return;
+        if (!$this->_objectManager->get('Magento\Checkout\Model\Session\SuccessValidator')->isValid()) {
+            return $this->resultRedirectFactory->create()->setPath('checkout/cart');
         }
         $session->clearQuote();
         //@todo: Refactor it to match CQRS
-        $this->_view->loadLayout();
-        $this->_view->getLayout()->initMessages();
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->getLayout()->initMessages();
         $this->_eventManager->dispatch(
             'checkout_onepage_controller_success_action',
             ['order_ids' => [$session->getLastOrderId()]]
         );
-        $this->_view->renderLayout();
+        return $resultPage;
     }
 }

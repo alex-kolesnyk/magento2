@@ -1,7 +1,7 @@
 <?php
 /**
- *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\Index;
 
@@ -23,12 +23,16 @@ class Validate extends \Magento\Customer\Controller\Adminhtml\Index
 
         try {
             /** @var CustomerInterface $customer */
-            $customer = $this->customerDataBuilder->create();
+            $customer = $this->customerDataFactory->create();
 
             $customerForm = $this->_formFactory->create(
                 'customer',
                 'adminhtml_customer',
-                $this->_extensibleDataObjectConverter->toFlatArray($customer),
+                $this->_extensibleDataObjectConverter->toFlatArray(
+                    $customer,
+                    [],
+                    '\Magento\Customer\Api\Data\CustomerInterface'
+                ),
                 true
             );
             $customerForm->setInvisibleIgnored(true);
@@ -39,9 +43,13 @@ class Validate extends \Magento\Customer\Controller\Adminhtml\Index
                 unset($data['website_id']);
             }
 
-            $customer = $this->customerDataBuilder->populateWithArray($data)->create();
+            $this->dataObjectHelper->populateWithArray(
+                $customer,
+                $data,
+                '\Magento\Customer\Api\Data\CustomerInterface'
+            );
             $errors = $this->customerAccountManagement->validate($customer);
-        } catch (\Magento\Framework\Model\Exception $exception) {
+        } catch (\Magento\Framework\Validator\Exception $exception) {
             /* @var $error Error */
             foreach ($exception->getMessages(\Magento\Framework\Message\MessageInterface::TYPE_ERROR) as $error) {
                 $errors[] = $error->getText();
@@ -94,7 +102,7 @@ class Validate extends \Magento\Customer\Controller\Adminhtml\Index
     /**
      * AJAX customer validation action
      *
-     * @return void
+     * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
     {
@@ -105,12 +113,14 @@ class Validate extends \Magento\Customer\Controller\Adminhtml\Index
         if ($customer) {
             $this->_validateCustomerAddress($response);
         }
-
+        $resultJson = $this->resultJsonFactory->create();
         if ($response->getError()) {
-            $this->_view->getLayout()->initMessages();
-            $response->setHtmlMessage($this->_view->getLayout()->getMessagesBlock()->getGroupedHtml());
+            $layout = $this->layoutFactory->create();
+            $layout->initMessages();
+            $response->setHtmlMessage($layout->getMessagesBlock()->getGroupedHtml());
         }
 
-        $this->getResponse()->representJson($response->toJson());
+        $resultJson->setData($response);
+        return $resultJson;
     }
 }

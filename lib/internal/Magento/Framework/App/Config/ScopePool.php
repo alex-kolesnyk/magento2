@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Config;
 
@@ -109,7 +110,7 @@ class ScopePool
      */
     protected function _getScopeCode($scopeType, $scopeCode)
     {
-        if ((is_null($scopeCode) || is_numeric($scopeCode))
+        if (($scopeCode === null || is_numeric($scopeCode))
             && $scopeType !== \Magento\Framework\App\ScopeInterface::SCOPE_DEFAULT
         ) {
             $scopeResolver = $this->_scopeResolverPool->get($scopeType);

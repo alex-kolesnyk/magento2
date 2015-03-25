@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Block\Form;
 
@@ -36,6 +37,7 @@ class Cc extends \Magento\Payment\Block\Form
      * Retrieve availables credit card types
      *
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function getCcAvailableTypes()
     {
@@ -62,7 +64,7 @@ class Cc extends \Magento\Payment\Block\Form
     public function getCcMonths()
     {
         $months = $this->getData('cc_months');
-        if (is_null($months)) {
+        if ($months === null) {
             $months[0] = __('Month');
             $months = array_merge($months, $this->_paymentConfig->getMonths());
             $this->setData('cc_months', $months);
@@ -78,7 +80,7 @@ class Cc extends \Magento\Payment\Block\Form
     public function getCcYears()
     {
         $years = $this->getData('cc_years');
-        if (is_null($years)) {
+        if ($years === null) {
             $years = $this->_paymentConfig->getYears();
             $years = [0 => __('Year')] + $years;
             $this->setData('cc_years', $years);
@@ -95,7 +97,7 @@ class Cc extends \Magento\Payment\Block\Form
     {
         if ($this->getMethod()) {
             $configData = $this->getMethod()->getConfigData('useccv');
-            if (is_null($configData)) {
+            if ($configData === null) {
                 return true;
             }
             return (bool)$configData;

@@ -2,7 +2,8 @@
 /**
  * Backwards-incompatible changes in file system
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Legacy;
 
@@ -10,7 +11,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
 {
     public function testRelocations()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * Directories may re-appear again during merging, therefore ensure they were properly relocated
@@ -19,7 +20,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
              */
             function ($path) {
                 $this->assertFileNotExists(
-                    \Magento\Framework\Test\Utility\Files::init()->getPathToSource() . '/' . $path
+                    \Magento\Framework\App\Utility\Files::init()->getPathToSource() . '/' . $path
                 );
             },
             $this->relocationsDataProvider()
@@ -57,7 +58,7 @@ class FilesystemTest extends \PHPUnit_Framework_TestCase
     {
         $area = '*';
         $theme = '*';
-        $root = \Magento\Framework\Test\Utility\Files::init()->getPathToSource();
+        $root = \Magento\Framework\App\Utility\Files::init()->getPathToSource();
         $dirs = glob("{$root}/app/design/{$area}/{$theme}/template", GLOB_ONLYDIR);
         $msg = [];
         if ($dirs) {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Helper;
 
@@ -92,7 +93,7 @@ class Data extends AbstractHelper
      */
     public function setPageHelpUrl($url = null)
     {
-        if (is_null($url)) {
+        if ($url === null) {
             $request = $this->_request;
             $frontModule = $request->getControllerModule();
             if (!$frontModule) {
@@ -104,7 +105,7 @@ class Data extends AbstractHelper
                 }
             }
             $url = 'http://www.magentocommerce.com/gethelp/';
-            $url .= $this->_locale->getLocaleCode() . '/';
+            $url .= $this->_locale->getLocale() . '/';
             $url .= $frontModule . '/';
             $url .= $request->getControllerName() . '/';
             $url .= $request->getActionName() . '/';

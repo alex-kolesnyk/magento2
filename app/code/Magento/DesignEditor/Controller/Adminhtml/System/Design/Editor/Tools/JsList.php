@@ -1,8 +1,12 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor\Tools;
 
 class JsList extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor\Tools
@@ -21,10 +25,10 @@ class JsList extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Ed
             $customJsFiles = $customization->getFilesByType(\Magento\Framework\View\Design\Theme\Customization\File\Js::TYPE);
             $result = ['error' => false, 'files' => $customization->generateFileInfo($customJsFiles)];
             $this->getResponse()->representJson(
-                $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
+                $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($result)
             );
         } catch (\Exception $e) {
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
     }
 }

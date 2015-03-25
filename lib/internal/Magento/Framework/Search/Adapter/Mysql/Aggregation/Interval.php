@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Adapter\Mysql\Aggregation;
 
@@ -40,15 +41,16 @@ class Interval implements IntervalInterface
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function load($limit, $offset = null, $lower = null, $upper = null)
     {
         $select = clone $this->select;
         $value = $this->getValueFiled();
-        if (!is_null($lower)) {
+        if ($lower !== null) {
             $select->where("${value} >= ?", $lower - self::DELTA);
         }
-        if (!is_null($upper)) {
+        if ($upper !== null) {
             $select->where("${value} < ?", $upper - self::DELTA);
         }
         $select->order("value ASC")
@@ -62,6 +64,7 @@ class Interval implements IntervalInterface
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function loadPrevious($data, $index, $lower = null)
     {
@@ -69,7 +72,7 @@ class Interval implements IntervalInterface
         $value = $this->getValueFiled();
         $select->columns(['count' => 'COUNT(*)'])
             ->where("${value} <  ?", $data - self::DELTA);
-        if (!is_null($lower)) {
+        if ($lower !== null) {
             $select->where("${value} >= ?", $lower - self::DELTA);
         }
         $offset = $this->select->getAdapter()
@@ -83,6 +86,7 @@ class Interval implements IntervalInterface
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function loadNext($data, $rightIndex, $upper = null)
     {
@@ -91,7 +95,7 @@ class Interval implements IntervalInterface
         $select->columns(['count' => 'COUNT(*)'])
             ->where("${value} > ?", $data + self::DELTA);
 
-        if (!is_null($upper)) {
+        if ($upper !== null) {
             $select->where("${value} < ? ", $data - self::DELTA);
         }
 
@@ -104,7 +108,7 @@ class Interval implements IntervalInterface
 
         $select = clone $this->select;
         $select->where("${value} >= ?", $data - self::DELTA);
-        if (!is_null($upper)) {
+        if ($upper !== null) {
             $select->where("${value} < ? ", $data - self::DELTA);
         }
         $select->order("${value} DESC")

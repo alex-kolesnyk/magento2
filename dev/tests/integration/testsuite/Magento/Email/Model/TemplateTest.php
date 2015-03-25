@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Email\Model;
 
@@ -33,7 +34,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
                 $objectManager->get('Magento\Framework\Model\Context'),
                 $objectManager->get('Magento\Framework\View\DesignInterface'),
                 $objectManager->get('Magento\Framework\Registry'),
-                $objectManager->get('Magento\Core\Model\App\Emulation'),
+                $objectManager->get('Magento\Store\Model\App\Emulation'),
                 $objectManager->get('Magento\Store\Model\StoreManager'),
                 $objectManager->create('Magento\Framework\Filesystem'),
                 $objectManager->create('Magento\Framework\View\Asset\Repository'),
@@ -88,7 +89,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      */
     public function testGetProcessedTemplate()
     {
@@ -136,7 +137,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      */
     public function testGetProcessedTemplateSubject()
     {
@@ -173,7 +174,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
             \Magento\Framework\App\Area::AREA_FRONTEND
         )->load();
         $this->assertStringEndsWith(
-            'static/frontend/Magento/blank/en_US/Magento_Email/logo_email.gif',
+            'static/frontend/Magento/blank/en_US/Magento_Email/logo_email.png',
             $this->_model->getDefaultEmailLogo()
         );
     }
@@ -184,7 +185,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDesignConfigException($config)
     {
-        // \Magento\Core\Model\Template is an abstract class
+        // \Magento\Email\Model\Template is an abstract class
         $model = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->create('Magento\Email\Model\Template');
         $model->setDesignConfig($config);

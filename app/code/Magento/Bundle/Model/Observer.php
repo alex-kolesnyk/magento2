@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model;
 
@@ -66,6 +67,8 @@ class Observer
      *
      * @param \Magento\Framework\Object $observer
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function appendUpsellProducts($observer)
     {
@@ -94,7 +97,7 @@ class Observer
         $resource = $this->_bundleSelection;
 
         $productIds = array_keys($collection->getItems());
-        if (!is_null($limit) && $limit <= count($productIds)) {
+        if ($limit !== null && $limit <= count($productIds)) {
             return $this;
         }
 
@@ -114,7 +117,7 @@ class Observer
             $this->_productVisibility->getVisibleInCatalogIds()
         );
 
-        if (!is_null($limit)) {
+        if ($limit !== null) {
             $bundleCollection->setPageSize($limit);
         }
         $bundleCollection->addFieldToFilter(

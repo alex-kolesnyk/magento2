@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Framework\Interception\Code\Generator;
 
 class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
@@ -79,7 +83,7 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getDefaultConstructorDefinition()
     {
-        $reflectionClass = new \ReflectionClass($this->_getSourceClassName());
+        $reflectionClass = new \ReflectionClass($this->getSourceClassName());
         $constructor = $reflectionClass->getConstructor();
         $parameters = [];
         if ($constructor) {
@@ -90,18 +94,8 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
 
         return [
             'name' => '__construct',
-            'parameters' => array_merge(
-                [
-                    ['name' => 'pluginLocator', 'type' => '\Magento\Framework\ObjectManagerInterface'],
-                    ['name' => 'pluginList', 'type' => '\Magento\Framework\Interception\PluginListInterface'],
-                    ['name' => 'chain', 'type' => '\Magento\Framework\Interception\ChainInterface'],
-                ],
-                $parameters
-            ),
-            'body' => "\$this->pluginLocator = \$pluginLocator;\n" .
-            "\$this->pluginList = \$pluginList;\n" .
-            "\$this->chain = \$chain;\n" .
-            "\$this->subjectType = get_parent_class(\$this);\n" .
+            'parameters' => $parameters,
+            'body' => "\$this->___init();\n" .
             (count(
                 $parameters
             ) ? "parent::__construct({$this->_getParameterList(
@@ -118,6 +112,17 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
     protected function _getClassMethods()
     {
         $methods = [$this->_getDefaultConstructorDefinition()];
+
+        $methods[] = [
+            'name' => '___init',
+            'body' => "\$this->pluginLocator = \\Magento\\Framework\\App\\ObjectManager::getInstance();\n" .
+                "\$this->pluginList = \$this->pluginLocator->get('Magento\\Framework\\Interception\\PluginListInterface');\n" .
+                "\$this->chain = \$this->pluginLocator->get('Magento\\Framework\\Interception\\ChainInterface');\n" .
+                "\$this->subjectType = get_parent_class(\$this);\n" .
+                "if (method_exists(\$this->subjectType, '___init')) {\n" .
+                "    parent::___init();\n" .
+                "}\n",
+        ];
 
         $methods[] = [
             'name' => '___callParent',
@@ -139,10 +144,7 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
 
         $methods[] = [
             'name' => '__wakeup',
-            'body' => "\$this->pluginLocator = \\Magento\\Framework\\App\\ObjectManager::getInstance();\n" .
-            "\$this->pluginList = \$this->pluginLocator->get('Magento\\Framework\\Interception\\PluginListInterface');\n" .
-            "\$this->chain = \$this->pluginLocator->get('Magento\\Framework\\Interception\\ChainInterface');\n" .
-            "\$this->subjectType = get_parent_class(\$this);\n",
+            'body' => "\$this->___init();\n",
         ];
 
         $methods[] = [
@@ -194,7 +196,7 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
             "return \$result;\n",
         ];
 
-        $reflectionClass = new \ReflectionClass($this->_getSourceClassName());
+        $reflectionClass = new \ReflectionClass($this->getSourceClassName());
         $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
         foreach ($publicMethods as $method) {
             if ($this->isInterceptedMethod($method)) {
@@ -276,7 +278,7 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _generateCode()
     {
-        $typeName = $this->_getFullyQualifiedClassName($this->_getSourceClassName());
+        $typeName = $this->getSourceClassName();
         $reflection = new \ReflectionClass($typeName);
 
         if ($reflection->isInterface()) {
@@ -295,7 +297,7 @@ class Interceptor extends \Magento\Framework\Code\Generator\EntityAbstract
         $result = parent::_validateData();
 
         if ($result) {
-            $sourceClassName = $this->_getSourceClassName();
+            $sourceClassName = $this->getSourceClassName();
             $resultClassName = $this->_getResultClassName();
 
             if ($resultClassName !== $sourceClassName . '\\Interceptor') {

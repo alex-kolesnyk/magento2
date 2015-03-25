@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Block\Cart;
 
@@ -82,7 +83,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link
      * Create link label based on cart item quantity
      *
      * @param int $count
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     protected function _createLabel($count)
     {

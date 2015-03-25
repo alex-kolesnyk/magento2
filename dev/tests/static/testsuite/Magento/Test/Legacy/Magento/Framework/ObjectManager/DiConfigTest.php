@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Legacy\Magento\Framework\ObjectManager;
 
@@ -8,10 +9,10 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testObsoleteDiFormat()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             [$this, 'assertObsoleteFormat'],
-            \Magento\Framework\Test\Utility\Files::init()->getDiConfigs(true)
+            \Magento\Framework\App\Utility\Files::init()->getDiConfigs(true)
         );
     }
 

@@ -1,11 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend;
 
+use Magento\Eav\Exception as EavException;
+
 /**
  * Entity/Attribute/Model - attribute backend abstract
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Backend\BackendInterface
 {
@@ -209,8 +213,9 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
      * Validate object
      *
      * @param \Magento\Framework\Object $object
-     * @throws \Magento\Eav\Exception
      * @return bool
+     * @throws EavException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function validate($object)
     {
@@ -218,7 +223,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
         $attrCode = $attribute->getAttributeCode();
         $value = $object->getData($attrCode);
         if ($attribute->getIsVisible() && $attribute->getIsRequired() && $attribute->isValueEmpty($value)) {
-            throw new \Magento\Eav\Exception(__('The value of attribute "%1" must be set', $attrCode));
+            throw new EavException(__('The value of attribute "%1" must be set', $attrCode));
         }
 
         if ($attribute->getIsUnique()
@@ -231,7 +236,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
         if ($attribute->getIsUnique()) {
             if (!$attribute->getEntity()->checkAttributeUniqueValue($attribute, $object)) {
                 $label = $attribute->getFrontend()->getLabel();
-                throw new \Magento\Eav\Exception(__('The value of attribute "%1" must be unique', $label));
+                throw new EavException(__('The value of attribute "%1" must be unique', $label));
             }
         }
 
@@ -243,6 +248,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
      *
      * @param \Magento\Framework\Object $object
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterLoad($object)
     {
@@ -270,6 +276,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
      *
      * @param \Magento\Framework\Object $object
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterSave($object)
     {
@@ -281,6 +288,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
      *
      * @param \Magento\Framework\Object $object
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function beforeDelete($object)
     {
@@ -292,6 +300,7 @@ abstract class AbstractBackend implements \Magento\Eav\Model\Entity\Attribute\Ba
      *
      * @param \Magento\Framework\Object $object
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function afterDelete($object)
     {

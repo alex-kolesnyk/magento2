@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model;
 
@@ -66,7 +67,8 @@ class StockManagement implements StockManagementInterface
      * @param string[] $items
      * @param int $websiteId
      * @return StockItemInterface[]
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function registerProductsSale($items, $websiteId = null)
     {
@@ -89,7 +91,7 @@ class StockManagement implements StockManagementInterface
                 && !$this->stockState->checkQty($productId, $orderedQty, $stockItem->getWebsiteId())
             ) {
                 $this->getResource()->commit();
-                throw new \Magento\Framework\Model\Exception(
+                throw new \Magento\Framework\Exception\LocalizedException(
                     __('Not all of your products are available in the requested quantity.')
                 );
             }

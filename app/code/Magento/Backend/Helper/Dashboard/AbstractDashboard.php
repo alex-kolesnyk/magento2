@@ -1,15 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Helper\Dashboard;
-
-use Magento\Core\Helper\Data as HelperData;
 
 /**
  * Adminhtml abstract  dashboard helper.
  */
-abstract class AbstractDashboard extends HelperData
+abstract class AbstractDashboard extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
      * Helper collection
@@ -30,7 +29,7 @@ abstract class AbstractDashboard extends HelperData
      */
     public function getCollection()
     {
-        if (is_null($this->_collection)) {
+        if ($this->_collection === null) {
             $this->_initCollection();
         }
         return $this->_collection;

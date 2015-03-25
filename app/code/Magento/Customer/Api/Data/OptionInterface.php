@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Api\Data;
@@ -27,6 +28,14 @@ interface OptionInterface
     public function getLabel();
 
     /**
+     * Set option label
+     *
+     * @param string $label
+     * @return $this
+     */
+    public function setLabel($label);
+
+    /**
      * Get option value
      *
      * @return string|null
@@ -34,9 +43,25 @@ interface OptionInterface
     public function getValue();
 
     /**
+     * Set option value
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setValue($value);
+
+    /**
      * Get nested options
      *
      * @return \Magento\Customer\Api\Data\OptionInterface[]|null
      */
     public function getOptions();
+
+    /**
+     * Set nested options
+     *
+     * @param \Magento\Customer\Api\Data\OptionInterface[] $options
+     * @return $this
+     */
+    public function setOptions(array $options = null);
 }

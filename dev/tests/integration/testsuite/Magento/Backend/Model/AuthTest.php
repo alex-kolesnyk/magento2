@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model;
+
+use Magento\Framework\Exception\AuthenticationException;
 
 /**
  * Test class for \Magento\Backend\Model\Auth.
@@ -27,7 +30,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Backend\Model\Auth\Exception
+     * @expectedException \Magento\Framework\Exception\AuthenticationException
      */
     public function testLoginFailed()
     {
@@ -47,7 +50,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
         try {
             $this->_model->setAuthStorage($incorrectStorage);
             $this->fail('Incorrect authentication storage setted.');
-        } catch (\Magento\Backend\Model\Auth\Exception $e) {
+        } catch (AuthenticationException $e) {
             // in case of exception - Auth works correct
             $this->assertNotEmpty($e->getMessage());
         }
@@ -80,7 +83,7 @@ class AuthTest extends \PHPUnit_Framework_TestCase
             \Magento\TestFramework\Bootstrap::ADMIN_PASSWORD
         );
         $this->assertNotEmpty($this->_model->getAuthStorage()->getData());
-        $cookie = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('\Magento\Framework\Stdlib\Cookie');
+        $cookie = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\Stdlib\Cookie');
         $cookie->set($this->_model->getAuthStorage()->getName(), 'session_id');
         $this->_model->logout();
         $this->assertEmpty($this->_model->getAuthStorage()->getData());

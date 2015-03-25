@@ -1,15 +1,16 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\OfflineShipping\Controller\Adminhtml\System\Config;
 
 use Magento\Framework\App\ResponseInterface;
-use Magento\Backend\Controller\Adminhtml\System\ConfigSectionChecker;
+use Magento\Config\Controller\Adminhtml\System\ConfigSectionChecker;
 use Magento\Framework\App\Filesystem\DirectoryList;
 
-class ExportTablerates extends \Magento\Backend\Controller\Adminhtml\System\AbstractConfig
+class ExportTablerates extends \Magento\Config\Controller\Adminhtml\System\AbstractConfig
 {
     /**
      * @var \Magento\Framework\App\Response\Http\FileFactory
@@ -23,14 +24,14 @@ class ExportTablerates extends \Magento\Backend\Controller\Adminhtml\System\Abst
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Backend\Model\Config\Structure $configStructure
-     * @param ConfigSectionChecker $sectionChecker
+     * @param \Magento\Config\Model\Config\Structure $configStructure
+     * @param \Magento\Config\Controller\Adminhtml\System\ConfigSectionChecker $sectionChecker
      * @param \Magento\Framework\App\Response\Http\FileFactory $fileFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Backend\Model\Config\Structure $configStructure,
+        \Magento\Config\Model\Config\Structure $configStructure,
         ConfigSectionChecker $sectionChecker,
         \Magento\Framework\App\Response\Http\FileFactory $fileFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager

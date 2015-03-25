@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Controller\Adminhtml\Downloadable\Product\Edit;
 
@@ -52,7 +53,7 @@ class Sample extends \Magento\Downloadable\Controller\Adminhtml\Downloadable\Pro
             }
             try {
                 $this->_processDownload($resource, $resourceType);
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError(__('Something went wrong while getting the requested content.'));
             }
         }

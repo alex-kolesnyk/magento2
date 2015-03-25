@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Controller\Adminhtml\Product;
 
@@ -14,7 +15,7 @@ class Post extends \Magento\Review\Controller\Adminhtml\Product
     {
         $productId = $this->getRequest()->getParam('product_id', false);
 
-        if ($data = $this->getRequest()->getPost()) {
+        if ($data = $this->getRequest()->getPostValue()) {
             /** @var \Magento\Store\Model\StoreManagerInterface $storeManagerInterface */
             $storeManager = $this->_objectManager->get('Magento\Store\Model\StoreManagerInterface');
             if ($storeManager->hasSingleStore()) {
@@ -58,7 +59,7 @@ class Post extends \Magento\Review\Controller\Adminhtml\Product
                 }
 
                 return;
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
                 $this->messageManager->addException($e, __('An error occurred while saving review.'));

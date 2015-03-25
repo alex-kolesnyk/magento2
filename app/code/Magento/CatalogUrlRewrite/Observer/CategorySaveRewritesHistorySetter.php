@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Observer;
 
@@ -17,7 +18,7 @@ class CategorySaveRewritesHistorySetter
     {
         /** @var Category $category */
         $category = $observer->getEvent()->getCategory();
-        $data = $observer->getEvent()->getRequest()->getPost();
+        $data = $observer->getEvent()->getRequest()->getPostValue();
 
         /**
          * Create Permanent Redirect for old URL key

@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Checkout\Test\Block\Cart;
 
-use Magento\Customer\Test\Fixture\AddressInjectable;
-use Mtf\Block\Form;
-use Mtf\Client\Element\Locator;
+use Magento\Customer\Test\Fixture\Address;
+use Magento\Mtf\Block\Form;
+use Magento\Mtf\Client\Locator;
 
 /**
  * Class Shipping
@@ -87,7 +88,7 @@ class Shipping extends Form
      */
     public function selectShippingMethod(array $shipping)
     {
-        $selector = sprintf($this->shippingMethod, $shipping['carrier'], $shipping['method']);
+        $selector = sprintf($this->shippingMethod, $shipping['shipping_service'], $shipping['shipping_method']);
         if (!$this->_rootElement->find($selector, Locator::SELECTOR_XPATH)->isVisible()) {
             $this->openEstimateShippingAndTax();
         }
@@ -98,10 +99,10 @@ class Shipping extends Form
     /**
      * Fill shipping and tax form
      *
-     * @param AddressInjectable $address
+     * @param Address $address
      * @return void
      */
-    public function fillEstimateShippingAndTax(AddressInjectable $address)
+    public function fillEstimateShippingAndTax(Address $address)
     {
         $this->openEstimateShippingAndTax();
         $this->fill($address);
@@ -124,6 +125,7 @@ class Shipping extends Form
             }
         );
         $selector = sprintf($this->shippingMethod, $carrier, $method);
+
         return $this->_rootElement->find($selector, Locator::SELECTOR_XPATH)->isVisible();
     }
 }

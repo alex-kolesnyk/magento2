@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -34,6 +35,25 @@
         <resources>
             <resource ref="Magento_Test1::resource1"/>
             <resource ref="Magento_Test1::resource2"/>
+        </resources>
+    </route>
+    <route method="GET" url="/V1/testmoduleMSC/:itemId">
+        <service class="Magento\TestModuleMSC\Api\AllSoapAndRestInterface" method="item" />
+        <resources>
+            <resource ref="Magento_TestModuleMSC::resource1" />
+        </resources>
+    </route>
+    <route method="POST" url="/V1/testmoduleMSC">
+        <service class="Magento\TestModuleMSC\Api\AllSoapAndRestInterface" method="create" />
+        <resources>
+            <resource ref="Magento_TestModuleMSC::resource3" />
+        </resources>
+    </route>
+    <route method="GET" url="/V2/testmoduleMSC/itemPreconfigured">
+        <service class="Magento\TestModuleMSC\Api\AllSoapAndRestInterface" method="getPreconfiguredItem" />
+        <resources>
+            <resource ref="Magento_TestModuleMSC::resource1" />
+            <resource ref="Magento_TestModuleMSC::resource2" />
         </resources>
     </route>
 </routes>

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element;
 
@@ -180,15 +181,20 @@ class Redirect extends Template
     {
         $html = '';
 
-        $html .= '<div class="page-title">';
-        $html .= '<h1>' . __('Redirecting...') . '</h1>';
+        $html .= '<div class="page-title-wrapper">';
+        $html .= '<h1>' . (string)new \Magento\Framework\Phrase('Redirecting...') . '</h1>';
         $html .= '</div>';
         if ($this->getMessage()) {
             $html .= '<p>' . $this->getMessage() . '</p>';
         }
         $html .= $this->getRedirectOutput();
         if (!$this->isHtmlFormRedirect()) {
-            $html .= '<p>' . __('Click <a href="%1">here</a> if nothing has happened', $this->getTargetURL()) . '</p>';
+            $html .= '<p>'
+                . (string)new \Magento\Framework\Phrase(
+                    'Click <a href="%1">here</a> if nothing has happened',
+                    [$this->getTargetURL()]
+                )
+                . '</p>';
         }
 
         return $html;

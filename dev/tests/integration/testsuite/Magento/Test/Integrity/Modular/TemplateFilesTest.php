@@ -1,19 +1,20 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Modular;
 
 use Magento\Customer\Model\Context;
 
 /**
- * @magentoAppIsolation
+ * @magentoAppIsolation enabled
  */
 class TemplateFilesTest extends \Magento\TestFramework\TestCase\AbstractIntegrity
 {
     public function testAllTemplates()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             function ($module, $template, $class, $area) {
                 \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
@@ -42,6 +43,7 @@ class TemplateFilesTest extends \Magento\TestFramework\TestCase\AbstractIntegrit
 
     /**
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function allTemplatesDataProvider()
     {
@@ -56,7 +58,7 @@ class TemplateFilesTest extends \Magento\TestFramework\TestCase\AbstractIntegrit
 
             $templates = [];
             $skippedBlocks = $this->_getBlocksToSkip();
-            foreach (\Magento\Framework\Test\Utility\Classes::collectModuleClasses('Block') as $blockClass => $module) {
+            foreach (\Magento\Framework\App\Utility\Classes::collectModuleClasses('Block') as $blockClass => $module) {
                 if (!in_array($module, $this->_getEnabledModules()) || in_array($blockClass, $skippedBlocks)) {
                     continue;
                 }
@@ -66,7 +68,7 @@ class TemplateFilesTest extends \Magento\TestFramework\TestCase\AbstractIntegrit
                 }
 
                 $area = 'frontend';
-                if ($module == 'Magento_Adminhtml' || strpos(
+                if ($module == 'Magento_Backend' || strpos(
                     $blockClass,
                     '\\Adminhtml\\'
                 ) || strpos(

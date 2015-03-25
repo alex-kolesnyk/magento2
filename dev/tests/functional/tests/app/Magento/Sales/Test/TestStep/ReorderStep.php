@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\TestStep;
 
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\TestStep\TestStepInterface;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\TestStep\TestStepInterface;
 
 /**
  * Class ReorderStep
@@ -17,17 +18,17 @@ class ReorderStep implements TestStepInterface
     /**
      * Order View Page
      *
-     * @var OrderView
+     * @var SalesOrderView
      */
-    protected $orderView;
+    protected $salesOrderView;
 
     /**
      * @construct
-     * @param OrderView $orderView
+     * @param SalesOrderView $salesOrderView
      */
-    public function __construct(OrderView $orderView)
+    public function __construct(SalesOrderView $salesOrderView)
     {
-        $this->orderView = $orderView;
+        $this->salesOrderView = $salesOrderView;
     }
 
     /**
@@ -37,6 +38,6 @@ class ReorderStep implements TestStepInterface
      */
     public function run()
     {
-        $this->orderView->getPageActions()->reorder();
+        $this->salesOrderView->getPageActions()->reorder();
     }
 }

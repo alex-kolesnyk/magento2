@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model\Stock;
 
@@ -15,6 +16,7 @@ use Magento\Framework\Exception\CouldNotSaveException;
 
 /**
  * Class StockStatusRepository
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class StockStatusRepository implements StockStatusRepositoryInterface
 {
@@ -74,7 +76,7 @@ class StockStatusRepository implements StockStatusRepositoryInterface
         try {
             $this->resource->save($stockStatus);
         } catch (\Exception $exception) {
-            throw new CouldNotSaveException($exception->getMessage());
+            throw new CouldNotSaveException(__($exception->getMessage()));
         }
         return $stockStatus;
     }
@@ -114,7 +116,7 @@ class StockStatusRepository implements StockStatusRepositoryInterface
         try {
             $this->resource->delete($stockStatus);
         } catch (\Exception $exception) {
-            throw new CouldNotDeleteException($exception->getMessage());
+            throw new CouldNotDeleteException(__($exception->getMessage()));
         }
         return true;
     }
@@ -130,7 +132,7 @@ class StockStatusRepository implements StockStatusRepositoryInterface
             $stockStatus = $this->get($id);
             $this->delete($stockStatus);
         } catch (\Exception $exception) {
-            throw new CouldNotDeleteException($exception->getMessage());
+            throw new CouldNotDeleteException(__($exception->getMessage()));
         }
         return true;
     }

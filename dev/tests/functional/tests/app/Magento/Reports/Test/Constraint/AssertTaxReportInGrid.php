@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
@@ -8,7 +9,7 @@ namespace Magento\Reports\Test\Constraint;
 use Magento\Reports\Test\Page\Adminhtml\SalesTaxReport;
 use Magento\Sales\Test\Fixture\OrderInjectable;
 use Magento\Tax\Test\Fixture\TaxRule;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertTaxReportInGrid
@@ -16,10 +17,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertTaxReportInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert sales info in report: Tax, Rate, Orders, Tax Amount on tax report page
      *

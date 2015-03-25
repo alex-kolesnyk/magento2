@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab;
 
@@ -20,7 +21,7 @@ class Actions extends \Magento\Backend\Block\Widget\Form\Generic implements
     protected $_ruleActions;
 
     /**
-     * @var \Magento\Backend\Model\Config\Source\Yesno
+     * @var \Magento\Config\Model\Config\Source\Yesno
      */
     protected $_sourceYesno;
 
@@ -28,7 +29,7 @@ class Actions extends \Magento\Backend\Block\Widget\Form\Generic implements
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Data\FormFactory $formFactory
-     * @param \Magento\Backend\Model\Config\Source\Yesno $sourceYesno
+     * @param \Magento\Config\Model\Config\Source\Yesno $sourceYesno
      * @param \Magento\Rule\Block\Actions $ruleActions
      * @param \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $rendererFieldset
      * @param array $data
@@ -37,7 +38,7 @@ class Actions extends \Magento\Backend\Block\Widget\Form\Generic implements
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Backend\Model\Config\Source\Yesno $sourceYesno,
+        \Magento\Config\Model\Config\Source\Yesno $sourceYesno,
         \Magento\Rule\Block\Actions $ruleActions,
         \Magento\Backend\Block\Widget\Form\Renderer\Fieldset $rendererFieldset,
         array $data = []
@@ -84,6 +85,7 @@ class Actions extends \Magento\Backend\Block\Widget\Form\Generic implements
      * Prepare form before rendering HTML
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareForm()
     {

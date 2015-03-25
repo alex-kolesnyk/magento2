@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Model\Resource;
 
@@ -26,31 +27,31 @@ class Rating extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $moduleManager;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Module\Manager $moduleManager
-     * @param \Magento\Review\Helper\Data $ratingData
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Review\Model\Resource\Review\Summary $reviewSummary
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Module\Manager $moduleManager,
-        \Magento\Review\Helper\Data $ratingData,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Review\Model\Resource\Review\Summary $reviewSummary
+        \Magento\Review\Model\Resource\Review\Summary $reviewSummary,
+        $resourcePrefix = null
     ) {
         $this->moduleManager = $moduleManager;
         $this->_storeManager = $storeManager;
         $this->_logger = $logger;
         $this->_reviewSummary = $reviewSummary;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -158,6 +159,7 @@ class Rating extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param \Magento\Framework\Model\AbstractModel|\Magento\Review\Model\Rating $object
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _afterSave(\Magento\Framework\Model\AbstractModel $object)
     {
@@ -197,7 +199,7 @@ class Rating extends \Magento\Framework\Model\Resource\Db\AbstractDb
                 }
                 $adapter->commit();
             } catch (\Exception $e) {
-                $this->_logger->logException($e);
+                $this->_logger->critical($e);
                 $adapter->rollBack();
             }
         }
@@ -233,7 +235,7 @@ class Rating extends \Magento\Framework\Model\Resource\Db\AbstractDb
 
                 $adapter->commit();
             } catch (\Exception $e) {
-                $this->_logger->logException($e);
+                $this->_logger->critical($e);
                 $adapter->rollBack();
             }
         }

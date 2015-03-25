@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block\Customer;
 
@@ -78,11 +79,11 @@ class View extends \Magento\Catalog\Block\Product\AbstractProduct
         $this->_voteFactory = $voteFactory;
         $this->_ratingFactory = $ratingFactory;
         $this->currentCustomer = $currentCustomer;
-
         parent::__construct(
             $context,
             $data
         );
+        $this->_isScopePrivate = true;
     }
 
     /**
@@ -195,17 +196,7 @@ class View extends \Magento\Catalog\Block\Product\AbstractProduct
      */
     public function dateFormat($date)
     {
-        return $this->formatDate($date, \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_LONG);
-    }
-
-    /**
-     * Check whether current customer is review owner
-     *
-     * @return bool
-     */
-    public function isReviewOwner()
-    {
-        return ($this->getReviewData()->getCustomerId() == $this->currentCustomer->getCustomerId());
+        return $this->formatDate($date, \IntlDateFormatter::LONG);
     }
 
     /**
@@ -225,5 +216,13 @@ class View extends \Magento\Catalog\Block\Product\AbstractProduct
             $this->_reviewFactory->create()->getEntitySummary($product, $this->_storeManager->getStore()->getId());
         }
         return parent::getReviewsSummaryHtml($product, $templateType, $displayIfNoReviews);
+    }
+
+    /**
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        return $this->currentCustomer->getCustomerId() ? parent::_toHtml() : '';
     }
 }

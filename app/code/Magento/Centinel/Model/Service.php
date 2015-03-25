@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Centinel\Model;
 
@@ -141,6 +142,7 @@ class Service extends \Magento\Framework\Object
      * @param float $amount
      * @param string $currencyCode
      * @return string
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _generateChecksum(
         $paymentMethodCode,
@@ -306,7 +308,7 @@ class Service extends \Magento\Framework\Object
      *
      * @param \Magento\Framework\Object $data
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function validate($data)
     {
@@ -329,12 +331,14 @@ class Service extends \Magento\Framework\Object
         // check whether is authenticated before placing order
         if ($this->getIsPlaceOrder()) {
             if ($validationState->getChecksum() != $newChecksum) {
-                throw new \Magento\Framework\Model\Exception(__('Payment information error. Please start over.'));
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Payment information error. Please start over.')
+                );
             }
             if ($validationState->isAuthenticateSuccessful()) {
                 return;
             }
-            throw new \Magento\Framework\Model\Exception(
+            throw new \Magento\Framework\Exception\LocalizedException(
                 __('Please verify the card with the issuer bank before placing the order.')
             );
         } else {
@@ -345,7 +349,9 @@ class Service extends \Magento\Framework\Object
             if ($validationState->isLookupSuccessful()) {
                 return;
             }
-            throw new \Magento\Framework\Model\Exception(__('This card has failed validation and cannot be used.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('This card has failed validation and cannot be used.')
+            );
         }
     }
 

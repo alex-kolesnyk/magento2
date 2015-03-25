@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab\View;
 
@@ -111,7 +112,7 @@ class Sales extends \Magento\Backend\Block\Template
         $this->_groupedCollection = [];
 
         foreach ($this->_collection as $sale) {
-            if (!is_null($sale->getStoreId())) {
+            if ($sale->getStoreId() !== null) {
                 $store = $this->_storeManager->getStore($sale->getStoreId());
                 $websiteId = $store->getWebsiteId();
                 $groupId = $store->getGroupId();

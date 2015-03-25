@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\OfflineShipping\Block\Adminhtml\Carrier\Tablerate;
 
@@ -86,7 +87,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     public function getWebsiteId()
     {
-        if (is_null($this->_websiteId)) {
+        if ($this->_websiteId === null) {
             $this->_websiteId = $this->_storeManager->getWebsite()->getId();
         }
         return $this->_websiteId;

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\Config;
 
@@ -10,7 +11,7 @@ namespace Magento\Tax\Model\Config;
 class Notification extends \Magento\Framework\App\Config\Value
 {
     /**
-     * @var \Magento\Core\Model\Resource\Config
+     * @var \Magento\Config\Model\Resource\Config
      */
     protected $resourceConfig;
 
@@ -18,7 +19,7 @@ class Notification extends \Magento\Framework\App\Config\Value
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
-     * @param \Magento\Core\Model\Resource\Config $resourceConfig
+     * @param \Magento\Config\Model\Resource\Config $resourceConfig
      * @param \Magento\Framework\Model\Resource\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\Db $resourceCollection
      * @param array $data
@@ -27,7 +28,7 @@ class Notification extends \Magento\Framework\App\Config\Value
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\Registry $registry,
         \Magento\Framework\App\Config\ScopeConfigInterface $config,
-        \Magento\Core\Model\Resource\Config $resourceConfig,
+        \Magento\Config\Model\Resource\Config $resourceConfig,
         \Magento\Framework\Model\Resource\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\Db $resourceCollection = null,
         array $data = []

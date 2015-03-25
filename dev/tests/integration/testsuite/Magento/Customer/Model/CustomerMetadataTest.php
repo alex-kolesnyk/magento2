@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Model;
@@ -46,18 +47,7 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
     public function testGetCustomAttributesMetadata()
     {
         $customAttributesMetadata = $this->_service->getCustomAttributesMetadata();
-        $this->assertCount(3, $customAttributesMetadata, "Invalid number of attributes returned.");
-        $configAttributeCode = 'customer_attribute_1';
-        $configAttributeFound = false;
-        foreach ($customAttributesMetadata as $attribute) {
-            if ($attribute->getAttributeCode() == $configAttributeCode) {
-                $configAttributeFound = true;
-                break;
-            }
-        }
-        if (!$configAttributeFound) {
-            $this->fail("Custom attribute declared in the config not found.");
-        }
+        $this->assertCount(1, $customAttributesMetadata, "Invalid number of attributes returned.");
     }
 
     public function testGetNestedOptionsCustomAttributesMetadata()
@@ -103,7 +93,7 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
         if (!$customAttributesFound) {
             $this->fail("Custom attributes declared in the config not found.");
         }
-        $this->assertCount(5, $customAttributesMetadata, "Invalid number of attributes returned.");
+        $this->assertCount(3, $customAttributesMetadata, "Invalid number of attributes returned.");
     }
 
     /**
@@ -119,7 +109,7 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
             'id' => 1,
             'website_id' => 1,
             'store_id' => 1,
-            'group_id' => '1',
+            'group_id' => 1,
             'firstname' => 'John',
             'lastname' => 'Smith',
             'email' => 'customer@example.com',
@@ -131,7 +121,11 @@ class CustomerMetadataTest extends \PHPUnit_Framework_TestCase
         $customer = $this->customerRepository->getById(1);
         $this->assertNotNull($customer);
 
-        $attributes = $this->_extensibleDataObjectConverter->toFlatArray($customer);
+        $attributes = $this->_extensibleDataObjectConverter->toFlatArray(
+            $customer,
+            [],
+            '\Magento\Customer\Api\Data\CustomerInterface'
+        );
         $this->assertNotEmpty($attributes);
 
         foreach ($attributes as $attributeCode => $attributeValue) {

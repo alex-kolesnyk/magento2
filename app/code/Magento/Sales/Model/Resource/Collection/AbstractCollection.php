@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Collection;
 
@@ -46,7 +47,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
      *
      * @param string|\Magento\Eav\Model\Entity\Attribute $attribute
      * @return string
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _attributeToField($attribute)
     {
@@ -57,7 +58,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
             $field = $attribute->getAttributeCode();
         }
         if (!$field) {
-            throw new \Magento\Framework\Model\Exception(__('We cannot determine the field name.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('We cannot determine the field name.'));
         }
         return $field;
     }
@@ -162,6 +163,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
      * @return $this
      *
      * @todo implement join functionality if necessary
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function joinAttribute($alias, $attribute, $bind, $filter = null, $joinType = 'inner', $storeId = null)
     {
@@ -179,6 +181,18 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
     }
 
     /**
+     * Set search criteria.
+     *
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    {
+        return $this;
+    }
+
+    /**
      * Get total count.
      *
      * @return int
@@ -186,5 +200,29 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
     public function getTotalCount()
     {
         return $this->getSize();
+    }
+
+    /**
+     * Set total count.
+     *
+     * @param int $totalCount
+     * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function setTotalCount($totalCount)
+    {
+        return $this;
+    }
+
+    /**
+     * Set items list.
+     *
+     * @param \Magento\Framework\Api\ExtensibleDataInterface[] $items
+     * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function setItems(array $items = null)
+    {
+        return $this;
     }
 }

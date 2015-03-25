@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -46,9 +47,9 @@ class Options extends \Magento\Framework\View\Element\Template
     protected $_jsonEncoder;
 
     /**
-     * @var \Magento\Core\Helper\Data
+     * @var \Magento\Framework\Pricing\Helper\Data
      */
-    protected $_coreData;
+    protected $pricingHelper;
 
     /**
      * @var \Magento\Catalog\Helper\Data
@@ -57,7 +58,7 @@ class Options extends \Magento\Framework\View\Element\Template
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Core\Helper\Data $coreData
+     * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
      * @param \Magento\Catalog\Helper\Data $catalogData
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
      * @param \Magento\Catalog\Model\Product\Option $option
@@ -67,7 +68,7 @@ class Options extends \Magento\Framework\View\Element\Template
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Core\Helper\Data $coreData,
+        \Magento\Framework\Pricing\Helper\Data $pricingHelper,
         \Magento\Catalog\Helper\Data $catalogData,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
         \Magento\Catalog\Model\Product\Option $option,
@@ -75,7 +76,7 @@ class Options extends \Magento\Framework\View\Element\Template
         \Magento\Framework\Stdlib\ArrayUtils $arrayUtils,
         array $data = []
     ) {
-        $this->_coreData = $coreData;
+        $this->pricingHelper = $pricingHelper;
         $this->_catalogData = $catalogData;
         $this->_jsonEncoder = $jsonEncoder;
         $this->_registry = $registry;
@@ -154,11 +155,11 @@ class Options extends \Magento\Framework\View\Element\Template
      */
     protected function _getPriceConfiguration($option)
     {
-        $optionPrice = $this->_coreData->currency($option->getPrice(true), false, false);
+        $optionPrice = $this->pricingHelper->currency($option->getPrice(true), false, false);
         $data = [
             'prices' => [
                 'oldPrice' => [
-                    'amount' => $this->_coreData->currency($option->getPrice(false), false, false),
+                    'amount' => $this->pricingHelper->currency($option->getPrice(false), false, false),
                     'adjustments' => [],
                 ],
                 'basePrice' => [

@@ -4,7 +4,8 @@
  *
  * Uses for encapsulate some logic of rule model and for having ability change behavior (for example, in controller)
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -50,7 +51,7 @@ class Job extends \Magento\Framework\Object
         try {
             $this->ruleProcessor->markIndexerAsInvalid();
             $this->setSuccess(__('Updated rules applied.'));
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->setError($e->getMessage());
         }
         return $this;

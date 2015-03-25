@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Model;
 
@@ -54,7 +55,7 @@ class Inbox extends \Magento\Framework\Model\AbstractModel implements NotifierIn
             MessageInterface::SEVERITY_NOTICE => __('notice'),
         ];
 
-        if (!is_null($severity)) {
+        if ($severity !== null) {
             if (isset($severities[$severity])) {
                 return $severities[$severity];
             }
@@ -106,13 +107,13 @@ class Inbox extends \Magento\Framework\Model\AbstractModel implements NotifierIn
      * @param string|string[] $description
      * @param string $url
      * @param bool $isInternal
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     public function add($severity, $title, $description, $url = '', $isInternal = true)
     {
         if (!$this->getSeverities($severity)) {
-            throw new \Magento\Framework\Model\Exception(__('Wrong message type'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Wrong message type'));
         }
         if (is_array($description)) {
             $description = '<ul><li>' . implode('</li><li>', $description) . '</li></ul>';

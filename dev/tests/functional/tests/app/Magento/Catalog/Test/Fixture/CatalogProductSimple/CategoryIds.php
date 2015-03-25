@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\Fixture\CatalogProductSimple;
 
-use Magento\Catalog\Test\Fixture\CatalogCategory;
-use Mtf\Fixture\FixtureFactory;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Catalog\Test\Fixture\Category;
+use Magento\Mtf\Fixture\FixtureFactory;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class CategoryIds
@@ -34,6 +35,8 @@ class CategoryIds implements FixtureInterface
      * @param FixtureFactory $fixtureFactory
      * @param array $params
      * @param array $data
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function __construct(
         FixtureFactory $fixtureFactory,
@@ -44,9 +47,9 @@ class CategoryIds implements FixtureInterface
 
         if (!empty($data['category'])
             && empty($data['presets'])
-            && $data['category'] instanceof CatalogCategory
+            && $data['category'] instanceof Category
         ) {
-            /** @var CatalogCategory $category */
+            /** @var Category $category */
             $category = $data['category'];
             if (!$category->hasData('id')) {
                 $category->persist();
@@ -56,10 +59,16 @@ class CategoryIds implements FixtureInterface
         } elseif (isset($data['presets'])) {
             $presets = explode(',', $data['presets']);
             foreach ($presets as $preset) {
-                $category = $fixtureFactory->createByCode('catalogCategory', ['dataSet' => $preset]);
-                $category->persist();
+                if (trim($preset) == '-') {
+                    $this->data[] = '';
+                    continue;
+                }
+                $category = $fixtureFactory->createByCode('category', ['dataSet' => $preset]);
+                if (!isset($data['new_category']) || $data['new_category'] !== 'yes') {
+                    $category->persist();
+                }
 
-                /** @var CatalogCategory $category */
+                /** @var Category $category */
                 $this->data[] = $category->getName();
                 $this->categories[] = $category;
             }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -165,8 +166,7 @@ class Stock extends \Magento\Framework\Data\Form\Element\Select
     {
         return "
             <script type='text/javascript'>
-                require(['jquery'], function(jQuery) {
-                    jQuery(function($) {
+                require(['jquery', 'prototype', 'domReady!'], function($) {
                         var qty = $('#{$quantityFieldId}'),
                             productType = $('#product_type_id').val(),
                             stockAvailabilityField = $('#{$inStockFieldId}'),
@@ -235,8 +235,7 @@ class Stock extends \Magento\Framework\Data\Form\Element\Select
                             filler.call($('#' + advancedTabField));
                         });
 
-                        $(window).load(disabler);
-                    });
+                        disabler();
                 })
             </script>
         ";

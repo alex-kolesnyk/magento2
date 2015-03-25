@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Config;
 
@@ -22,7 +23,7 @@ class ShareTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture Magento/Core/_files/second_third_store.php
+     * @magentoDataFixture Magento/Store/_files/core_second_third_fixturestore.php
      * @magentoConfigFixture current_store customer/account_share/scope 0
      */
     public function testGetSharedWebsiteIdsMultipleSites()

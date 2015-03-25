@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Resource\Product;
 
@@ -35,18 +36,20 @@ class Flat extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_storeManager;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Model\Config $catalogConfig
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Model\Config $catalogConfig
+        \Magento\Catalog\Model\Config $catalogConfig,
+        $resourcePrefix = null
     ) {
         $this->_storeManager = $storeManager;
         $this->_catalogConfig = $catalogConfig;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**

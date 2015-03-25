@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Multishipping\Block\Checkout;
 
 use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Sales\Model\Quote\Address;
+use Magento\Quote\Model\Quote\Address;
 
 /**
  * Mustishipping checkout shipping
@@ -88,7 +89,7 @@ class Shipping extends \Magento\Sales\Block\Items\AbstractItems
     public function getAddressCount()
     {
         $count = $this->getData('address_count');
-        if (is_null($count)) {
+        if ($count === null) {
             $count = count($this->getAddresses());
             $this->setData('address_count', $count);
         }

@@ -1,12 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Block\Form;
 
-use Mtf\Block\Form;
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Mtf\Block\Form;
+use Magento\Mtf\Client\Element\SimpleElement;
+use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Customer\Test\Fixture\Customer;
 
 /**
  * Customer account edit form.
@@ -45,12 +48,27 @@ class CustomerForm extends Form
     }
 
     /**
+     * Fill the customer data
+     *
+     * @param FixtureInterface $customer
+     * @param SimpleElement|null $element
+     * @return $this
+     */
+    public function fill(FixtureInterface $customer, SimpleElement $element = null)
+    {
+        /** @var Customer $customer */
+        if ($customer->hasData()) {
+            return parent::fill($customer, $element);
+        }
+    }
+
+    /**
      * Get all error validation messages for fields.
      *
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @return array
      */
-    public function getValidationMessages(CustomerInjectable $customer)
+    public function getValidationMessages(Customer $customer)
     {
         $messages = [];
         foreach (array_keys($customer->getData()) as $field) {

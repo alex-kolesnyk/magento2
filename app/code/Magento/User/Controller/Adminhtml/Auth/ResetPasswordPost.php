@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\User\Controller\Adminhtml\Auth;
 
@@ -44,7 +45,7 @@ class ResetPasswordPost extends \Magento\User\Controller\Adminhtml\Auth
             $this->getResponse()->setRedirect(
                 $this->_objectManager->get('Magento\Backend\Helper\Data')->getHomePageUrl()
             );
-        } catch (\Magento\Framework\Model\Exception $exception) {
+        } catch (\Magento\Framework\Validator\Exception $exception) {
             $this->messageManager->addMessages($exception->getMessages());
             $this->_redirect(
                 'adminhtml/auth/resetpassword',

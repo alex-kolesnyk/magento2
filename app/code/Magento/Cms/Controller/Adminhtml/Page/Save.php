@@ -1,14 +1,21 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Page;
 
 use Magento\Backend\App\Action;
+use Magento\Backend\Model\View\Result\RedirectFactory;
 
 class Save extends \Magento\Backend\App\Action
 {
+    /**
+     * @var RedirectFactory
+     */
+    protected $resultRedirectFactory;
+
     /**
      * @var PostDataProcessor
      */
@@ -17,10 +24,15 @@ class Save extends \Magento\Backend\App\Action
     /**
      * @param Action\Context $context
      * @param PostDataProcessor $dataProcessor
+     * @param RedirectFactory $resultRedirectFactory
      */
-    public function __construct(Action\Context $context, PostDataProcessor $dataProcessor)
-    {
+    public function __construct(
+        Action\Context $context,
+        PostDataProcessor $dataProcessor,
+        RedirectFactory $resultRedirectFactory
+    ) {
         $this->dataProcessor = $dataProcessor;
+        $this->resultRedirectFactory = $resultRedirectFactory;
         parent::__construct($context);
     }
 
@@ -35,11 +47,13 @@ class Save extends \Magento\Backend\App\Action
     /**
      * Save action
      *
-     * @return void
+     * @return \Magento\Framework\Controller\ResultInterface
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getPostValue();
+        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
             $data = $this->dataProcessor->filter($data);
             $model = $this->_objectManager->create('Magento\Cms\Model\Page');
@@ -57,8 +71,7 @@ class Save extends \Magento\Backend\App\Action
             );
 
             if (!$this->dataProcessor->validate($data)) {
-                $this->_redirect('*/*/edit', ['page_id' => $model->getId(), '_current' => true]);
-                return;
+                return $resultRedirect->setPath('*/*/edit', ['page_id' => $model->getId(), '_current' => true]);
             }
 
             try {
@@ -66,12 +79,10 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addSuccess(__('The page has been saved.'));
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('*/*/edit', ['page_id' => $model->getId(), '_current' => true]);
-                    return;
+                    return $resultRedirect->setPath('*/*/edit', ['page_id' => $model->getId(), '_current' => true]);
                 }
-                $this->_redirect('*/*/');
-                return;
-            } catch (\Magento\Framework\Model\Exception $e) {
+                return $resultRedirect->setPath('*/*/');
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
@@ -80,9 +91,8 @@ class Save extends \Magento\Backend\App\Action
             }
 
             $this->_getSession()->setFormData($data);
-            $this->_redirect('*/*/edit', ['page_id' => $this->getRequest()->getParam('page_id')]);
-            return;
+            return $resultRedirect->setPath('*/*/edit', ['page_id' => $this->getRequest()->getParam('page_id')]);
         }
-        $this->_redirect('*/*/');
+        return $resultRedirect->setPath('*/*/');
     }
 }

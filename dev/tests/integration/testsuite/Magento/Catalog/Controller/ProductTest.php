@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -8,8 +9,19 @@
  */
 namespace Magento\Catalog\Controller;
 
+/**
+ * @magentoAppIsolation enabled
+ */
 class ProductTest extends \Magento\TestFramework\TestCase\AbstractController
 {
+    protected function setUp()
+    {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped('Randomly fails due to known HHVM bug (DOMText mixed with DOMElement)');
+        }
+        parent::setUp();
+    }
+
     public function assert404NotFound()
     {
         parent::assert404NotFound();

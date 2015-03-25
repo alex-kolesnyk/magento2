@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Asset;
 
@@ -26,6 +27,27 @@ class Collection
     public function add($identifier, AssetInterface $asset)
     {
         $this->assets[$identifier] = $asset;
+    }
+
+    /**
+     * @param string $identifier
+     * @param AssetInterface $asset
+     * @param string $key
+     * @return void
+     */
+    public function insert($identifier, AssetInterface $asset, $key)
+    {
+        $result = [];
+        foreach ($this->assets as $assetKey => $assetVal) {
+            if ($assetKey == $key) {
+                $result[$key] = $assetVal;
+                $result[$identifier] = $asset;
+            } else {
+                $result[$assetKey] = $assetVal;
+            }
+        }
+
+        $this->assets = $result;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -138,7 +139,7 @@ class Switcher extends \Magento\Backend\Block\Template
         $collection = $this->_websiteFactory->create()->getResourceCollection();
 
         $websiteIds = $this->getWebsiteIds();
-        if (!is_null($websiteIds)) {
+        if ($websiteIds !== null) {
             $collection->addIdFilter($this->getWebsiteIds());
         }
 

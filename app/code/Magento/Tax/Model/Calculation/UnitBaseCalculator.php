@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\Calculation;
 
@@ -54,18 +55,18 @@ class UnitBaseCalculator extends AbstractCalculator
         $appliedRates = $this->calculationTool->getAppliedRates($taxRateRequest);
         $appliedTaxes = $this->getAppliedTaxes($rowTax, $rate, $appliedRates);
 
-        $this->taxDetailsItemBuilder->setCode($item->getCode());
-        $this->taxDetailsItemBuilder->setType($item->getType());
-        $this->taxDetailsItemBuilder->setRowTax($rowTax);
-        $this->taxDetailsItemBuilder->setPrice($price);
-        $this->taxDetailsItemBuilder->setPriceInclTax($priceInclTax);
-        $this->taxDetailsItemBuilder->setRowTotal($price * $quantity);
-        $this->taxDetailsItemBuilder->setRowTotalInclTax($priceInclTax * $quantity);
-        $this->taxDetailsItemBuilder->setDiscountTaxCompensationAmount($discountTaxCompensationAmount);
-        $this->taxDetailsItemBuilder->setAssociatedItemCode($item->getAssociatedItemCode());
-        $this->taxDetailsItemBuilder->setTaxPercent($rate);
-        $this->taxDetailsItemBuilder->setAppliedTaxes($appliedTaxes);
-        return $this->taxDetailsItemBuilder->create();
+        return $this->taxDetailsItemDataObjectFactory->create()
+            ->setCode($item->getCode())
+            ->setType($item->getType())
+            ->setRowTax($rowTax)
+            ->setPrice($price)
+            ->setPriceInclTax($priceInclTax)
+            ->setRowTotal($price * $quantity)
+            ->setRowTotalInclTax($priceInclTax * $quantity)
+            ->setDiscountTaxCompensationAmount($discountTaxCompensationAmount)
+            ->setAssociatedItemCode($item->getAssociatedItemCode())
+            ->setTaxPercent($rate)
+            ->setAppliedTaxes($appliedTaxes);
     }
 
     /**
@@ -121,17 +122,17 @@ class UnitBaseCalculator extends AbstractCalculator
         $rowTax = $unitTax * $quantity;
         $priceInclTax = $price + $unitTaxBeforeDiscount;
 
-        $this->taxDetailsItemBuilder->setCode($item->getCode());
-        $this->taxDetailsItemBuilder->setType($item->getType());
-        $this->taxDetailsItemBuilder->setRowTax($rowTax);
-        $this->taxDetailsItemBuilder->setPrice($price);
-        $this->taxDetailsItemBuilder->setPriceInclTax($priceInclTax);
-        $this->taxDetailsItemBuilder->setRowTotal($price * $quantity);
-        $this->taxDetailsItemBuilder->setRowTotalInclTax($priceInclTax * $quantity);
-        $this->taxDetailsItemBuilder->setDiscountTaxCompensationAmount($discountTaxCompensationAmount);
-        $this->taxDetailsItemBuilder->setAssociatedItemCode($item->getAssociatedItemCode());
-        $this->taxDetailsItemBuilder->setTaxPercent($rate);
-        $this->taxDetailsItemBuilder->setAppliedTaxes($appliedTaxes);
-        return $this->taxDetailsItemBuilder->create();
+        return $this->taxDetailsItemDataObjectFactory->create()
+            ->setCode($item->getCode())
+            ->setType($item->getType())
+            ->setRowTax($rowTax)
+            ->setPrice($price)
+            ->setPriceInclTax($priceInclTax)
+            ->setRowTotal($price * $quantity)
+            ->setRowTotalInclTax($priceInclTax * $quantity)
+            ->setDiscountTaxCompensationAmount($discountTaxCompensationAmount)
+            ->setAssociatedItemCode($item->getAssociatedItemCode())
+            ->setTaxPercent($rate)
+            ->setAppliedTaxes($appliedTaxes);
     }
 }

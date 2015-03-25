@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\App\Language;
 
@@ -46,7 +47,7 @@ class TranslationFilesTest extends TranslationFiles
 
         $optionResolverFactory = new \Magento\Tools\I18n\Dictionary\Options\ResolverFactory();
         $optionResolver = $optionResolverFactory->create(
-            \Magento\Framework\Test\Utility\Files::init()->getPathToSource(),
+            \Magento\Framework\App\Utility\Files::init()->getPathToSource(),
             true
         );
 
@@ -76,7 +77,7 @@ class TranslationFilesTest extends TranslationFiles
     protected function buildFilePath($phrase, $context)
     {
         $path = $this->getContext()->buildPathToLocaleDirectoryByContext($phrase->getContextType(), $context);
-        return \Magento\Framework\Test\Utility\Files::init()->getPathToSource() . '/'
+        return \Magento\Framework\App\Utility\Files::init()->getPathToSource() . '/'
         . $path . \Magento\Tools\I18n\Locale::DEFAULT_SYSTEM_LOCALE
         . '.' . \Magento\Tools\I18n\Pack\Writer\File\Csv::FILE_EXTENSION;
     }

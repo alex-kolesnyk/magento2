@@ -2,8 +2,12 @@
 /**
  * Update items statistics and remove the items which are not available in Google Content
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\GoogleShopping\Controller\Adminhtml\Googleshopping\Items;
 
 class Refresh extends \Magento\GoogleShopping\Controller\Adminhtml\Googleshopping\Items
@@ -55,7 +59,7 @@ class Refresh extends \Magento\GoogleShopping\Controller\Adminhtml\Googleshoppin
                     'One or more products were not deleted from google shopping account. Refer to the log file for details.'
                 )
             );
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             return;
         }
 

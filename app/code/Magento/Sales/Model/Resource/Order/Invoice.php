@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Order;
 
@@ -34,18 +35,20 @@ class Invoice extends SalesResource implements InvoiceResourceInterface
     }
 
     /**
-     * @param Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param Attribute $attribute
      * @param SalesIncrement $salesIncrement
      * @param InvoiceGrid $gridAggregator
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         Attribute $attribute,
         SalesIncrement $salesIncrement,
-        InvoiceGrid $gridAggregator
+        InvoiceGrid $gridAggregator,
+        $resourcePrefix = null
     ) {
-        parent::__construct($resource, $attribute, $salesIncrement, $gridAggregator);
+        parent::__construct($context, $attribute, $salesIncrement, $resourcePrefix, $gridAggregator);
     }
 
     /**

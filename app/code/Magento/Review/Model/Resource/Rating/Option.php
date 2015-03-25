@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Model\Resource\Rating;
 
@@ -78,21 +79,23 @@ class Option extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_ratingOptionVoteF;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Review\Model\Rating\Option\VoteFactory $ratingOptionVoteF
      * @param \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Review\Model\Rating\Option\VoteFactory $ratingOptionVoteF,
-        \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress
+        \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress,
+        $resourcePrefix = null
     ) {
         $this->_customerSession = $customerSession;
         $this->_ratingOptionVoteF = $ratingOptionVoteF;
         $this->_remoteAddress = $remoteAddress;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**

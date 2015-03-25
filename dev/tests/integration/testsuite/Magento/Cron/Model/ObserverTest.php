@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cron\Model;
+
+use \Magento\TestFramework\Helper\Bootstrap;
 
 class ObserverTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,8 +19,9 @@ class ObserverTest extends \PHPUnit_Framework_TestCase
         \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\App\AreaList')
             ->getArea('crontab')
             ->load(\Magento\Framework\App\Area::PART_CONFIG);
-        $this->_model = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
-            ->create('Magento\Cron\Model\Observer');
+        $request = Bootstrap::getObjectManager()->create('Magento\Framework\App\Console\Request');
+        $request->setParams(['group' => 'default', 'standaloneProcessStarted' => '0']);
+        $this->_model = Bootstrap::getObjectManager()->create('Magento\Cron\Model\Observer', ['request' => $request]);
         $this->_model->dispatch('this argument is not used');
     }
 

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Options\Type;
 
@@ -21,7 +22,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
             'select'
         );
         $html = $block->getPriceTypeSelectHtml();
-        $this->assertContains('select_${select_id}', $html);
-        $this->assertContains('[${select_id}]', $html);
+        $this->assertContains('select_<%- data.select_id %>', $html);
+        $this->assertContains('[<%- data.select_id %>]', $html);
     }
 }

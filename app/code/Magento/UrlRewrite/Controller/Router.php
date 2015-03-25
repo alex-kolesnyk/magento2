@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Controller;
 
@@ -84,6 +85,7 @@ class Router implements \Magento\Framework\App\RouterInterface
             return $this->processRedirect($request, $rewrite);
         }
 
+        $request->setAlias(\Magento\Framework\UrlInterface::REWRITE_REQUEST_PATH_ALIAS, $rewrite->getRequestPath());
         $request->setPathInfo('/' . $rewrite->getTargetPath());
         return $this->actionFactory->create('Magento\Framework\App\Action\Forward', ['request' => $request]);
     }

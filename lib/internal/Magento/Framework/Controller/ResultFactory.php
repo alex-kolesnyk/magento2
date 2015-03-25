@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Controller;
@@ -29,7 +30,7 @@ class ResultFactory
      * @var array
      */
     protected $typeMap = [
-        self::TYPE_JSON     => 'Magento\Framework\Controller\Result\JSON',
+        self::TYPE_JSON     => 'Magento\Framework\Controller\Result\Json',
         self::TYPE_RAW      => 'Magento\Framework\Controller\Result\Raw',
         self::TYPE_REDIRECT => 'Magento\Framework\Controller\Result\Redirect',
         self::TYPE_FORWARD  => 'Magento\Framework\Controller\Result\Forward',

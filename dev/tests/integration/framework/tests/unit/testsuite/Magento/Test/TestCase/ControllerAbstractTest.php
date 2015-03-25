@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\TestCase;
 
@@ -18,9 +19,9 @@ class ControllerAbstractTest extends \Magento\TestFramework\TestCase\AbstractCon
     {
         $this->messageManager = $this->getMock('\Magento\Framework\Message\Manager', [], [], '', false);
         $request = new \Magento\TestFramework\Request(
-            $this->getMock('Magento\Framework\App\Route\ConfigInterface\Proxy', [], [], '', false),
-            $this->getMock('Magento\Framework\App\Request\PathInfoProcessorInterface', [], [], '', false),
             $this->getMock('Magento\Framework\Stdlib\Cookie\CookieReaderInterface'),
+            $this->getMock('Magento\Framework\App\Route\ConfigInterface\Proxy', [], [], '', false),
+            $this->getMock('Magento\Framework\App\Request\PathInfoProcessorInterface'),
             $this->getMock('Magento\Framework\ObjectManagerInterface')
         );
         $response = new \Magento\TestFramework\Response(
@@ -119,7 +120,7 @@ class ControllerAbstractTest extends \Magento\TestFramework\TestCase\AbstractCon
          * which requires fully initialized application environment intentionally not available
          * for unit tests
          */
-        $setRedirectMethod = new \ReflectionMethod('Zend_Controller_Response_Http', 'setRedirect');
+        $setRedirectMethod = new \ReflectionMethod('Magento\Framework\App\Response\Http', 'setRedirect');
         $setRedirectMethod->invoke($this->getResponse(), 'http://magentocommerce.com');
         $this->assertRedirect();
         $this->assertRedirect($this->equalTo('http://magentocommerce.com'));

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Api;
 
@@ -39,7 +40,7 @@ interface StockStateInterface
      * @param int $productId
      * @param float $qty
      * @param int $websiteId
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return bool
      */
     public function checkQty($productId, $qty, $websiteId = null);

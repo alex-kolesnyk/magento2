@@ -1,15 +1,26 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
 
+use Magento\Framework\Api\AbstractSimpleObject;
+
 /**
  * Filter which can be used by any methods from service layer.
+ * @codeCoverageIgnore
  */
-class Filter extends AbstractExtensibleObject
+class Filter extends AbstractSimpleObject
 {
+    /**#@+
+     * Constants for Data Object keys
+     */
+    const KEY_FIELD = 'field';
+    const KEY_VALUE = 'value';
+    const KEY_CONDITION_TYPE = 'condition_type';
+
     /**
      * Get field
      *
@@ -17,7 +28,18 @@ class Filter extends AbstractExtensibleObject
      */
     public function getField()
     {
-        return $this->_get('field');
+        return $this->_get(self::KEY_FIELD);
+    }
+
+    /**
+     * Set field
+     *
+     * @param string $field
+     * @return $this
+     */
+    public function setField($field)
+    {
+        return $this->setData(self::KEY_FIELD, $field);
     }
 
     /**
@@ -27,7 +49,18 @@ class Filter extends AbstractExtensibleObject
      */
     public function getValue()
     {
-        return $this->_get('value');
+        return $this->_get(self::KEY_VALUE);
+    }
+
+    /**
+     * Set value
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        return $this->setData(self::KEY_VALUE, $value);
     }
 
     /**
@@ -37,6 +70,17 @@ class Filter extends AbstractExtensibleObject
      */
     public function getConditionType()
     {
-        return $this->_get('condition_type');
+        return $this->_get(self::KEY_CONDITION_TYPE);
+    }
+
+    /**
+     * Set condition type
+     *
+     * @param string $conditionType
+     * @return $this
+     */
+    public function setConditionType($conditionType)
+    {
+        return $this->setData(self::KEY_CONDITION_TYPE, $conditionType);
     }
 }

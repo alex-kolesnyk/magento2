@@ -1,10 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Ups\Model;
 
-use Magento\Sales\Model\Quote\Address\RateRequest;
+use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Shipping\Model\Carrier\AbstractCarrierOnline;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\Result;
@@ -13,6 +17,8 @@ use Magento\Ups\Helper\Config;
 
 /**
  * UPS shipping implementation
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Carrier extends AbstractCarrierOnline implements CarrierInterface
 {
@@ -105,7 +111,7 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
     protected $_localeFormat;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -116,11 +122,11 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
 
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Sales\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
-     * @param \Magento\Framework\Logger\AdapterFactory $logAdapterFactory
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory
      * @param \Magento\Shipping\Model\Rate\ResultFactory $rateFactory
-     * @param \Magento\Sales\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
+     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
      * @param \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory
      * @param \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory
      * @param \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory
@@ -129,7 +135,6 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
      * @param \Magento\Directory\Model\CurrencyFactory $currencyFactory
      * @param \Magento\Directory\Helper\Data $directoryData
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
-     * @param \Magento\Framework\Logger $logger
      * @param \Magento\Framework\Locale\FormatInterface $localeFormat
      * @param Config $configHelper
      * @param array $data
@@ -138,11 +143,11 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Sales\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-        \Magento\Framework\Logger\AdapterFactory $logAdapterFactory,
+        \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Shipping\Model\Simplexml\ElementFactory $xmlElFactory,
         \Magento\Shipping\Model\Rate\ResultFactory $rateFactory,
-        \Magento\Sales\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
+        \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
         \Magento\Shipping\Model\Tracking\ResultFactory $trackFactory,
         \Magento\Shipping\Model\Tracking\Result\ErrorFactory $trackErrorFactory,
         \Magento\Shipping\Model\Tracking\Result\StatusFactory $trackStatusFactory,
@@ -151,18 +156,16 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
         \Magento\Directory\Model\CurrencyFactory $currencyFactory,
         \Magento\Directory\Helper\Data $directoryData,
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
-        \Magento\Framework\Logger $logger,
         \Magento\Framework\Locale\FormatInterface $localeFormat,
         Config $configHelper,
         array $data = []
     ) {
-        $this->_logger = $logger;
         $this->_localeFormat = $localeFormat;
         $this->configHelper = $configHelper;
         parent::__construct(
             $scopeConfig,
             $rateErrorFactory,
-            $logAdapterFactory,
+            $logger,
             $xmlElFactory,
             $rateFactory,
             $rateMethodFactory,
@@ -203,6 +206,9 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
      *
      * @param RateRequest $request
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function setRequest(RateRequest $request)
     {
@@ -494,6 +500,7 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
      *
      * @param string $response
      * @return Result
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _parseCgiResponse($response)
     {
@@ -518,7 +525,7 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
                         $message = __(
                             'Sorry, something went wrong. Please try again or contact us and we\'ll try to help.'
                         );
-                        $this->_logger->log($message . ': ' . $errorTitle);
+                        $this->_logger->debug($message . ': ' . $errorTitle);
                         break;
                     case 6:
                         if (in_array($row[3], $allowedMethods)) {
@@ -563,6 +570,9 @@ class Carrier extends AbstractCarrierOnline implements CarrierInterface
      * Get xml rates
      *
      * @return Result
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _getXmlQuotes()
     {
@@ -750,6 +760,7 @@ XMLRequest;
      *
      * @param mixed $xmlResponse
      * @return Result
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _parseXmlResponse($xmlResponse)
     {
@@ -975,6 +986,8 @@ XMLAuth;
      * @param string $trackingValue
      * @param string $xmlResponse
      * @return null
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _parseXmlTrackingResponse($trackingValue, $xmlResponse)
     {
@@ -1136,6 +1149,9 @@ XMLAuth;
      *
      * @param \Magento\Framework\Object $request
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _formShipmentRequest(\Magento\Framework\Object $request)
     {
@@ -1508,6 +1524,7 @@ XMLAuth;
      *
      * @param \Magento\Framework\Object|null $params
      * @return array|bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getContainerTypes(\Magento\Framework\Object $params = null)
     {

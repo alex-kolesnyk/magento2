@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Dynamic\Algorithm;
 
+use Magento\Framework\Search\Adapter\OptionsInterface;
 use Magento\Framework\Search\Dynamic\Algorithm;
 use Magento\Framework\Search\Dynamic\DataProviderInterface;
 use Magento\Framework\Search\Request\BucketInterface;
@@ -21,15 +23,23 @@ class Improved implements AlgorithmInterface
     private $dataProvider;
 
     /**
+     * @var OptionsInterface
+     */
+    private $options;
+
+    /**
      * @param DataProviderInterface $dataProvider
      * @param Algorithm $algorithm
+     * @param OptionsInterface $options
      */
     public function __construct(
         DataProviderInterface $dataProvider,
-        Algorithm $algorithm
+        Algorithm $algorithm,
+        OptionsInterface $options
     ) {
         $this->algorithm = $algorithm;
         $this->dataProvider = $dataProvider;
+        $this->options = $options;
     }
 
     /**
@@ -39,7 +49,7 @@ class Improved implements AlgorithmInterface
     {
         $aggregations = $this->dataProvider->getAggregations($entityIds);
 
-        $options = $this->dataProvider->getOptions();
+        $options = $this->options->get();
         if ($aggregations['count'] < $options['interval_division_limit']) {
             return [];
         }
@@ -64,6 +74,7 @@ class Improved implements AlgorithmInterface
                 $data[$key]['to'] = $data[$key + 1]['from'];
             }
         }
+
         return $data;
     }
 }

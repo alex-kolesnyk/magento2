@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Resource\Product\Option;
 
@@ -35,21 +36,23 @@ class Value extends \Magento\Framework\Model\Resource\Db\AbstractDb
     /**
      * Class constructor
      *
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Directory\Model\CurrencyFactory $currencyFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $config
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Directory\Model\CurrencyFactory $currencyFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $config
+        \Magento\Framework\App\Config\ScopeConfigInterface $config,
+        $resourcePrefix = null
     ) {
         $this->_currencyFactory = $currencyFactory;
         $this->_storeManager = $storeManager;
         $this->_config = $config;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -82,6 +85,8 @@ class Value extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param \Magento\Framework\Model\AbstractModel $object
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _saveValuePrices(\Magento\Framework\Model\AbstractModel $object)
     {
@@ -208,6 +213,7 @@ class Value extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param \Magento\Framework\Model\AbstractModel $object
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _saveValueTitles(\Magento\Framework\Model\AbstractModel $object)
     {

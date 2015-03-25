@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Message;
 
@@ -46,7 +47,7 @@ abstract class AbstractMessage implements MessageInterface
      */
     public function getText()
     {
-        return $this->text;
+        return (string)$this->text;
     }
 
     /**
@@ -99,6 +100,7 @@ abstract class AbstractMessage implements MessageInterface
      * Getter for flag. Whether message is sticky
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsSticky()
     {

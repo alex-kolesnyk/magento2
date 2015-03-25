@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework;
+
+use Zend\Stdlib\Parameters;
 
 class UrlTest extends \PHPUnit_Framework_TestCase
 {
@@ -415,10 +418,10 @@ class UrlTest extends \PHPUnit_Framework_TestCase
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
         /** @var $request \Magento\TestFramework\Request */
         $request = $objectManager->get('Magento\Framework\App\RequestInterface');
-        $request->setServer(['HTTP_REFERER' => 'http://localhost/']);
+        $request->setServer(new Parameters(['HTTP_REFERER' => 'http://localhost/']));
         $this->assertTrue($this->_model->isOwnOriginUrl());
 
-        $request->setServer(['HTTP_REFERER' => 'http://example.com/']);
+        $request->setServer(new Parameters(['HTTP_REFERER' => 'http://example.com/']));
         $this->assertFalse($this->_model->isOwnOriginUrl());
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Model;
 
@@ -127,7 +128,7 @@ class Page extends \Magento\Framework\Model\AbstractModel implements IdentityInt
      */
     public function load($id, $field = null)
     {
-        if (is_null($id)) {
+        if ($id === null) {
             return $this->noRoutePage();
         }
         return parent::load($id, $field);

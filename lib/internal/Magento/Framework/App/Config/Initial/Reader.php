@@ -2,7 +2,8 @@
 /**
  * Default configuration data reader. Reads configuration data from storage
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Config\Initial;
 
@@ -98,7 +99,7 @@ class Reader
         $domDocument = null;
         foreach ($fileList as $file) {
             try {
-                if (is_null($domDocument)) {
+                if ($domDocument === null) {
                     $class = $this->_domDocumentClass;
                     $domDocument = new $class($file, [], null, $this->_schemaFile);
                 } else {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Constraint;
@@ -8,24 +9,19 @@ namespace Magento\Sales\Test\Constraint;
 use Magento\Sales\Test\Fixture\OrderInjectable;
 use Magento\Sales\Test\Page\CreditMemoView;
 use Magento\Sales\Test\Page\OrderHistory;
-use Magento\Sales\Test\Page\OrderView;
+use Magento\Sales\Test\Page\CustomerOrderView;
 
 /**
- * Class AssertRefundedGrandTotalOnFrontend
  * Assert that refunded grand total is equal to data from fixture on My Account page
  */
 class AssertRefundedGrandTotalOnFrontend extends AbstractAssertOrderOnFrontend
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that refunded grand total is equal to data from fixture on My Account page
      *
      * @param OrderHistory $orderHistory
      * @param OrderInjectable $order
-     * @param OrderView $orderView
+     * @param CustomerOrderView $customerOrderView
      * @param CreditMemoView $creditMemoView
      * @param array $ids
      * @return void
@@ -33,13 +29,13 @@ class AssertRefundedGrandTotalOnFrontend extends AbstractAssertOrderOnFrontend
     public function processAssert(
         OrderHistory $orderHistory,
         OrderInjectable $order,
-        OrderView $orderView,
+        CustomerOrderView $customerOrderView,
         CreditMemoView $creditMemoView,
         array $ids
     ) {
         $this->loginCustomerAndOpenOrderPage($order->getDataFieldConfig('customer_id')['source']->getCustomer());
         $orderHistory->getOrderHistoryBlock()->openOrderById($order->getId());
-        $orderView->getOrderViewBlock()->openLinkByName('Refunds');
+        $customerOrderView->getOrderViewBlock()->openLinkByName('Refunds');
         foreach ($ids['creditMemoIds'] as $key => $creditMemoId) {
             \PHPUnit_Framework_Assert::assertEquals(
                 number_format($order->getPrice()[$key]['grand_creditmemo_total'], 2),

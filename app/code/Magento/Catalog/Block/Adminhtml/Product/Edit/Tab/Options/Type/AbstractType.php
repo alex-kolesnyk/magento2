@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -48,14 +49,17 @@ class AbstractType extends \Magento\Backend\Block\Widget
                 $this->getNameInLayout() . '.option_price_type',
                 $this->getNameInLayout()
             )->setData(
-                ['id' => 'product_option_${option_id}_price_type', 'class' => 'select product-option-price-type']
+                [
+                    'id' => 'product_option_<%- data.option_id %>_price_type',
+                    'class' => 'select product-option-price-type',
+                ]
             )
         );
 
         $this->getChildBlock(
             'option_price_type'
         )->setName(
-            'product[options][${option_id}][price_type]'
+            'product[options][<%- data.option_id %>][price_type]'
         )->setOptions(
             $this->_optionPrice->toOptionArray()
         );

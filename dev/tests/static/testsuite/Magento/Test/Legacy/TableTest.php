@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -12,7 +13,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 {
     public function testTableName()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $filePath
@@ -31,7 +32,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
                 $message = $this->_composeFoundsMessage($legacyTables);
                 $this->assertEmpty($message, $message);
             },
-            \Magento\Framework\Test\Utility\Files::init()->getPhpFiles()
+            \Magento\Framework\App\Utility\Files::init()->getPhpFiles()
         );
     }
 

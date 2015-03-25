@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -15,7 +16,7 @@ abstract class AbstractAdapter extends \Zend_Translate_Adapter implements Adapte
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @param mixed $data
-     * @param string|\Zend_Locale $locale
+     * @param string $locale
      * @param array $options (optional)
      * @return array
      */
@@ -44,7 +45,7 @@ abstract class AbstractAdapter extends \Zend_Translate_Adapter implements Adapte
      * Stub for setLocale functionality
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @param string|\Zend_Locale $locale
+     * @param string $locale
      * @return $this
      */
     public function setLocale($locale)

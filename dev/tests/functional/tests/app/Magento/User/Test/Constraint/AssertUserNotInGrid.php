@@ -1,23 +1,20 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\User\Test\Constraint;
 
 use Magento\User\Test\Fixture\User;
 use Magento\User\Test\Page\Adminhtml\UserIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertUserNotInGrid
  */
 class AssertUserNotInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Asserts that User is not present in User Grid.
      *

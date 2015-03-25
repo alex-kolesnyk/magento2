@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Store\Model\Resolver;
 
@@ -31,5 +32,15 @@ class Store implements \Magento\Framework\App\ScopeResolverInterface
         }
 
         return $scope;
+    }
+
+    /**
+     * Retrieve a list of available stores
+     *
+     * @return \Magento\Store\Model\Store[]
+     */
+    public function getScopes()
+    {
+        return $this->_storeManager->getStores();
     }
 }

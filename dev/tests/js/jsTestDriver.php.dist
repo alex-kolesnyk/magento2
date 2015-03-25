@@ -3,7 +3,8 @@
  * Returns an array containing the configuration used to generate the JsTestDriver configuration
  * file that gets used by JsTestDriver when it executes the Javascript unit tests.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  *
  * @return array
  */
@@ -13,7 +14,6 @@ return array(
         '/dev/tests/js/framework',
         '/lib/web/mage/webapi.js',
         '/lib/web/mage/validation/validation.js',
-        '/lib/web/jquery/jquery.tmpl.min.js',
         '/app/code/Magento/DesignEditor/view/adminhtml/web/js/infinitescroll.js',
         '/lib/web/jquery/jstree/jquery.jstree.js',
         '/lib/web/jquery/jquery-ui-timepicker-addon.js',

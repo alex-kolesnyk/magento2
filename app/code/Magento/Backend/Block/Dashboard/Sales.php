@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Dashboard;
 
@@ -70,6 +71,6 @@ class Sales extends \Magento\Backend\Block\Dashboard\Bar
         $sales = $collection->getFirstItem();
 
         $this->addTotal(__('Lifetime Sales'), $sales->getLifetime());
-        $this->addTotal(__('Average Orders'), $sales->getAverage());
+        $this->addTotal(__('Average Order'), $sales->getAverage());
     }
 }

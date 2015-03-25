@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -36,6 +37,8 @@ class Store extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
      * Render HTML of the element
      *
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getHtml()
     {
@@ -112,7 +115,7 @@ class Store extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
     public function getCondition()
     {
         $value = $this->getValue();
-        if (is_null($value) || $value == self::ALL_STORE_VIEWS) {
+        if ($value === null || $value == self::ALL_STORE_VIEWS) {
             return null;
         }
         if ($value == '_deleted_') {

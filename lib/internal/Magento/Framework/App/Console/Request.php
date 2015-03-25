@@ -2,7 +2,8 @@
 /**
  * Console request
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Console;
 
@@ -18,18 +19,13 @@ class Request implements \Magento\Framework\App\RequestInterface
      */
     public function __construct(array $parameters = [])
     {
-        $this->setParam($parameters);
-    }
-
-    /**
-     * Initialize console parameters
-     *
-     * @param array $parameters
-     * @return void
-     */
-    public function setParam($parameters)
-    {
-        $this->params = getopt(null, $parameters);
+        $data = getopt(null, $parameters);
+        // It can happen that request comes from http, but it runs the console (e.g. pub/cron.php)
+        if ($data) {
+            $this->setParams($data);
+        } else {
+            $this->setParams([]);
+        }
     }
 
     /**
@@ -47,6 +43,7 @@ class Request implements \Magento\Framework\App\RequestInterface
      *
      * @param string $name
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setModuleName($name)
     {
@@ -67,6 +64,7 @@ class Request implements \Magento\Framework\App\RequestInterface
      *
      * @param string $name
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setActionName($name)
     {
@@ -88,13 +86,46 @@ class Request implements \Magento\Framework\App\RequestInterface
     }
 
     /**
+     * Retrieve all params as array
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
+     * Set params from key value array
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function setParams(array $data)
+    {
+        $this->params = $data;
+        return $this;
+    }
+
+    /**
      * Stub to satisfy RequestInterface
      *
      * @param null|string $name
      * @param null|string $default
      * @return null|string|void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getCookie($name, $default)
     {
+    }
+
+    /**
+     * Stub to satisfy RequestInterface
+     *
+     * @return bool
+     */
+    public function isSecure()
+    {
+        return false;
     }
 }

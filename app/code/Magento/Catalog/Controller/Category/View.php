@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Category;
 
@@ -10,6 +11,9 @@ use Magento\Catalog\Model\Layer\Resolver;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Result\PageFactory;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class View extends \Magento\Framework\App\Action\Action
 {
     /**
@@ -49,6 +53,16 @@ class View extends \Magento\Framework\App\Action\Action
     protected $resultPageFactory;
 
     /**
+     * @var \Magento\Framework\Controller\Result\ForwardFactory
+     */
+    protected $resultForwardFactory;
+
+    /**
+     * @var \Magento\Framework\Controller\Result\RedirectFactory
+     */
+    protected $resultRedirectFactory;
+
+    /**
      * Catalog Layer Resolver
      *
      * @var Resolver
@@ -69,9 +83,12 @@ class View extends \Magento\Framework\App\Action\Action
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator $categoryUrlPathGenerator
-     * @param Resolver $layerResolver
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     * @param Resolver $layerResolver
      * @param CategoryRepositoryInterface $categoryRepository
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -81,6 +98,8 @@ class View extends \Magento\Framework\App\Action\Action
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\CatalogUrlRewrite\Model\CategoryUrlPathGenerator $categoryUrlPathGenerator,
         PageFactory $resultPageFactory,
+        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
+        \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
         Resolver $layerResolver,
         CategoryRepositoryInterface $categoryRepository
     ) {
@@ -91,6 +110,8 @@ class View extends \Magento\Framework\App\Action\Action
         $this->_coreRegistry = $coreRegistry;
         $this->categoryUrlPathGenerator = $categoryUrlPathGenerator;
         $this->resultPageFactory = $resultPageFactory;
+        $this->resultForwardFactory = $resultForwardFactory;
+        $this->resultRedirectFactory = $resultRedirectFactory;
         $this->layerResolver = $layerResolver;
         $this->categoryRepository = $categoryRepository;
     }
@@ -122,8 +143,8 @@ class View extends \Magento\Framework\App\Action\Action
                 'catalog_controller_category_init_after',
                 ['category' => $category, 'controller_action' => $this]
             );
-        } catch (\Magento\Framework\Model\Exception $e) {
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             return false;
         }
 
@@ -133,13 +154,14 @@ class View extends \Magento\Framework\App\Action\Action
     /**
      * Category view action
      *
-     * @return \Magento\Framework\View\Result\Page
+     * @return \Magento\Framework\Controller\ResultInterface
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {
         if ($this->_request->getParam(\Magento\Framework\App\Action\Action::PARAM_NAME_URL_ENCODED)) {
-            $this->getResponse()->setRedirect($this->_redirect->getRedirectUrl());
-            return;
+            return $this->resultRedirectFactory->create()->setUrl($this->_redirect->getRedirectUrl());
         }
         $category = $this->_initCategory();
         if ($category) {
@@ -186,7 +208,7 @@ class View extends \Magento\Framework\App\Action\Action
             $page->getLayout()->initMessages();
             return $page;
         } elseif (!$this->getResponse()->isRedirect()) {
-            $this->_forward('noroute');
+            return $this->resultForwardFactory->create()->forward('noroute');
         }
     }
 }

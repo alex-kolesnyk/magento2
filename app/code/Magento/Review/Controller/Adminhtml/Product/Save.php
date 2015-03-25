@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Controller\Adminhtml\Product;
 
@@ -9,10 +10,11 @@ class Save extends \Magento\Review\Controller\Adminhtml\Product
 {
     /**
      * @return mixed
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
     {
-        if (($data = $this->getRequest()->getPost()) && ($reviewId = $this->getRequest()->getParam('id'))) {
+        if (($data = $this->getRequest()->getPostValue()) && ($reviewId = $this->getRequest()->getParam('id'))) {
             $review = $this->_reviewFactory->create()->load($reviewId);
             if (!$review->getId()) {
                 $this->messageManager->addError(__('The review was removed by another user or does not exist.'));
@@ -52,7 +54,7 @@ class Save extends \Magento\Review\Controller\Adminhtml\Product
                     $review->aggregate();
 
                     $this->messageManager->addSuccess(__('You saved the review.'));
-                } catch (\Magento\Framework\Model\Exception $e) {
+                } catch (\Magento\Framework\Exception\LocalizedException $e) {
                     $this->messageManager->addError($e->getMessage());
                 } catch (\Exception $e) {
                     $this->messageManager->addException($e, __('Something went wrong while saving this review.'));

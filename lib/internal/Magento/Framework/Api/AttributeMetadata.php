@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
@@ -20,5 +21,16 @@ class AttributeMetadata extends AbstractSimpleObject implements MetadataObjectIn
     public function getAttributeCode()
     {
         return $this->_get(self::ATTRIBUTE_CODE);
+    }
+
+    /**
+     * Set code of the attribute.
+     *
+     * @param string $attributeCode
+     * @return $this
+     */
+    public function setAttributeCode($attributeCode)
+    {
+        return $this->setData(self::ATTRIBUTE_CODE, $attributeCode);
     }
 }

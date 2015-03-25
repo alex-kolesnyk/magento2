@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework\Dependency;
 
@@ -25,7 +26,7 @@ class DbRuleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDependencyInfo($module, $file, $contents, array $expected)
     {
-        $this->assertEquals($expected, $this->model->getDependencyInfo($module, 'any', $file, $contents));
+        $this->assertEquals($expected, $this->model->getDependencyInfo($module, 'php', $file, $contents));
     }
 
     public function getDependencyInfoDataProvider()
@@ -34,26 +35,20 @@ class DbRuleTest extends \PHPUnit_Framework_TestCase
             ['any', 'non-resource-file-path.php', 'any', []],
             [
                 'any',
-                '/app/some/path/sql/some-file.php',
-                '$install->getTableName("unknown_table")',
-                [['module' => 'Unknown', 'source' => 'unknown_table']]
-            ],
-            [
-                'any',
-                '/app/some/path/data/some-file.php',
+                '/app/some/path/Setup/some-file.php',
                 '$install->getTableName("unknown_table")',
                 [['module' => 'Unknown', 'source' => 'unknown_table']]
             ],
             [
                 'SomeModule',
-                '/app/some/path/resource/some-file.php',
+                '/app/some/path/Resource/Setup.php',
                 '$install->getTableName("some_table")',
                 []
             ],
             [
                 'any',
-                '/app/some/path/resource/some-file.php',
-                '$install->getTableName(\'some_table\')',
+                '/app/some/path/Resource/Setup.php',
+                '$install->getTableName("some_table")',
                 [
                     [
                         'module' => 'SomeModule',

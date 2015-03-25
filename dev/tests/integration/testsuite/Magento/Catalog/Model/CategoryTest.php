@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model;
 
@@ -114,7 +115,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      * @magentoAppIsolation enabled
      * @magentoConfigFixture current_store catalog/frontend/flat_catalog_product 1
      */
@@ -255,5 +256,14 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
             'name' => 'test',
         ]);
         $this->assertNotEmpty($this->_model->validate());
+    }
+
+    /**
+     * @magentoDataFixture Magento/Catalog/_files/category_with_position.php
+     */
+    public function testSaveCategoryWithPosition()
+    {
+        $category = $this->_model->load('444');
+        $this->assertEquals('5', $category->getPosition());
     }
 }

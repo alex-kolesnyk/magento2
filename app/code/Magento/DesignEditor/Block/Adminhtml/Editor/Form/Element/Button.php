@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\DesignEditor\Block\Adminhtml\Editor\Form\Element;
 
@@ -32,7 +33,7 @@ class Button extends \Magento\Framework\Data\Form\Element\AbstractElement
             );
         }
         $html .= sprintf(
-            '<button id="%s" %s %s><span>%s</span></button>',
+            '<button type="button" id="%s" %s %s><span>%s</span></button>',
             $this->getHtmlId(),
             $this->_getUiId(),
             $this->serialize($this->getHtmlAttributes()),

@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Bundle\Api\Data;
@@ -16,11 +17,27 @@ interface OptionInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     public function getOptionId();
 
     /**
+     * Set option id
+     *
+     * @param int $optionId
+     * @return $this
+     */
+    public function setOptionId($optionId);
+
+    /**
      * Get option title
      *
      * @return string|null
      */
     public function getTitle();
+
+    /**
+     * Set option title
+     *
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title);
 
     /**
      * Get is required option
@@ -30,11 +47,27 @@ interface OptionInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     public function getRequired();
 
     /**
+     * Set whether option is required
+     *
+     * @param bool $required
+     * @return $this
+     */
+    public function setRequired($required);
+
+    /**
      * Get input type
      *
      * @return string|null
      */
     public function getType();
+
+    /**
+     * Set input type
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type);
 
     /**
      * Get option position
@@ -44,6 +77,14 @@ interface OptionInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     public function getPosition();
 
     /**
+     * Set option position
+     *
+     * @param int $position
+     * @return $this
+     */
+    public function setPosition($position);
+
+    /**
      * Get product sku
      *
      * @return string|null
@@ -51,9 +92,40 @@ interface OptionInterface extends \Magento\Framework\Api\ExtensibleDataInterface
     public function getSku();
 
     /**
+     * Set product sku
+     *
+     * @param string $sku
+     * @return $this
+     */
+    public function setSku($sku);
+
+    /**
      * Get product links
      *
      * @return \Magento\Bundle\Api\Data\LinkInterface[]|null
      */
     public function getProductLinks();
+
+    /**
+     * Set product links
+     *
+     * @param \Magento\Bundle\Api\Data\LinkInterface[] $productLinks
+     * @return $this
+     */
+    public function setProductLinks(array $productLinks = null);
+
+    /**
+     * Retrieve existing extension attributes object or create a new one.
+     *
+     * @return \Magento\Bundle\Api\Data\OptionExtensionInterface|null
+     */
+    public function getExtensionAttributes();
+
+    /**
+     * Set an extension attributes object.
+     *
+     * @param \Magento\Bundle\Api\Data\OptionExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(\Magento\Bundle\Api\Data\OptionExtensionInterface $extensionAttributes);
 }

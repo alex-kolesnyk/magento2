@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Block\Advanced;
 
@@ -159,7 +160,7 @@ class Result extends Template
     public function getFormUrl()
     {
         return $this->_urlFactory->create()->addQueryParams(
-            $this->getRequest()->getQuery()
+            $this->getRequest()->getQueryValue()
         )->getUrl(
             '*/*/',
             ['_escape' => true]

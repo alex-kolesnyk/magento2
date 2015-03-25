@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Block\Customer;
 
@@ -52,6 +53,7 @@ class Recent extends \Magento\Framework\View\Element\Template
         $this->_collectionFactory = $collectionFactory;
         parent::__construct($context, $data);
         $this->currentCustomer = $currentCustomer;
+        $this->_isScopePrivate = true;
     }
 
     /**
@@ -73,52 +75,26 @@ class Recent extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * Initialize review collection
-     * @return $this
-     */
-    protected function _initCollection()
-    {
-        $this->_collection = $this->_collectionFactory->create();
-        $this->_collection
-            ->addStoreFilter($this->_storeManager->getStore()->getId())
-            ->addCustomerFilter($this->currentCustomer->getCustomerId())
-            ->setDateOrder()
-            ->setPageSize(5)
-            ->load()
-            ->addReviewSummary();
-        return $this;
-    }
-
-    /**
-     * Get number of reviews
-     *
-     * @return int
-     */
-    public function count()
-    {
-        return $this->_getCollection()->getSize();
-    }
-
-    /**
-     * Initialize and return collection of reviews
-     * @return Collection
-     */
-    protected function _getCollection()
-    {
-        if (!$this->_collection) {
-            $this->_initCollection();
-        }
-        return $this->_collection;
-    }
-
-    /**
      * Return collection of reviews
      *
-     * @return Collection
+     * @return array|\Magento\Review\Model\Resource\Review\Product\Collection
      */
-    public function getCollection()
+    public function getReviews()
     {
-        return $this->_getCollection();
+        if (!($customerId = $this->currentCustomer->getCustomerId())) {
+            return [];
+        }
+        if (!$this->_collection) {
+            $this->_collection = $this->_collectionFactory->create();
+            $this->_collection
+                ->addStoreFilter($this->_storeManager->getStore()->getId())
+                ->addCustomerFilter($customerId)
+                ->setDateOrder()
+                ->setPageSize(5)
+                ->load()
+                ->addReviewSummary();
+        }
+        return $this->_collection;
     }
 
     /**
@@ -149,7 +125,7 @@ class Recent extends \Magento\Framework\View\Element\Template
      */
     public function dateFormat($date)
     {
-        return $this->formatDate($date, \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT);
+        return $this->formatDate($date, \IntlDateFormatter::SHORT);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model\Resource\Indexer;
 
@@ -81,7 +82,7 @@ class Stock extends \Magento\CatalogInventory\Model\Resource\Indexer\Stock\Defau
             ['option_id' => 'bo.option_id', 'status' => $status]
         );
 
-        if (!is_null($entityIds)) {
+        if ($entityIds !== null) {
             $select->where('bo.parent_id IN(?)', $entityIds);
         }
 
@@ -173,7 +174,7 @@ class Stock extends \Magento\CatalogInventory\Model\Resource\Indexer\Stock\Defau
             ]
         );
 
-        if (!is_null($entityIds)) {
+        if ($entityIds !== null) {
             $select->where('e.entity_id IN(?)', $entityIds);
         }
 

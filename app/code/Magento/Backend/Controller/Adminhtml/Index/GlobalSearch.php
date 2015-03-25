@@ -1,14 +1,15 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\Index;
 
 class GlobalSearch extends \Magento\Backend\Controller\Adminhtml\Index
 {
     /**
-     * @var \Magento\Framework\Controller\Result\JSONFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $resultJsonFactory;
 
@@ -21,12 +22,12 @@ class GlobalSearch extends \Magento\Backend\Controller\Adminhtml\Index
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param array $searchModules
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         array $searchModules = []
     ) {
         $this->_searchModules = $searchModules;
@@ -37,13 +38,13 @@ class GlobalSearch extends \Magento\Backend\Controller\Adminhtml\Index
     /**
      * Global Search Action
      *
-     * @return \Magento\Framework\Controller\Result\JSON
+     * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
     {
         $items = [];
 
-        if (!$this->_authorization->isAllowed('Magento_Adminhtml::global_search')) {
+        if (!$this->_authorization->isAllowed('Magento_Backend::global_search')) {
             $items[] = [
                 'id' => 'error',
                 'type' => __('Error'),
@@ -86,7 +87,7 @@ class GlobalSearch extends \Magento\Backend\Controller\Adminhtml\Index
             }
         }
 
-        /** @var \Magento\Framework\Controller\Result\JSON $resultJson */
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         return $resultJson->setData($items);
     }

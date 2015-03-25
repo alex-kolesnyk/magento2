@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
@@ -25,9 +26,25 @@ interface AttributeInterface
     public function getAttributeCode();
 
     /**
+     * Set attribute code
+     *
+     * @param string $attributeCode
+     * @return $this
+     */
+    public function setAttributeCode($attributeCode);
+
+    /**
      * Get attribute value
      *
      * @return mixed
      */
     public function getValue();
+
+    /**
+     * Set attribute value
+     *
+     * @param mixed $value
+     * @return $this
+     */
+    public function setValue($value);
 }

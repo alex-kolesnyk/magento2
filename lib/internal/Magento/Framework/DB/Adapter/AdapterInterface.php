@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB\Adapter;
 
@@ -665,7 +666,7 @@ interface AdapterInterface
     /**
      * Format Date to internal database date format
      *
-     * @param int|string|\Magento\Framework\Stdlib\DateTime\DateInterface $date
+     * @param int|string|\DateTime $date
      * @param boolean $includeTime
      * @return \Zend_Db_Expr
      */

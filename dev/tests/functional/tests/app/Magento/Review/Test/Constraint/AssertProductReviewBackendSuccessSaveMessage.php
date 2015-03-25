@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Review\Test\Constraint;
 
 use Magento\Review\Test\Page\Adminhtml\ReviewIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertProductReviewBackendSuccessSaveMessage
@@ -14,10 +15,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertProductReviewBackendSuccessSaveMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'middle';
-    /* end tags */
-
     /**
      * Text of success message after review created
      */

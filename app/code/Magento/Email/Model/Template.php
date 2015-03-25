@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Email\Model;
 
@@ -156,7 +157,7 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\View\DesignInterface $design
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Core\Model\App\Emulation $appEmulation
+     * @param \Magento\Store\Model\App\Emulation $appEmulation
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
@@ -172,7 +173,7 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
         \Magento\Framework\Model\Context $context,
         \Magento\Framework\View\DesignInterface $design,
         \Magento\Framework\Registry $registry,
-        \Magento\Core\Model\App\Emulation $appEmulation,
+        \Magento\Store\Model\App\Emulation $appEmulation,
         StoreManagerInterface $storeManager,
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\View\Asset\Repository $assetRepo,
@@ -216,7 +217,7 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
             $store
         );
         if ($fileName) {
-            $uploadDir = \Magento\Backend\Model\Config\Backend\Email\Logo::UPLOAD_DIR;
+            $uploadDir = \Magento\Config\Model\Config\Backend\Email\Logo::UPLOAD_DIR;
             $mediaDirectory = $this->_filesystem->getDirectoryRead(DirectoryList::MEDIA);
             if ($mediaDirectory->isFile($uploadDir . '/' . $fileName)) {
                 return $this->_storeManager->getStore()->getBaseUrl(
@@ -235,7 +236,7 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
     public function getDefaultEmailLogo()
     {
         return $this->_assetRepo->getUrlWithParams(
-            'Magento_Email::logo_email.gif',
+            'Magento_Email::logo_email.png',
             ['area' => \Magento\Framework\App\Area::AREA_FRONTEND]
         );
     }
@@ -318,6 +319,16 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
         $modulesDirectory = $this->_filesystem->getDirectoryRead(DirectoryList::MODULES);
         $templateText = $modulesDirectory->readFile($modulesDirectory->getRelativePath($templateFile));
 
+        /**
+         * trim copyright message for text templates
+         */
+        if ('html' != $templateType
+            && preg_match('/^<!--[\w\W]+?-->/m', $templateText, $matches)
+            && strpos($matches[0], 'Copyright') > 0
+        ) {
+            $templateText = str_replace($matches[0], '', $templateText);
+        }
+
         if (preg_match('/<!--@subject\s*(.*?)\s*@-->/u', $templateText, $matches)) {
             $this->setTemplateSubject($matches[1]);
             $templateText = str_replace($matches[0], '', $templateText);
@@ -334,9 +345,9 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
         }
 
         /**
-         * Remove comment lines
+         * Remove comment lines and extra spaces
          */
-        $templateText = preg_replace('#\{\*.*\*\}#suU', '', $templateText);
+        $templateText = trim(preg_replace('#\{\*.*\*\}#suU', '', $templateText));
 
         $this->setTemplateText($templateText);
         $this->setId($templateId);
@@ -386,7 +397,7 @@ class Template extends \Magento\Email\Model\AbstractTemplate implements \Magento
     public function getType()
     {
         $templateType = $this->getTemplateType();
-        if (is_null($templateType) && $this->getId()) {
+        if (null === $templateType && $this->getId()) {
             $templateType = $this->_emailConfig->getTemplateType($this->getId());
             $templateType = $templateType == 'html' ? self::TYPE_HTML : self::TYPE_TEXT;
         }

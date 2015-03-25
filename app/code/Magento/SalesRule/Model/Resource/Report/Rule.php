@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Model\Resource\Report;
 
@@ -22,26 +23,36 @@ class Rule extends \Magento\Reports\Model\Resource\Report\AbstractReport
     protected $_updatedatFactory;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
      * @param \Magento\Reports\Model\FlagFactory $reportsFlagFactory
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
      * @param \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator
      * @param \Magento\SalesRule\Model\Resource\Report\Rule\CreatedatFactory $createdatFactory
      * @param \Magento\SalesRule\Model\Resource\Report\Rule\UpdatedatFactory $updatedatFactory
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
         \Magento\Reports\Model\FlagFactory $reportsFlagFactory,
         \Magento\Framework\Stdlib\DateTime $dateTime,
         \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator,
         \Magento\SalesRule\Model\Resource\Report\Rule\CreatedatFactory $createdatFactory,
-        \Magento\SalesRule\Model\Resource\Report\Rule\UpdatedatFactory $updatedatFactory
+        \Magento\SalesRule\Model\Resource\Report\Rule\UpdatedatFactory $updatedatFactory,
+        $resourcePrefix = null
     ) {
-        parent::__construct($resource, $logger, $localeDate, $reportsFlagFactory, $dateTime, $timezoneValidator);
+        parent::__construct(
+            $context,
+            $logger,
+            $localeDate,
+            $reportsFlagFactory,
+            $dateTime,
+            $timezoneValidator,
+            $resourcePrefix
+        );
         $this->_createdatFactory = $createdatFactory;
         $this->_updatedatFactory = $updatedatFactory;
     }

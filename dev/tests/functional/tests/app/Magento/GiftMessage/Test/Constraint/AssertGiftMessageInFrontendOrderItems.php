@@ -1,16 +1,17 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GiftMessage\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Customer\Test\Page\CustomerAccountLogout;
 use Magento\GiftMessage\Test\Fixture\GiftMessage;
 use Magento\Sales\Test\Page\OrderHistory;
-use Magento\Sales\Test\Page\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\CustomerOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertGiftMessageInFrontendOrderItems
@@ -18,17 +19,13 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertGiftMessageInFrontendOrderItems extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'high';
-    /* end tags */
-
     /**
      * Assert that message from dataSet is displayed for each items on order(s) view page on frontend
      *
      * @param GiftMessage $giftMessage
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param OrderHistory $orderHistory
-     * @param OrderView $orderView
+     * @param CustomerOrderView $customerOrderView
      * @param CustomerAccountLogout $customerAccountLogout
      * @param string $orderId
      * @param array $products
@@ -36,9 +33,9 @@ class AssertGiftMessageInFrontendOrderItems extends AbstractConstraint
      */
     public function processAssert(
         GiftMessage $giftMessage,
-        CustomerInjectable $customer,
+        Customer $customer,
         OrderHistory $orderHistory,
-        OrderView $orderView,
+        CustomerOrderView $customerOrderView,
         CustomerAccountLogout $customerAccountLogout,
         $orderId,
         $products = []
@@ -67,7 +64,7 @@ class AssertGiftMessageInFrontendOrderItems extends AbstractConstraint
             }
             \PHPUnit_Framework_Assert::assertEquals(
                 $expectedData,
-                $orderView->getGiftMessageForItemBlock()->getGiftMessage($product->getName()),
+                $customerOrderView->getGiftMessageForItemBlock()->getGiftMessage($product->getName()),
                 'Wrong gift message is displayed on "' . $product->getName() . '" item.'
             );
         }

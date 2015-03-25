@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -238,7 +239,7 @@ class Type
      */
     public function getTypes()
     {
-        if (is_null($this->_types)) {
+        if ($this->_types === null) {
             $productTypes = $this->_config->getAll();
             foreach ($productTypes as $productTypeKey => $productTypeConfig) {
                 $productTypes[$productTypeKey]['label'] = __($productTypeConfig['label']);
@@ -255,7 +256,7 @@ class Type
      */
     public function getCompositeTypes()
     {
-        if (is_null($this->_compositeTypes)) {
+        if ($this->_compositeTypes === null) {
             $this->_compositeTypes = [];
             $types = $this->getTypes();
             foreach ($types as $typeId => $typeInfo) {
@@ -274,7 +275,7 @@ class Type
      */
     public function getTypesByPriority()
     {
-        if (is_null($this->_typesPriority)) {
+        if ($this->_typesPriority === null) {
             $this->_typesPriority = [];
             $simplePriority = [];
             $compositePriority = [];

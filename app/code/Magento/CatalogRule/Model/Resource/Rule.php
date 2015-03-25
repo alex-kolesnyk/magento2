@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -14,6 +15,9 @@ use Magento\Catalog\Model\Product;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Rule extends \Magento\Rule\Model\Resource\AbstractResource
 {
     /**
@@ -22,7 +26,7 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
     const SECONDS_IN_DAY = 86400;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -89,28 +93,31 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
     protected $priceCurrency;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param Product\ConditionFactory $conditionFactory
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $coreDate
      * @param \Magento\Eav\Model\Config $eavConfig
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\CatalogRule\Helper\Data $catalogRuleData
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
      * @param PriceCurrencyInterface $priceCurrency
+     * @param string|null $resourcePrefix
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\Product\ConditionFactory $conditionFactory,
         \Magento\Framework\Stdlib\DateTime\DateTime $coreDate,
         \Magento\Eav\Model\Config $eavConfig,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\CatalogRule\Helper\Data $catalogRuleData,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Stdlib\DateTime $dateTime,
-        PriceCurrencyInterface $priceCurrency
+        PriceCurrencyInterface $priceCurrency,
+        $resourcePrefix = null
     ) {
         $this->_storeManager = $storeManager;
         $this->_conditionFactory = $conditionFactory;
@@ -121,7 +128,7 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
         $this->_logger = $logger;
         $this->dateTime = $dateTime;
         $this->priceCurrency = $priceCurrency;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -203,7 +210,7 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
      * Get catalog rules product price for specific date, website and
      * customer group
      *
-     * @param int|string $date
+     * @param \DateTime $date
      * @param int $wId
      * @param int $gId
      * @param int $pId
@@ -223,13 +230,13 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
      * Retrieve product prices by catalog rule for specific date, website and customer group
      * Collect data with  product Id => price pairs
      *
-     * @param int|string $date
+     * @param \DateTime $date
      * @param int $websiteId
      * @param int $customerGroupId
      * @param array $productIds
      * @return array
      */
-    public function getRulePrices($date, $websiteId, $customerGroupId, $productIds)
+    public function getRulePrices(\DateTime $date, $websiteId, $customerGroupId, $productIds)
     {
         $adapter = $this->_getReadAdapter();
         $select = $adapter->select()->from(
@@ -237,7 +244,7 @@ class Rule extends \Magento\Rule\Model\Resource\AbstractResource
             ['product_id', 'rule_price']
         )->where(
             'rule_date = ?',
-            $this->dateTime->formatDate($date, false)
+            $date->format('Y-m-d')
         )->where(
             'website_id = ?',
             $websiteId

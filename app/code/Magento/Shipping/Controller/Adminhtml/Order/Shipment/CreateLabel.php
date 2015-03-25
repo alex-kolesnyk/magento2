@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order\Shipment;
 
@@ -60,11 +61,11 @@ class CreateLabel extends \Magento\Backend\App\Action
             $shipment->save();
             $this->messageManager->addSuccess(__('You created the shipping label.'));
             $response->setOk(true);
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $response->setError(true);
             $response->setMessage($e->getMessage());
         } catch (\Exception $e) {
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             $response->setError(true);
             $response->setMessage(__('An error occurred while creating shipping label.'));
         }

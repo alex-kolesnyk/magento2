@@ -1,9 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Store\App\Action\Plugin;
+
+use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class ContextPlugin
@@ -53,6 +57,7 @@ class Context
      * @param callable $proceed
      * @param \Magento\Framework\App\RequestInterface $request
      * @return mixed
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function aroundDispatch(
         \Magento\Framework\App\Action\Action $subject,
@@ -61,13 +66,13 @@ class Context
     ) {
         $defaultStore = $this->storeManager->getWebsite()->getDefaultStore();
         $this->httpContext->setValue(
-            \Magento\Core\Helper\Data::CONTEXT_CURRENCY,
+            HttpContext::CONTEXT_CURRENCY,
             $this->session->getCurrencyCode(),
             $defaultStore->getDefaultCurrency()->getCode()
         );
 
         $this->httpContext->setValue(
-            \Magento\Core\Helper\Data::CONTEXT_STORE,
+            StoreManagerInterface::CONTEXT_STORE,
             $this->httpRequest->getParam(
                 '___store',
                 $defaultStore->getStoreCodeFromCookie()

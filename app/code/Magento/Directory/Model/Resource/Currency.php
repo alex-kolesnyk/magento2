@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -130,7 +131,7 @@ class Currency extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param array $rates
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function saveRates($rates)
     {
@@ -150,7 +151,7 @@ class Currency extends \Magento\Framework\Model\Resource\Db\AbstractDb
                 $adapter->insertOnDuplicate($this->_currencyRateTable, $data, ['rate']);
             }
         } else {
-            throw new \Magento\Framework\Model\Exception(__('Please correct the rates received'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please correct the rates received'));
         }
     }
 
@@ -160,6 +161,7 @@ class Currency extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param \Magento\Directory\Model\Currency $model
      * @param string $path
      * @return array
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getConfigCurrencies($model, $path)
     {

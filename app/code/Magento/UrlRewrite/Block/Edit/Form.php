@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Block\Edit;
 
@@ -283,7 +284,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
      */
     protected function _getSessionData()
     {
-        if (is_null($this->_sessionData)) {
+        if ($this->_sessionData === null) {
             $this->_sessionData = $this->_backendSession->getData('url_rewrite_data', true);
         }
         return $this->_sessionData;
@@ -309,7 +310,7 @@ class Form extends \Magento\Backend\Block\Widget\Form\Generic
      */
     protected function _getAllStores()
     {
-        if (is_null($this->_allStores)) {
+        if ($this->_allStores === null) {
             $this->_allStores = $this->_systemStore->getStoreValuesForForm();
         }
 

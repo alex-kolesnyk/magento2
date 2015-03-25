@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data\Argument\Interpreter;
 
@@ -39,7 +40,7 @@ class String implements InterpreterInterface
             }
             $needTranslation = isset($data['translate']) ? $this->booleanUtils->toBoolean($data['translate']) : false;
             if ($needTranslation) {
-                $result = __($result);
+                $result = (string)new \Magento\Framework\Phrase($result);
             }
         } else {
             $result = '';

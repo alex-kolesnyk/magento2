@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Metadata\Form;
 
@@ -8,7 +9,7 @@ use Magento\Customer\Api\Data\AttributeMetadataInterface;
 use Magento\Customer\Model\Metadata\ElementFactory;
 use Magento\Directory\Helper\Data as DirectoryHelper;
 use Magento\Framework\Locale\ResolverInterface;
-use Magento\Framework\Logger;
+use Psr\Log\LoggerInterface as PsrLogger;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface as MagentoTimezone;
 
 /**
@@ -23,7 +24,7 @@ class Postcode extends AbstractData
 
     /**
      * @param MagentoTimezone $localeDate
-     * @param Logger $logger
+     * @param PsrLogger $logger
      * @param AttributeMetadataInterface $attribute
      * @param ResolverInterface $localeResolver
      * @param string $value
@@ -33,7 +34,7 @@ class Postcode extends AbstractData
      */
     public function __construct(
         MagentoTimezone $localeDate,
-        Logger $logger,
+        PsrLogger $logger,
         AttributeMetadataInterface $attribute,
         ResolverInterface $localeResolver,
         $value,

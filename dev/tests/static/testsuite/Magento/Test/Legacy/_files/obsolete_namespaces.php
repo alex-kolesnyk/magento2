@@ -4,13 +4,13 @@
  *
  * Format: array(<namespace>[, <replacement>])
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 return [
     ['Magento\App', 'Magento\Framework\App'],
     ['Magento\Data', 'Magento\Framework\Data'],
     ['Magento\Filesystem', 'Magento\Framework\Filesystem'],
-    ['Magento\Config', 'Magento\Framework\Config'],
     ['Magento\Model', 'Magento\Framework\Model'],
     ['Magento\View', 'Magento\Framework\View'],
     ['Magento\DB', 'Magento\Framework\DB'],
@@ -28,7 +28,7 @@ return [
     ['Magento\Phrase', 'Magento\Framework\Phrase'],
     ['Magento\Locale', 'Magento\Framework\Locale'],
     ['Magento\Message', 'Magento\Framework\Message'],
-    ['Magento\Logger', 'Magento\Framework\Logger'],
+    ['Magento\Logger', 'Psr\Log\LoggerInterface'],
     ['Magento\Error', 'Magento\Framework\Error'],
     ['Magento\Filter', 'Magento\Framework\Filter'],
     ['Magento\DomDocument', 'Magento\Framework\DomDocument'],
@@ -58,6 +58,7 @@ return [
     ['Magento\Mail', 'Magento\Framework\Mail'],
     ['Magento\HTTP', 'Magento\Framework\HTTP'],
     ['Magento\Math', 'Magento\Framework\Math'],
+    ['Magento\Framework\Code\Generator\CodeGenerator', 'Magento\Framework\Code\Generator'],
     ['Magento\Gdata', 'Magento\Framework\Gdata'],
     ['Magento\Image', 'Magento\Framework\Image'],
     ['Magento\Oauth', 'Magento\Framework\Oauth'],
@@ -69,5 +70,17 @@ return [
     ['Magento\RecurringPayment'],
     ['Magento\PayPalRecurringPayment'],
     ['Magento\ConfigurableProduct\Service'],
-    ['Magento\Catalog\Service']
+    ['Magento\Core\Model\Resource\Variable', 'Magento\Variable\Model\Resource\Variable'],
+    ['Magento\Core\Model\TemplateEngine\Decorator', 'Magento\Developer\Model\TemplateEngine\Decorator'],
+    ['Magento\Core\Model\Resource\Config', 'Magento\Config\Model\Resource\Config'],
+    ['Magento\Backend\Block\System\Config', 'Magento\Config\Block\System\Config'],
+    ['Magento\Backend\Controller\Adminhtml\System\Config', 'Magento\Config\Controller\Adminhtml\System\Config'],
+    ['Magento\Backend\Model\Config', 'Magento\Config\Model\Config'],
+    ['Magento\Core\Model\Variable', 'Magento\Variable\Model\Variable'],
+    ['Magento\Catalog\Service'],
+    ['Magento\CheckoutAgreements\Service'],
+    ['Magento\Checkout\Service'],
+    ['Magento\GiftMessage\Service'],
+    ['Magento\Backend\Controller\Adminhtml\System\Variable', 'Magento\Variable\Controller\Adminhtml\System\Variable'],
+    ['Magento\Framework\Test\Utility', 'Magento\Framework\App\Utility']
 ];

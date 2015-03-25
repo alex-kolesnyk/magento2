@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
     <system>
         <section id="catalog">
             <group id="seo">
@@ -21,11 +22,11 @@
                 </field>
                 <field id="product_use_categories" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Use Categories Path for Product URLs</label>
-                    <source_model>Magento\Backend\Model\Config\Source\Yesno</source_model>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="save_rewrites_history" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Create Permanent Redirect for URLs if URL Key Changed</label>
-                    <source_model>Magento\Backend\Model\Config\Source\Yesno</source_model>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
         </section>

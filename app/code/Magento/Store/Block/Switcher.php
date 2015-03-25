@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -8,6 +9,7 @@
  */
 namespace Magento\Store\Block;
 
+use Magento\Directory\Helper\Data;
 use Magento\Store\Model\Group;
 
 class Switcher extends \Magento\Framework\View\Element\Template
@@ -18,7 +20,7 @@ class Switcher extends \Magento\Framework\View\Element\Template
     protected $_storeInUrl;
 
     /**
-     * @var \Magento\Core\Helper\PostData
+     * @var \Magento\Framework\Data\Helper\PostHelper
      */
     protected $_postDataHelper;
 
@@ -26,12 +28,12 @@ class Switcher extends \Magento\Framework\View\Element\Template
      * Constructs
      *
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Core\Helper\PostData $postDataHelper
+     * @param \Magento\Framework\Data\Helper\PostHelper $postDataHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Core\Helper\PostData $postDataHelper,
+        \Magento\Framework\Data\Helper\PostHelper $postDataHelper,
         array $data = []
     ) {
         $this->_postDataHelper = $postDataHelper;
@@ -93,7 +95,7 @@ class Switcher extends \Magento\Framework\View\Element\Template
                     continue;
                 }
                 $localeCode = $this->_scopeConfig->getValue(
-                    \Magento\Core\Helper\Data::XML_PATH_DEFAULT_LOCALE,
+                    Data::XML_PATH_DEFAULT_LOCALE,
                     \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
                     $store
                 );
@@ -125,7 +127,7 @@ class Switcher extends \Magento\Framework\View\Element\Template
 
             $groups = [];
             $localeCode = $this->_scopeConfig->getValue(
-                \Magento\Core\Helper\Data::XML_PATH_DEFAULT_LOCALE,
+                Data::XML_PATH_DEFAULT_LOCALE,
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE
             );
             foreach ($rawGroups as $group) {
@@ -182,7 +184,7 @@ class Switcher extends \Magento\Framework\View\Element\Template
      */
     public function isStoreInUrl()
     {
-        if (is_null($this->_storeInUrl)) {
+        if ($this->_storeInUrl === null) {
             $this->_storeInUrl = $this->_storeManager->getStore()->isUseStoreInUrl();
         }
         return $this->_storeInUrl;

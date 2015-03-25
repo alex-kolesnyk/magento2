@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Modular\Magento\Email;
 
@@ -25,7 +26,7 @@ class EmailTemplateConfigFilesTest extends \PHPUnit_Framework_TestCase
      */
     public function fileFormatDataProvider()
     {
-        return \Magento\Framework\Test\Utility\Files::init()->getConfigFiles('email_templates.xml');
+        return \Magento\Framework\App\Utility\Files::init()->getConfigFiles('email_templates.xml');
     }
 
     /**

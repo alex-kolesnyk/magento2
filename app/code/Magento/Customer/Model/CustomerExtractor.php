@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model;
 
@@ -16,9 +17,9 @@ class CustomerExtractor
     protected $formFactory;
 
     /**
-     * @var \Magento\Customer\Api\Data\CustomerDataBuilder
+     * @var \Magento\Customer\Api\Data\CustomerInterfaceFactory
      */
-    protected $customerBuilder;
+    protected $customerFactory;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
@@ -31,21 +32,29 @@ class CustomerExtractor
     protected $customerGroupManagement;
 
     /**
+     * @var \Magento\Framework\Api\DataObjectHelper
+     */
+    protected $dataObjectHelper;
+
+    /**
      * @param Metadata\FormFactory $formFactory
-     * @param \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder
+     * @param \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param GroupManagementInterface $customerGroupManagement
+     * @param \Magento\Framework\Api\DataObjectHelper $dataObjectHelper
      */
     public function __construct(
         \Magento\Customer\Model\Metadata\FormFactory $formFactory,
-        \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder,
+        \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        GroupManagementInterface $customerGroupManagement
+        GroupManagementInterface $customerGroupManagement,
+        \Magento\Framework\Api\DataObjectHelper $dataObjectHelper
     ) {
         $this->formFactory = $formFactory;
-        $this->customerBuilder = $customerBuilder;
+        $this->customerFactory = $customerFactory;
         $this->storeManager = $storeManager;
         $this->customerGroupManagement = $customerGroupManagement;
+        $this->dataObjectHelper = $dataObjectHelper;
     }
 
     /**
@@ -67,17 +76,22 @@ class CustomerExtractor
             }
             $customerData[$attributeCode] = $request->getParam($attributeCode);
         }
-        $this->customerBuilder->populateWithArray($customerData);
+        $customerDataObject = $this->customerFactory->create();
+        $this->dataObjectHelper->populateWithArray(
+            $customerDataObject,
+            $customerData,
+            '\Magento\Customer\Api\Data\CustomerInterface'
+        );
         $store = $this->storeManager->getStore();
         if ($isGroupIdEmpty) {
-            $this->customerBuilder->setGroupId(
+            $customerDataObject->setGroupId(
                 $this->customerGroupManagement->getDefaultGroup($store->getId())->getId()
             );
         }
 
-        $this->customerBuilder->setWebsiteId($store->getWebsiteId());
-        $this->customerBuilder->setStoreId($store->getId());
+        $customerDataObject->setWebsiteId($store->getWebsiteId());
+        $customerDataObject->setStoreId($store->getId());
 
-        return $this->customerBuilder->create();
+        return $customerDataObject;
     }
 }

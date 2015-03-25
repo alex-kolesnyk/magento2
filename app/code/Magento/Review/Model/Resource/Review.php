@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Review\Model\Resource;
 
@@ -89,25 +90,27 @@ class Review extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_ratingOptions;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $date
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Review\Model\RatingFactory $ratingFactory
      * @param \Magento\Review\Model\Resource\Rating\Option $ratingOptions
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $date,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Review\Model\RatingFactory $ratingFactory,
-        Rating\Option $ratingOptions
+        Rating\Option $ratingOptions,
+        $resourcePrefix = null
     ) {
         $this->_date = $date;
         $this->_storeManager = $storeManager;
         $this->_ratingFactory = $ratingFactory;
         $this->_ratingOptions = $ratingOptions;
 
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**

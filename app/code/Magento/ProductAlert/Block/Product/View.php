@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ProductAlert\Block\Product;
 
@@ -22,7 +23,7 @@ class View extends \Magento\Framework\View\Element\Template
     protected $_helper;
 
     /**
-     * @var \Magento\Core\Helper\PostData
+     * @var \Magento\Framework\Data\Helper\PostHelper
      */
     protected $coreHelper;
 
@@ -30,14 +31,14 @@ class View extends \Magento\Framework\View\Element\Template
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\ProductAlert\Helper\Data $helper
      * @param \Magento\Framework\Registry $registry
-     * @param \Magento\Core\Helper\PostData $coreHelper
+     * @param \Magento\Framework\Data\Helper\PostHelper $coreHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\ProductAlert\Helper\Data $helper,
         \Magento\Framework\Registry $registry,
-        \Magento\Core\Helper\PostData $coreHelper,
+        \Magento\Framework\Data\Helper\PostHelper $coreHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);

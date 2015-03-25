@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model\Category\Plugin\Store;
 
@@ -93,7 +94,7 @@ class View
     protected function generateProductUrls($websiteId, $originWebsiteId, $storeId)
     {
         $urls = [];
-        $websiteIds = $websiteId != $originWebsiteId && !is_null($originWebsiteId)
+        $websiteIds = $websiteId != $originWebsiteId && $originWebsiteId !== null
             ? [$websiteId, $originWebsiteId]
             : [$websiteId];
         $collection = $this->productFactory->create()

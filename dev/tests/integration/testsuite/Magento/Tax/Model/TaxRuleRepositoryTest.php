@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model;
 
@@ -15,9 +16,9 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
     private $objectManager;
 
     /**
-     * @var \Magento\Tax\Api\Data\TaxRuleDataBuilder
+     * @var \Magento\Tax\Api\Data\TaxRuleInterfaceFactory
      */
-    private $taxRuleBuilder;
+    private $taxRuleFactory;
 
     /**
      * @var \Magento\Tax\Api\TaxRuleRepositoryInterface
@@ -61,12 +62,18 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     private $taxRateRepository;
 
+    /**
+     * @var \Magento\Framework\Api\DataObjectHelper
+     */
+    private $dataObjectHelper;
+
     protected function setUp()
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->taxRuleRepository = $this->objectManager->get('Magento\Tax\Api\TaxRuleRepositoryInterface');
         $this->taxRateRepository = $this->objectManager->get('Magento\Tax\Api\TaxRateRepositoryInterface');
-        $this->taxRuleBuilder = $this->objectManager->create('Magento\Tax\Api\Data\TaxRuleDataBuilder');
+        $this->taxRuleFactory = $this->objectManager->create('Magento\Tax\Api\Data\TaxRuleInterfaceFactory');
+        $this->dataObjectHelper = $this->objectManager->create('Magento\Framework\Api\DataObjectHelper');
         $this->taxRuleFixtureFactory = new TaxRuleFixtureFactory();
     }
 
@@ -100,16 +107,14 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveThrowsExceptionIdTargetTaxRulDoesNotExist()
     {
-        $taxRuleDataObject = $this->taxRuleBuilder
-            ->setId(9999)
+        $taxRuleDataObject = $this->taxRuleFactory->create();
+        $taxRuleDataObject->setId(9999)
             ->setCode('code')
             ->setCustomerTaxClassIds([3])
             ->setProductTaxClassIds([2])
             ->setTaxRateIds([2])
             ->setPriority(0)
-            ->setPosition(1)
-            ->create();
-
+            ->setPosition(1);
         $this->taxRuleRepository->save($taxRuleDataObject);
     }
 
@@ -131,7 +136,12 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
             'position' => 0,
         ];
         // Tax rule data object created
-        $taxRule = $this->taxRuleBuilder->populateWithArray($taxRuleData)->create();
+        $taxRule = $this->taxRuleFactory->create();
+        $this->dataObjectHelper->populateWithArray(
+            $taxRule,
+            $taxRuleData,
+            '\Magento\Tax\Api\Data\TaxRuleInterface'
+        );
 
         $this->taxRuleRepository->save($taxRule);
     }
@@ -152,7 +162,12 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
             'position' => -1,
         ];
         // Tax rule data object created
-        $taxRule = $this->taxRuleBuilder->populateWithArray($taxRuleData)->create();
+        $taxRule = $this->taxRuleFactory->create();
+        $this->dataObjectHelper->populateWithArray(
+            $taxRule,
+            $taxRuleData,
+            '\Magento\Tax\Api\Data\TaxRuleInterface'
+        );
 
         //Tax rule service call
         $this->taxRuleRepository->save($taxRule);
@@ -287,7 +302,7 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
         foreach ($filters as $filter) {
             $searchBuilder->addFilter([$filter]);
         }
-        if (!is_null($filterGroup)) {
+        if ($filterGroup !== null) {
             $searchBuilder->addFilter($filterGroup);
         }
         $searchCriteria = $searchBuilder->create();
@@ -310,7 +325,7 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function searchTaxRulesDataProvider()
     {
-        $filterBuilder = Bootstrap::getObjectManager()->create('\Magento\Framework\Api\FilterBuilder');
+        $filterBuilder = Bootstrap::getObjectManager()->create('Magento\Framework\Api\FilterBuilder');
 
         return [
             'code eq "Default Rule"' => [
@@ -417,13 +432,13 @@ class TaxRuleRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     private function createTaxRuleDataObject()
     {
-        return $this->taxRuleBuilder
-            ->setCode('code')
+        $taxRule = $this->taxRuleFactory->create();
+        $taxRule->setCode('code')
             ->setCustomerTaxClassIds([3])
             ->setProductTaxClassIds([2])
             ->setTaxRateIds([2])
             ->setPriority(0)
-            ->setPosition(1)
-            ->create();
+            ->setPosition(1);
+        return $taxRule;
     }
 }

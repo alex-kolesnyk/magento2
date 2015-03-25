@@ -1,23 +1,20 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\ConfigurableProduct\Test\Constraint;
 
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductEdit;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductIndex;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Assert form data equals duplicate product configurable data.
  */
 class AssertConfigurableProductDuplicateForm extends AssertConfigurableProductForm
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert form data equals duplicate product configurable data.
      *
@@ -39,6 +36,10 @@ class AssertConfigurableProductDuplicateForm extends AssertConfigurableProductFo
         $productData = $product->getData();
         $productData['sku'] = $duplicateProductSku;
         $productData['status'] = 'Product offline';
+        if (isset($compareData['quantity_and_stock_status']['qty'])) {
+            $compareData['quantity_and_stock_status']['qty'] = '';
+            $compareData['quantity_and_stock_status']['is_in_stock'] = 'Out of Stock';
+        }
         $fixtureData = $this->prepareFixtureData($productData, $this->sortFields);
         $formData = $this->prepareFormData($productPage->getProductForm()->getData($product), $this->sortFields);
         $error = $this->verifyData($fixtureData, $formData);
@@ -55,6 +56,7 @@ class AssertConfigurableProductDuplicateForm extends AssertConfigurableProductFo
     protected function prepareFixtureData(array $data, array $sortFields = [])
     {
         $data['url_key'] = $this->prepareUrlKey($data['url_key']);
+        $data['quantity_and_stock_status']['is_in_stock'] = 'Out of Stock';
         return parent::prepareFixtureData($data, $sortFields);
     }
 

@@ -1,15 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\Fixture\CatalogProductSimple;
 
-use Mtf\Fixture\FixtureFactory;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureFactory;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
- * Class CustomOptions
  * Custom options fixture
  *
  * Data keys:
@@ -149,7 +149,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '30 bucks',
@@ -164,7 +164,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '40 bucks',
@@ -179,7 +179,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'Test1 option %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Field',
+                    'type' => 'Text/Field',
                     'options' => [
                         [
                             'price' => 120.03,
@@ -192,7 +192,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'Test2 option %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Field',
+                    'type' => 'Text/Field',
                     'options' => [
                         [
                             'price' => 120.03,
@@ -205,7 +205,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'Test3 option %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => 'Test3-1 %isolation%',
@@ -224,7 +224,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'Test4 option %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => 'Test1 %isolation%',
@@ -245,7 +245,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '10 percent',
@@ -258,7 +258,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down2 %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '20 percent',
@@ -273,7 +273,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '10 percent',
@@ -292,7 +292,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option field %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Field',
+                    'type' => 'Text/Field',
                     'options' => [
                         [
                             'price' => 10,
@@ -306,7 +306,7 @@ class CustomOptions implements FixtureInterface
             'all_types' => [
                 [
                     'title' => 'custom option field %isolation%',
-                    'type' => 'Field',
+                    'type' => 'Text/Field',
                     'is_require' => 'Yes',
                     'options' => [
                         [
@@ -320,7 +320,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Area %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Area',
+                    'type' => 'Text/Area',
                     'options' => [
                         [
                             'price' => 10,
@@ -333,7 +333,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option File %isolation%',
                     'is_require' => 'No',
-                    'type' => 'File',
+                    'type' => 'File/File',
                     'options' => [
                         [
                             'price' => 10,
@@ -348,7 +348,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option drop down %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Drop-down',
+                    'type' => 'Select/Drop-down',
                     'options' => [
                         [
                             'title' => '10 percent',
@@ -373,7 +373,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Radio Buttons %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Radio Buttons',
+                    'type' => 'Select/Radio Buttons',
                     'options' => [
                         [
                             'title' => '20 fixed',
@@ -386,7 +386,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Checkbox %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Checkbox',
+                    'type' => 'Select/Checkbox',
                     'options' => [
                         [
                             'title' => '20 fixed',
@@ -399,7 +399,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Multiple Select %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Multiple Select',
+                    'type' => 'Select/Multiple Select',
                     'options' => [
                         [
                             'title' => '20 fixed',
@@ -412,7 +412,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Date %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Date',
+                    'type' => 'Date/Date',
                     'options' => [
                         [
                             'price' => 20,
@@ -424,7 +424,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Date & Time %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Date & Time',
+                    'type' => 'Date/Date & Time',
                     'options' => [
                         [
                             'price' => 20,
@@ -436,7 +436,7 @@ class CustomOptions implements FixtureInterface
                 [
                     'title' => 'custom option Time %isolation%',
                     'is_require' => 'Yes',
-                    'type' => 'Time',
+                    'type' => 'Date/Time',
                     'options' => [
                         [
                             'price' => 20,

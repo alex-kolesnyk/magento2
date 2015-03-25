@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Definition;
 
@@ -17,11 +18,18 @@ abstract class Compiled implements \Magento\Framework\ObjectManager\DefinitionIn
     protected $_definitions;
 
     /**
-     * @param array $definitions
+     * @var \Magento\Framework\Code\Reader\ClassReader
      */
-    public function __construct(array $definitions)
+    protected $reader ;
+
+    /**
+     * @param array $definitions
+     * @param \Magento\Framework\Code\Reader\ClassReader $reader
+     */
+    public function __construct(array $definitions, \Magento\Framework\Code\Reader\ClassReader $reader = null)
     {
         list($this->_signatures, $this->_definitions) = $definitions;
+        $this->reader = $reader ?: new \Magento\Framework\Code\Reader\ClassReader();
     }
 
     /**
@@ -50,6 +58,11 @@ abstract class Compiled implements \Magento\Framework\ObjectManager\DefinitionIn
      */
     public function getParameters($className)
     {
+        // if the definition isn't found in the list gathered from the compiled file then  using reflection to find it
+        if (!array_key_exists($className, $this->_definitions)) {
+            return $this->reader->getConstructor($className);
+        }
+
         $definition = $this->_definitions[$className];
         if ($definition !== null) {
             if (is_string($this->_signatures[$definition])) {

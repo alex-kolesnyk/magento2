@@ -2,12 +2,21 @@
 /**
  * Mail Message
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Mail;
 
 class Message extends \Zend_Mail implements MessageInterface
 {
+    /**
+     * @param string $charset
+     */
+    public function __construct($charset = 'utf-8')
+    {
+        parent::__construct($charset);
+    }
+
     /**
      * Message type
      *

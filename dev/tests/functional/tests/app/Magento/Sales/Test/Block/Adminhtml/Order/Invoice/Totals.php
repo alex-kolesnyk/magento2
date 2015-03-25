@@ -1,18 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Block\Adminhtml\Order\Invoice;
 
-use Mtf\Block\Block;
-use Mtf\Client\Element\Locator;
+use Magento\Mtf\Client\Locator;
 
 /**
  * Class Totals
  * Invoice totals block
  */
-class Totals extends Block
+class Totals extends \Magento\Sales\Test\Block\Adminhtml\Order\Totals
 {
     /**
      * Submit invoice button selector
@@ -44,7 +44,6 @@ class Totals extends Block
                 return $element->isVisible() == false ? true : null;
             }
         );
-        $this->reinitRootElement();
         $this->_rootElement->find($this->submit)->click();
     }
 

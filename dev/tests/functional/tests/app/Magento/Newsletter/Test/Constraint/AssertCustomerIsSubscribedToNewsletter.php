@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Newsletter\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Newsletter\Test\Page\Adminhtml\SubscriberIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomerIsSubscribedToNewsletter
@@ -15,19 +16,15 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertCustomerIsSubscribedToNewsletter extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert customer is subscribed to newsletter
      *
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param SubscriberIndex $subscriberIndex
      * @return void
      */
     public function processAssert(
-        CustomerInjectable $customer,
+        Customer $customer,
         SubscriberIndex $subscriberIndex
     ) {
         $filter = [

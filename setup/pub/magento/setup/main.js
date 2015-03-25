@@ -1,11 +1,11 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 'use strict';
 var main = angular.module('main', ['ngStorage']);
-main.controller('navigationController', ['$scope', '$state', '$rootScope', 'navigationService', '$localStorage', function ($scope, $state, $rootScope, navigationService, $localStorage) {
-    $localStorage.$reset();
+main.controller('navigationController', ['$scope', '$state', '$rootScope', 'navigationService', function ($scope, $state, $rootScope, navigationService) {
     navigationService.load();
     $rootScope.isMenuEnabled = true;
     $scope.itemStatus = function (order) {
@@ -17,10 +17,6 @@ main.controller('navigationController', ['$scope', '$state', '$rootScope', 'navi
     function ($scope, $state, navigationService) {
         $scope.$on('$stateChangeSuccess', function (event, state) {
             $scope.valid = true;
-            $scope.class = 'col-lg-9';
-            if (state.main) {
-                $scope.class = 'col-lg-offset-3 col-lg-6';
-            }
         });
 
         $scope.nextState = function () {

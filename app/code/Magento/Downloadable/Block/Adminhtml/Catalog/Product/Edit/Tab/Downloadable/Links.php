@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Downloadable\Block\Adminhtml\Catalog\Product\Edit\Tab\Downloadable;
 
@@ -8,6 +9,7 @@ namespace Magento\Downloadable\Block\Adminhtml\Catalog\Product\Edit\Tab\Download
  * Adminhtml catalog product downloadable items tab links section
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Links extends \Magento\Backend\Block\Template
 {
@@ -40,7 +42,7 @@ class Links extends \Magento\Backend\Block\Template
     /**
      * Core file storage database
      *
-     * @var \Magento\Core\Helper\File\Storage\Database
+     * @var \Magento\MediaStorage\Helper\File\Storage\Database
      */
     protected $_coreFileStorageDb = null;
 
@@ -62,7 +64,7 @@ class Links extends \Magento\Backend\Block\Template
     protected $_link;
 
     /**
-     * @var \Magento\Backend\Model\Config\Source\Yesno
+     * @var \Magento\Config\Model\Config\Source\Yesno
      */
     protected $_sourceModel;
 
@@ -79,22 +81,23 @@ class Links extends \Magento\Backend\Block\Template
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Json\EncoderInterface $jsonEncoder
-     * @param \Magento\Core\Helper\File\Storage\Database $coreFileStorageDatabase
+     * @param \Magento\MediaStorage\Helper\File\Storage\Database $coreFileStorageDatabase
      * @param \Magento\Downloadable\Helper\File $downloadableFile
      * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Backend\Model\Config\Source\Yesno $sourceModel
+     * @param \Magento\Config\Model\Config\Source\Yesno $sourceModel
      * @param \Magento\Downloadable\Model\Link $link
      * @param \Magento\Eav\Model\Entity\AttributeFactory $attributeFactory
      * @param \Magento\Backend\Model\UrlFactory $urlFactory
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Json\EncoderInterface $jsonEncoder,
-        \Magento\Core\Helper\File\Storage\Database $coreFileStorageDatabase,
+        \Magento\MediaStorage\Helper\File\Storage\Database $coreFileStorageDatabase,
         \Magento\Downloadable\Helper\File $downloadableFile,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Backend\Model\Config\Source\Yesno $sourceModel,
+        \Magento\Config\Model\Config\Source\Yesno $sourceModel,
         \Magento\Downloadable\Model\Link $link,
         \Magento\Eav\Model\Entity\AttributeFactory $attributeFactory,
         \Magento\Backend\Model\UrlFactory $urlFactory,
@@ -141,7 +144,7 @@ class Links extends \Magento\Backend\Block\Template
      */
     public function getPurchasedSeparatelyAttribute()
     {
-        if (is_null($this->_purchasedSeparatelyAttribute)) {
+        if ($this->_purchasedSeparatelyAttribute === null) {
             $_attributeCode = 'links_purchased_separately';
 
             $this->_purchasedSeparatelyAttribute = $this->_attributeFactory->create()->loadByCode(
@@ -214,6 +217,7 @@ class Links extends \Magento\Backend\Block\Template
      * Check exists defined links title
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getUsedDefault()
     {
@@ -224,6 +228,7 @@ class Links extends \Magento\Backend\Block\Template
      * Return true if price in website scope
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsPriceWebsiteScope()
     {
@@ -241,6 +246,8 @@ class Links extends \Magento\Backend\Block\Template
      * Return array of links
      *
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getLinkData()
     {
@@ -431,7 +438,7 @@ class Links extends \Magento\Backend\Block\Template
      */
     public function getConfig()
     {
-        if (is_null($this->_config)) {
+        if ($this->_config === null) {
             $this->_config = new \Magento\Framework\Object();
         }
 

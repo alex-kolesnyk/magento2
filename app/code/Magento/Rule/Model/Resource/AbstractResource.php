@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -43,15 +44,15 @@ abstract class AbstractResource extends \Magento\Framework\Model\Resource\Db\Abs
     public function _beforeSave(\Magento\Framework\Model\AbstractModel $object)
     {
         $fromDate = $object->getFromDate();
-        if ($fromDate instanceof \Zend_Date) {
-            $object->setFromDate($fromDate->toString(\Magento\Framework\Stdlib\DateTime::DATETIME_INTERNAL_FORMAT));
+        if ($fromDate instanceof \DateTime) {
+            $object->setFromDate($fromDate->format('Y-m-d H:i:s'));
         } elseif (!is_string($fromDate) || empty($fromDate)) {
             $object->setFromDate(null);
         }
 
         $toDate = $object->getToDate();
-        if ($toDate instanceof \Zend_Date) {
-            $object->setToDate($toDate->toString(\Magento\Framework\Stdlib\DateTime::DATETIME_INTERNAL_FORMAT));
+        if ($toDate instanceof \DateTime) {
+            $object->setToDate($toDate->format('Y-m-d H:i:s'));
         } elseif (!is_string($toDate) || empty($toDate)) {
             $object->setToDate(null);
         }
@@ -228,7 +229,7 @@ abstract class AbstractResource extends \Magento\Framework\Model\Resource\Db\Abs
      *
      * @param string $entityType
      * @return array
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _getAssociatedEntityInfo($entityType)
     {
@@ -236,9 +237,8 @@ abstract class AbstractResource extends \Magento\Framework\Model\Resource\Db\Abs
             return $this->_associatedEntitiesMap[$entityType];
         }
 
-        throw new \Magento\Framework\Model\Exception(
-            __('There is no information about associated entity type "%1".', $entityType),
-            0
+        throw new \Magento\Framework\Exception\LocalizedException(
+            __('There is no information about associated entity type "%1".', $entityType)
         );
     }
 }

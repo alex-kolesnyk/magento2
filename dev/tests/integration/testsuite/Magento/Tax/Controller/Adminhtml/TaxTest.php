@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Controller\Adminhtml;
 
@@ -20,13 +21,13 @@ class TaxTest extends \Magento\Backend\Utility\Controller
      */
     public function testAjaxSaveAction($postData, $expectedData)
     {
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
 
         $this->dispatch('backend/tax/tax/ajaxSave');
 
         $jsonBody = $this->getResponse()->getBody();
         $result = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            'Magento\Core\Helper\Data'
+            'Magento\Framework\Json\Helper\Data'
         )->jsonDecode(
             $jsonBody
         );
@@ -53,13 +54,12 @@ class TaxTest extends \Magento\Backend\Utility\Controller
             'Magento\Tax\Api\TaxClassRepositoryInterface'
         );
 
-        $taxClassBuilder = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
-            'Magento\Tax\Api\Data\TaxClassDataBuilder'
+        $taxClassFactory = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
+            'Magento\Tax\Api\Data\TaxClassInterfaceFactory'
         );
-
-        $taxClass = $taxClassBuilder->setClassName($taxClassData['class_name'])
-            ->setClassType($taxClassData['class_type'])
-            ->create();
+        $taxClass = $taxClassFactory->create();
+        $taxClass->setClassName($taxClassData['class_name'])
+            ->setClassType($taxClassData['class_type']);
 
         $taxClassId = $taxClassService->save($taxClass);
 
@@ -70,7 +70,7 @@ class TaxTest extends \Magento\Backend\Utility\Controller
         $this->assertEquals($taxClassData['class_type'], $class->getClassType());
 
         $postData = [ 'class_id' => $taxClassId ];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/tax/tax/ajaxDelete');
 
         $isFound = true;

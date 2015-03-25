@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Controller\Adminhtml;
 
@@ -15,7 +16,7 @@ class ProductTest extends \Magento\Backend\Utility\Controller
     public function testSaveActionAssociatedProductIds()
     {
         $associatedProductIds = [3, 14, 15, 92];
-        $this->getRequest()->setPost(
+        $this->getRequest()->setPostValue(
             [
                 'attributes' => [$this->_getConfigurableAttribute()->getId()],
                 'associated_product_ids' => $associatedProductIds,

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\DesignEditor\Block\Adminhtml\Editor\Tools\QuickStyles;
 
@@ -60,12 +61,12 @@ abstract class AbstractTab extends \Magento\Backend\Block\Widget\Form
      * Create a form element with necessary controls
      *
      * @return \Magento\DesignEditor\Block\Adminhtml\Editor\Tools\QuickStyles\Header
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareForm()
     {
         if (!$this->_formId || !$this->_tab) {
-            throw new \Magento\Framework\Model\Exception(
+            throw new \Magento\Framework\Exception\LocalizedException(
                 __('We found an invalid block of class "%1". Please define the required properties.', get_class($this))
             );
         }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\View;
 
@@ -38,7 +39,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
      * Retrieve available order
      *
      * @return \Magento\Sales\Model\Order
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getOrder()
     {
@@ -51,7 +52,7 @@ class Tabs extends \Magento\Backend\Block\Widget\Tabs
         if ($this->_coreRegistry->registry('order')) {
             return $this->_coreRegistry->registry('order');
         }
-        throw new \Magento\Framework\Model\Exception(__('We cannot get the order instance.'));
+        throw new \Magento\Framework\Exception\LocalizedException(__('We cannot get the order instance.'));
     }
 
     /**

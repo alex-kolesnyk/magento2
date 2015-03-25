@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
@@ -16,5 +17,7 @@
     </type>
     <type name="Magento\Framework\View\Layout">
         <plugin name="layout-model-caching-unique-name" type="Magento\PageCache\Model\Layout\LayoutPlugin"/>
+        <plugin name="core-session-depersonalize"
+                type="Magento\PageCache\Model\Layout\DepersonalizePlugin" sortOrder="1"/>
     </type>
 </config>

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -96,12 +97,13 @@ class Layout
             'processorFactory' => $objectManager->get('Magento\Framework\View\Layout\ProcessorFactory'),
             'eventManager' => $objectManager->get('Magento\Framework\Event\ManagerInterface'),
             'structure' => $objectManager->create('Magento\Framework\View\Layout\Data\Structure', []),
-            'scheduledStructure' => $objectManager->create('Magento\Framework\View\Layout\ScheduledStructure', []),
             'messageManager' => $objectManager->get('Magento\Framework\Message\ManagerInterface'),
             'themeResolver' => $objectManager->get('Magento\Framework\View\Design\Theme\ResolverInterface'),
-            'pageConfigStructure' => $objectManager->create('Magento\Framework\View\Page\Config\Structure'),
             'reader' => $objectManager->get('commonRenderPool'),
             'generatorPool' => $objectManager->get('Magento\Framework\View\Layout\GeneratorPool'),
+            'cache' => $objectManager->get('Magento\Framework\App\Cache\Type\Layout'),
+            'readerContextFactory' => $objectManager->get('Magento\Framework\View\Layout\Reader\ContextFactory'),
+            'generatorContextFactory' => $objectManager->get('Magento\Framework\View\Layout\Generator\ContextFactory'),
         ];
     }
 }

@@ -2,7 +2,8 @@
 /**
  * Proxy generator
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Code\Generator;
 
@@ -46,7 +47,7 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
             'visibility' => 'protected',
             'docblock' => [
                 'shortDescription' => 'Proxied instance',
-                'tags' => [['name' => 'var', 'description' => '\\' . $this->_getSourceClassName()]],
+                'tags' => [['name' => 'var', 'description' => $this->getSourceClassName()]],
             ],
         ];
 
@@ -100,10 +101,10 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
             "return \$this->_subject;",
             'docblock' => [
                 'shortDescription' => 'Get proxied instance',
-                'tags' => [['name' => 'return', 'description' => '\\' . $this->_getSourceClassName()]],
+                'tags' => [['name' => 'return', 'description' => $this->getSourceClassName()]],
             ],
         ];
-        $reflectionClass = new \ReflectionClass($this->_getSourceClassName());
+        $reflectionClass = new \ReflectionClass($this->getSourceClassName());
         $publicMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
         foreach ($publicMethods as $method) {
             if (!($method->isConstructor() ||
@@ -126,7 +127,7 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _generateCode()
     {
-        $typeName = $this->_getFullyQualifiedClassName($this->_getSourceClassName());
+        $typeName = $this->getSourceClassName();
         $reflection = new \ReflectionClass($typeName);
 
         if ($reflection->isInterface()) {
@@ -180,7 +181,7 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
             'name' => '__construct',
             'parameters' => [
                 ['name' => 'objectManager', 'type' => '\Magento\Framework\ObjectManagerInterface'],
-                ['name' => 'instanceName', 'defaultValue' => $this->_getSourceClassName()],
+                ['name' => 'instanceName', 'defaultValue' => $this->getSourceClassName()],
                 ['name' => 'shared', 'defaultValue' => true],
             ],
             'body' => "\$this->_objectManager = \$objectManager;" .
@@ -224,7 +225,7 @@ class Proxy extends \Magento\Framework\Code\Generator\EntityAbstract
     {
         $result = parent::_validateData();
         if ($result) {
-            $sourceClassName = $this->_getSourceClassName();
+            $sourceClassName = $this->getSourceClassName();
             $resultClassName = $this->_getResultClassName();
 
             if ($resultClassName !== $sourceClassName . '\\Proxy') {

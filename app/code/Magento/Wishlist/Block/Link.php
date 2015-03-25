@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -37,6 +38,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link
         \Magento\Wishlist\Helper\Data $wishlistHelper,
         array $data = []
     ) {
+        $this->_isScopePrivate = true;
         $this->_wishlistHelper = $wishlistHelper;
         parent::__construct($context, $data);
     }
@@ -61,7 +63,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link
     }
 
     /**
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getLabel()
     {
@@ -98,7 +100,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link
      * Create button label based on wishlist item quantity
      *
      * @param int $count
-     * @return string|void
+     * @return \Magento\Framework\Phrase|void
      */
     protected function _createCounter($count)
     {

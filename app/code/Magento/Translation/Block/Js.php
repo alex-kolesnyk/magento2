@@ -1,54 +1,42 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Translation\Block;
 
-use Magento\Framework\Translate\InlineInterface as InlineTranslator;
-use Magento\Translation\Model\Js as DataProvider;
 use Magento\Framework\View\Element\Template;
+use Magento\Translation\Model\Js\Config;
 
-class Js extends \Magento\Framework\View\Element\Template
+class Js extends Template
 {
     /**
-     * Data provider model
-     *
-     * @var DataProvider
+     * @var Config
      */
-    protected $dataProvider;
-
-    /**
-     * Inline translator
-     *
-     * @var InlineTranslator
-     */
-    protected $translateInline;
+    protected $config;
 
     /**
      * @param Template\Context $context
-     * @param DataProvider $dataProvider
-     * @param InlineTranslator $translateInline
+     * @param Config $config
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
-        DataProvider $dataProvider,
-        InlineTranslator $translateInline,
+        Config $config,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->dataProvider = $dataProvider;
-        $this->translateInline = $translateInline;
+        $this->config = $config;
     }
 
     /**
-     * @return string
+     * Is js translation set to dictionary mode
+     *
+     * @return bool
      */
-    public function getTranslatedJson()
+    public function dictionaryEnabled()
     {
-        $json = \Zend_Json::encode($this->dataProvider->getTranslateData());
-        $this->translateInline->processResponseBody($json, false);
-        return $json;
+        return $this->config->dictionaryEnabled();
     }
 }

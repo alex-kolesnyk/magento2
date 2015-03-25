@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Controller;
@@ -18,6 +19,21 @@ abstract class AbstractResult implements ResultInterface
      * @var array
      */
     protected $headers = [];
+
+    /**
+     * @var string
+     */
+    protected $statusHeaderCode;
+
+    /**
+     * @var string
+     */
+    protected $statusHeaderVersion;
+
+    /**
+     * @var string
+     */
+    protected $statusHeaderPhrase;
 
     /**
      * Set response code to result
@@ -53,6 +69,20 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
+     * @param int|string $httpCode
+     * @param null|int|string $version
+     * @param null|string $phrase
+     * @return $this
+     */
+    public function setStatusHeader($httpCode, $version = null, $phrase = null)
+    {
+        $this->statusHeaderCode = $httpCode;
+        $this->statusHeaderVersion = $version;
+        $this->statusHeaderPhrase = $phrase;
+        return $this;
+    }
+
+    /**
      * @param ResponseInterface $response
      * @return $this
      */
@@ -61,7 +91,13 @@ abstract class AbstractResult implements ResultInterface
         if (!empty($this->httpResponseCode)) {
             $response->setHttpResponseCode($this->httpResponseCode);
         }
-
+        if ($this->statusHeaderCode) {
+            $response->setStatusHeader(
+                $this->statusHeaderCode,
+                $this->statusHeaderVersion,
+                $this->statusHeaderPhrase
+            );
+        }
         if (!empty($this->headers)) {
             foreach ($this->headers as $headerData) {
                 $response->setHeader($headerData['name'], $headerData['value'], $headerData['replace']);

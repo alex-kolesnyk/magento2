@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -19,13 +20,13 @@ class WordsTest extends \PHPUnit_Framework_TestCase
     {
         self::$_wordsFinder = new \Magento\TestFramework\Inspection\WordsFinder(
             glob(__DIR__ . '/_files/words_*.xml'),
-            \Magento\Framework\Test\Utility\Files::init()->getPathToSource()
+            \Magento\Framework\App\Utility\Files::init()->getPathToSource()
         );
     }
 
     public function testWords()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $file
@@ -36,7 +37,7 @@ class WordsTest extends \PHPUnit_Framework_TestCase
                     $this->fail("Found words: '" . implode("', '", $words) . "' in '{$file}' file");
                 }
             },
-            \Magento\Framework\Test\Utility\Files::init()->getAllFiles()
+            \Magento\Framework\App\Utility\Files::init()->getAllFiles()
         );
     }
 }

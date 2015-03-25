@@ -1,23 +1,20 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogSearch\Test\Constraint;
 
 use Magento\CatalogSearch\Test\Fixture\CatalogSearchQuery;
 use Magento\Cms\Test\Page\CmsIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertSuggestSearchingResult
  */
 class AssertSuggestSearchingResult extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'high';
-    /* end tags */
-
     /**
      * Check that after input some text(e.g. product name) into search field, drop-down window is appeared.
      * Window contains requested entity and number of quantity.

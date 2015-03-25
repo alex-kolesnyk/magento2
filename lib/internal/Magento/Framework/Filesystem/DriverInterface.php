@@ -2,7 +2,8 @@
 /**
  * Interface of Magento filesystem driver
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem;
 
@@ -142,6 +143,17 @@ interface DriverInterface
      * @throws FilesystemException
      */
     public function copy($source, $destination, DriverInterface $targetDriver = null);
+
+    /**
+     * Create symlink on source and place it into destination
+     *
+     * @param string $source
+     * @param string $destination
+     * @param DriverInterface|null $targetDriver
+     * @return bool
+     * @throws FilesystemException
+     */
+    public function symlink($source, $destination, DriverInterface $targetDriver = null);
 
     /**
      * Delete file
@@ -336,6 +348,14 @@ interface DriverInterface
      * @return mixed
      */
     public function getRealPath($path);
+
+    /**
+     * Return correct path for link
+     *
+     * @param string $path
+     * @return mixed
+     */
+    public function getRealPathSafety($path);
 
     /**
      * @param string $basePath

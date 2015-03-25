@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Controller\Adminhtml\Page;
 
@@ -13,7 +14,7 @@ class PostDataProcessor
     protected $dateFilter;
 
     /**
-     * @var \Magento\Core\Model\Layout\Update\ValidatorFactory
+     * @var \Magento\Framework\View\Model\Layout\Update\ValidatorFactory
      */
     protected $validatorFactory;
 
@@ -25,12 +26,12 @@ class PostDataProcessor
     /**
      * @param \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
-     * @param \Magento\Core\Model\Layout\Update\ValidatorFactory $validatorFactory
+     * @param \Magento\Framework\View\Model\Layout\Update\ValidatorFactory $validatorFactory
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\Filter\Date $dateFilter,
         \Magento\Framework\Message\ManagerInterface $messageManager,
-        \Magento\Core\Model\Layout\Update\ValidatorFactory $validatorFactory
+        \Magento\Framework\View\Model\Layout\Update\ValidatorFactory $validatorFactory
     ) {
         $this->dateFilter = $dateFilter;
         $this->messageManager = $messageManager;
@@ -64,7 +65,7 @@ class PostDataProcessor
     {
         $errorNo = true;
         if (!empty($data['layout_update_xml']) || !empty($data['custom_layout_update_xml'])) {
-            /** @var $validatorCustomLayout \Magento\Core\Model\Layout\Update\Validator */
+            /** @var $validatorCustomLayout \Magento\Framework\View\Model\Layout\Update\Validator */
             $validatorCustomLayout = $this->validatorFactory->create();
             if (!empty($data['layout_update_xml']) && !$validatorCustomLayout->isValid($data['layout_update_xml'])) {
                 $errorNo = false;

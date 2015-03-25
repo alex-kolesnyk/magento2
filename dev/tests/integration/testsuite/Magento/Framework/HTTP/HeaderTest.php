@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\HTTP;
+
+use Zend\Stdlib\Parameters;
 
 class HeaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +21,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
         /** @var \Magento\TestFramework\Request $request */
         $request = $objectManager->get('Magento\TestFramework\Request');
-        $request->setServer(['HTTP_HOST' => 'localhost']);
+        $request->setServer(new Parameters(['HTTP_HOST' => 'localhost']));
     }
 
     public function testGetHttpHeaderMethods()
@@ -33,6 +36,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetRequestUri()
     {
-        $this->assertNull($this->_header->getRequestUri());
+        $this->assertEquals('/', $this->_header->getRequestUri());
     }
 }

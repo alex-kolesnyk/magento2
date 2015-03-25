@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/layout_generic.xsd">
@@ -13,7 +14,7 @@
             <container name="checkout.onepage.review.info.items.before" as="items_before" label="Items Before"/>
             <container name="checkout.onepage.review.info.items.after" as="items_after" label="Items After"/>
             <block class="Magento\Checkout\Block\Onepage\Review\Button" name="checkout.onepage.review.button" as="button" template="Magento_Checkout::onepage/review/button.phtml"/>
-            <block class="Magento\Framework\View\Element\Template" name="additional.product.info" template="Magento_Core::template.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="additional.product.info" template="Magento_Theme::template.phtml"/>
         </block>
     </container>
 </layout>

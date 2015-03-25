@@ -1,15 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Factory;
+
+use Magento\Framework\ObjectManagerInterface;
 
 abstract class AbstractFactory implements \Magento\Framework\ObjectManager\FactoryInterface
 {
     /**
      * Object manager
      *
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
@@ -36,13 +39,13 @@ abstract class AbstractFactory implements \Magento\Framework\ObjectManager\Facto
 
     /**
      * @param \Magento\Framework\ObjectManager\ConfigInterface $config
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      * @param \Magento\Framework\ObjectManager\DefinitionInterface $definitions
      * @param array $globalArguments
      */
     public function __construct(
         \Magento\Framework\ObjectManager\ConfigInterface $config,
-        \Magento\Framework\ObjectManagerInterface $objectManager = null,
+        ObjectManagerInterface $objectManager = null,
         \Magento\Framework\ObjectManager\DefinitionInterface $definitions = null,
         $globalArguments = []
     ) {
@@ -55,11 +58,11 @@ abstract class AbstractFactory implements \Magento\Framework\ObjectManager\Facto
     /**
      * Set object manager
      *
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManagerInterface $objectManager
      *
      * @return void
      */
-    public function setObjectManager(\Magento\Framework\ObjectManagerInterface $objectManager)
+    public function setObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }

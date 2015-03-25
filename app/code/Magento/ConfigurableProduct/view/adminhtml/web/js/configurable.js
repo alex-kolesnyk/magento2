@@ -1,12 +1,14 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /**************************** CONFIGURABLE PRODUCT **************************/
 define([
     'jquery',
+    'mage/template',
     'mage/translate',
     'prototype'
-], function(jQuery){
+], function(jQuery, mageTemplate){
 
 if (typeof Product == 'undefined') {
     window.Product = {};
@@ -45,7 +47,7 @@ Product.Config.prototype = {
             this.settings   = $$('.super-attribute-select');
         }
         this.state      = new Hash();
-        this.priceTemplate = new Template(this.config.template);
+        this.priceTemplate = mageTemplate(this.config.template);
         this.prices     = config.prices;
         this.values     = {};
 
@@ -250,7 +252,11 @@ Product.Config.prototype = {
             str+= this.prices[roundedPrice];
         }
         else {
-            str+= this.priceTemplate.evaluate({price:price.toFixed(2)});
+            str+= this.priceTemplate({
+                data: {
+                    price:price.toFixed(2)
+                }
+            });
         }
         return str;
     },

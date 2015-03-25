@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product;
 
@@ -18,12 +19,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
                 'attribute_id' => 100500,
                 'frontend_input' => 'some_input',
             ];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/edit/attribute_id/100500',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -43,12 +44,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
             'popup' => 'true',
             'new_attribute_set_name' => 'new_attribute_set',
         ];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product/addAttribute/attribute/5',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -63,12 +64,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testWithExceptionWhenSaveAttribute()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => 0, 'frontend_input' => 'boolean'];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/edit/attribute_id/0',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -81,12 +82,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testWrongAttributeId()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => 100500];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/index',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -106,12 +107,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
                 'set' => 4,
                 'frontend_input' => 'boolean',
             ];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/index',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -127,12 +128,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testWrongAttributeCode()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => '2', 'attribute_code' => '_()&&&?'];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/edit/attribute_id/2',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
         /** @var \Magento\Framework\Message\Collection $messages */
         $messages = $this->_objectManager->create('Magento\Framework\Message\ManagerInterface')->getMessages();
@@ -152,12 +153,12 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testAttributeWithoutEntityTypeId()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => '2', 'new_attribute_set_name' => ' '];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals(302, $this->getResponse()->getHttpResponseCode());
         $this->assertContains(
             'catalog/product_attribute/index',
-            $this->getResponse()->getHeader('Location')['value']
+            $this->getResponse()->getHeader('Location')->getFieldValue()
         );
     }
 
@@ -167,7 +168,7 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testSaveActionApplyToDataSystemAttribute()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => '2'];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $model = $this->_objectManager->create('Magento\Catalog\Model\Resource\Eav\Attribute');
         $model->load($postData['attribute_id']);
@@ -180,7 +181,7 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     public function testSaveActionApplyToDataUserDefinedAttribute()
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => '1'];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         /** @var \Magento\Catalog\Model\Resource\Eav\Attribute $model */
         $model = $this->_objectManager->create('Magento\Catalog\Model\Resource\Eav\Attribute');
@@ -195,7 +196,7 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
     {
         $postData = $this->_getAttributeData() + ['attribute_id' => '3'];
         unset($postData['apply_to']);
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $model = $this->_objectManager->create('Magento\Catalog\Model\Resource\Eav\Attribute');
         $model->load($postData['attribute_id']);
@@ -214,7 +215,7 @@ class AttributeTest extends \Magento\Backend\Utility\Controller
         $this->assertEquals('predefined string translation', $this->_translate('string to translate'));
         $string->saveTranslate('string to translate', 'new string translation');
         $postData = $this->_getAttributeData() + ['attribute_id' => 1];
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/catalog/product_attribute/save');
         $this->assertEquals('new string translation', $this->_translate('string to translate'));
     }

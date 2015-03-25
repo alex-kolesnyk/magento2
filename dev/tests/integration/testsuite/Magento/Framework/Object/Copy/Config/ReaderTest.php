@@ -2,7 +2,8 @@
 /**
  * \Magento\Framework\Object\Copy\Config\Reader
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Object\Copy\Config;
 
@@ -52,10 +53,10 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($fileList);
         $expected = [
             'global' => [
-                'sales_convert_quote_item' => [
+                'quote_convert_item' => [
                     'event_id' => ['to_order_item' => "*"],
                     'event_name' => ['to_order_item' => "*"],
-                    'event_description' => ['to_order_item' => "complexDesciption"],
+                    'event_description' => ['to_order_item' => "complexDescription"],
                 ],
             ],
         ];

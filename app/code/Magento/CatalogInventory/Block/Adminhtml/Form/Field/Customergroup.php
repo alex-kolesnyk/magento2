@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogInventory\Block\Adminhtml\Form\Field;
@@ -74,7 +75,7 @@ class Customergroup extends \Magento\Framework\View\Element\Html\Select
      */
     protected function _getCustomerGroups($groupId = null)
     {
-        if (is_null($this->_customerGroups)) {
+        if ($this->_customerGroups === null) {
             $this->_customerGroups = [];
             foreach ($this->groupRepository->getList($this->searchCriteriaBuilder->create())->getItems() as $item) {
                 $this->_customerGroups[$item->getId()] = $item->getCode();
@@ -82,7 +83,7 @@ class Customergroup extends \Magento\Framework\View\Element\Html\Select
             $notLoggedInGroup = $this->groupManagement->getNotLoggedInGroup();
             $this->_customerGroups[$notLoggedInGroup->getId()] = $notLoggedInGroup->getCode();
         }
-        if (!is_null($groupId)) {
+        if ($groupId !== null) {
             return isset($this->_customerGroups[$groupId]) ? $this->_customerGroups[$groupId] : null;
         }
         return $this->_customerGroups;

@@ -1,13 +1,14 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite;
 
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
-use Magento\Framework\Model\Exception;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\UrlRewrite\Model\UrlFinderInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
@@ -51,7 +52,7 @@ class Save extends \Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite
      *
      * @param \Magento\UrlRewrite\Model\UrlRewrite $model
      * @return void
-     * @throws Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _handleCatalogUrlRewrite($model)
     {
@@ -74,7 +75,7 @@ class Save extends \Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite
      *
      * @param \Magento\UrlRewrite\Model\UrlRewrite $model
      * @return string
-     * @throws Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function getTargetPath($model)
     {
@@ -91,7 +92,7 @@ class Save extends \Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite
                 $message = $model->getEntityType() === self::ENTITY_TYPE_PRODUCT
                     ? __('Chosen product does not associated with the chosen store or category.')
                     : __('Chosen category does not associated with the chosen store.');
-                throw new Exception($message);
+                throw new LocalizedException($message);
             }
             $targetPath = $rewrite->getRequestPath();
         }
@@ -137,7 +138,7 @@ class Save extends \Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite
      */
     public function execute()
     {
-        $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getPostValue();
         if ($data) {
             /** @var $session \Magento\Backend\Model\Session */
             $session = $this->_objectManager->get('Magento\Backend\Model\Session');
@@ -161,7 +162,7 @@ class Save extends \Magento\UrlRewrite\Controller\Adminhtml\Url\Rewrite
                 $this->messageManager->addSuccess(__('The URL Rewrite has been saved.'));
                 $this->_redirect('adminhtml/*/');
                 return;
-            } catch (Exception $e) {
+            } catch (LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
                 $session->setUrlRewriteData($data);
             } catch (\Exception $e) {

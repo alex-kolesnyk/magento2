@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -24,7 +25,7 @@ class Validator extends \Zend_Validate_Abstract
     public function __construct()
     {
         // set translated message template
-        $this->setMessage(__("Invalid URL '%value%'."), self::INVALID_URL);
+        $this->setMessage((string)new \Magento\Framework\Phrase("Invalid URL '%value%'."), self::INVALID_URL);
     }
 
     /**

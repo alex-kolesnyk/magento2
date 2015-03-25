@@ -20,6 +20,7 @@ atlassian*
 /lib/internal/flex/varien/.project
 /lib/internal/flex/varien/.settings
 /node_modules
+/.grunt
 
 /pub/media/*.*
 !/pub/media/.htaccess
@@ -32,6 +33,8 @@ atlassian*
 /pub/media/theme/*
 /pub/media/theme_customization/*
 !/pub/media/theme_customization/.htaccess
+/pub/media/wysiwyg/*
+!/pub/media/wysiwyg/.htaccess
 /pub/media/tmp/*
 !/pub/media/tmp/.htaccess
 /pub/static/*

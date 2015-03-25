@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model;
 
@@ -13,20 +14,20 @@ class OptionTypeList implements \Magento\Bundle\Api\ProductOptionTypeListInterfa
     protected $types;
 
     /**
-     * @var \Magento\Bundle\Api\Data\OptionTypeDataBuilder
+     * @var \Magento\Bundle\Api\Data\OptionTypeInterfaceFactory
      */
-    protected $typeBuilder;
+    protected $typeFactory;
 
     /**
      * @param Source\Option\Type $type
-     * @param \Magento\Bundle\Api\Data\OptionTypeDataBuilder $typeBuilder
+     * @param \Magento\Bundle\Api\Data\OptionTypeInterfaceFactory $typeFactory
      */
     public function __construct(
         \Magento\Bundle\Model\Source\Option\Type $type,
-        \Magento\Bundle\Api\Data\OptionTypeDataBuilder $typeBuilder
+        \Magento\Bundle\Api\Data\OptionTypeInterfaceFactory $typeFactory
     ) {
         $this->types = $type;
-        $this->typeBuilder = $typeBuilder;
+        $this->typeFactory = $typeFactory;
     }
 
     /**
@@ -39,7 +40,7 @@ class OptionTypeList implements \Magento\Bundle\Api\ProductOptionTypeListInterfa
         /** @var \Magento\Bundle\Api\Data\OptionTypeInterface[] $typeList */
         $typeList = [];
         foreach ($optionList as $option) {
-            $typeList[] = $this->typeBuilder->setCode($option['value'])->setLabel($option['label'])->create();
+            $typeList[] = $this->typeFactory->create()->setCode($option['value'])->setLabel($option['label']);
         }
         return $typeList;
     }

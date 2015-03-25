@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Dashboard;
 
@@ -83,7 +84,7 @@ class Bar extends \Magento\Backend\Block\Dashboard\AbstractDashboard
      */
     public function getCurrency()
     {
-        if (is_null($this->_currentCurrencyCode)) {
+        if ($this->_currentCurrencyCode === null) {
             if ($this->getRequest()->getParam('store')) {
                 $this->_currentCurrencyCode = $this->_storeManager->getStore(
                     $this->getRequest()->getParam('store')

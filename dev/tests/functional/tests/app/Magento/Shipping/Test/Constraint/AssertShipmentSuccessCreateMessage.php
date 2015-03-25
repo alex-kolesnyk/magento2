@@ -1,23 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Shipping\Test\Constraint;
 
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class AssertShipmentSuccessCreateMessage
  * Assert that success message is displayed after shipment has been created
  */
 class AssertShipmentSuccessCreateMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Shipment created success message
      */
@@ -26,14 +22,14 @@ class AssertShipmentSuccessCreateMessage extends AbstractConstraint
     /**
      * Assert success message presents
      *
-     * @param OrderView $orderView
+     * @param SalesOrderView $salesOrderView
      * @return void
      */
-    public function processAssert(OrderView $orderView)
+    public function processAssert(SalesOrderView $salesOrderView)
     {
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
-            $orderView->getMessagesBlock()->getSuccessMessages()
+            $salesOrderView->getMessagesBlock()->getSuccessMessages()
         );
     }
 

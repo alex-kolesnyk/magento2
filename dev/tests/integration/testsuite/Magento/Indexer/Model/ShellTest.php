@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Indexer\Model;
 
@@ -64,7 +65,7 @@ class ShellTest extends \PHPUnit_Framework_TestCase
         );
         foreach ($indexerCollection->getItems() as $indexer) {
             /** @var \Magento\Indexer\Model\IndexerInterface $indexer */
-            $this->assertContains($indexer->getTitle(), $result);
+            $this->assertContains((string)$indexer->getTitle(), $result);
         }
     }
 

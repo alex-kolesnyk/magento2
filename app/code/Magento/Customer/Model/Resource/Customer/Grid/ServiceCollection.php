@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Resource\Customer\Grid;
 
-use Magento\Core\Model\EntityFactory;
+use Magento\Framework\Data\Collection\EntityFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\CustomerInterface;
 use Magento\Framework\Api\AbstractServiceCollection;
@@ -23,7 +24,7 @@ class ServiceCollection extends AbstractServiceCollection
     protected $customerRepository;
 
     /**
-     * @param EntityFactory $entityFactory
+     * @param \Magento\Framework\Data\Collection\EntityFactory $entityFactory
      * @param FilterBuilder $filterBuilder
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param CustomerRepositoryInterface $customerRepository
@@ -95,7 +96,7 @@ class ServiceCollection extends AbstractServiceCollection
             $customerItem->setBillingTelephone($billingAddress->getTelephone());
             $customerItem->setBillingPostcode($billingAddress->getPostcode());
             $customerItem->setBillingCountryId($billingAddress->getCountryId());
-            $region = is_null($billingAddress->getRegion()) ? '' : $billingAddress->getRegion()->getRegion();
+            $region = $billingAddress->getRegion() === null ? '' : $billingAddress->getRegion()->getRegion();
             $customerItem->setBillingRegion($region);
         }
         return $customerItem;

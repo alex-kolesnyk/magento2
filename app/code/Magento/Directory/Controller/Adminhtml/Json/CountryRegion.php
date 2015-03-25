@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Directory\Controller\Adminhtml\Json;
 
@@ -31,7 +32,7 @@ class CountryRegion extends \Magento\Backend\App\Action
             }
         }
         $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($arrRes)
+            $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($arrRes)
         );
     }
 }

@@ -1,41 +1,56 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Controller\Adminhtml\System\Config\Validatevat;
 
 class ValidateAdvanced extends \Magento\Customer\Controller\Adminhtml\System\Config\Validatevat
 {
     /**
+     * @var \Magento\Framework\Controller\Result\JsonFactory
+     */
+    protected $resultJsonFactory;
+
+    /**
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+    ) {
+        parent::__construct($context);
+        $this->resultJsonFactory = $resultJsonFactory;
+    }
+
+    /**
      * Retrieve validation result as JSON
      *
-     * @return void
+     * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
     {
-        /** @var $coreHelper \Magento\Core\Helper\Data */
-        $coreHelper = $this->_objectManager->get('Magento\Core\Helper\Data');
-
         $result = $this->_validate();
         $valid = $result->getIsValid();
         $success = $result->getRequestSuccess();
         // ID of the store where order is placed
         $storeId = $this->getRequest()->getParam('store_id');
         // Sanitize value if needed
-        if (!is_null($storeId)) {
+        if ($storeId !== null) {
             $storeId = (int)$storeId;
         }
 
-        $groupId = $this->_objectManager->get(
-            'Magento\Customer\Model\Vat'
-        )->getCustomerGroupIdBasedOnVatNumber(
-            $this->getRequest()->getParam('country'),
-            $result,
-            $storeId
-        );
+        $groupId = $this->_objectManager->get('Magento\Customer\Model\Vat')
+            ->getCustomerGroupIdBasedOnVatNumber(
+                $this->getRequest()->getParam('country'),
+                $result,
+                $storeId
+            );
 
-        $body = $coreHelper->jsonEncode(['valid' => $valid, 'group' => $groupId, 'success' => $success]);
-        $this->getResponse()->representJson($body);
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
+        $resultJson = $this->resultJsonFactory->create();
+        return $resultJson->setData(['valid' => $valid, 'group' => $groupId, 'success' => $success]);
     }
 }

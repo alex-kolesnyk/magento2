@@ -1,11 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Store\Model;
 
 use Magento\Framework\Profiler;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class StorageFactory
 {
     /**
@@ -29,11 +33,6 @@ class StorageFactory
      * @var \Magento\Framework\Event\ManagerInterface
      */
     protected $_eventManager;
-
-    /**
-     * @var \Magento\Framework\Logger
-     */
-    protected $_log;
 
     /**
      * @var \Magento\Framework\Session\SidResolverInterface
@@ -63,7 +62,6 @@ class StorageFactory
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
-     * @param \Magento\Framework\Logger $logger
      * @param \Magento\Framework\Session\SidResolverInterface $sidResolver
      * @param \Magento\Framework\App\State $appState
      * @param \Magento\Framework\App\Http\Context $httpContext
@@ -75,7 +73,6 @@ class StorageFactory
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Magento\Framework\Logger $logger,
         \Magento\Framework\Session\SidResolverInterface $sidResolver,
         \Magento\Framework\App\State $appState,
         \Magento\Framework\App\Http\Context $httpContext,
@@ -87,7 +84,6 @@ class StorageFactory
         $this->_objectManager = $objectManager;
         $this->_storageClassName = $storageClassName;
         $this->_eventManager = $eventManager;
-        $this->_log = $logger;
         $this->_appState = $appState;
         $this->_sidResolver = $sidResolver;
         $this->_writerModel = $writerModel;
@@ -127,36 +123,6 @@ class StorageFactory
                 $this->_sidResolver->setUseSessionInUrl($useSid);
 
                 $this->_eventManager->dispatch('core_app_init_current_store_after');
-
-                $store = $storage->getStore(true);
-                $logActive = $this->_scopeConfig->isSetFlag(
-                    'dev/log/active',
-                    \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-                    $store
-                );
-                if ($logActive || $this->_appState->getMode() === \Magento\Framework\App\State::MODE_DEVELOPER) {
-                    $logFile = $this->_scopeConfig->getValue(
-                        'dev/log/file',
-                        \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-                        $store
-                    );
-                    $logExceptionFile = $this->_scopeConfig->getValue(
-                        'dev/log/exception_file',
-                        \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-                        $store
-                    );
-                    $this->_log->unsetLoggers();
-                    $this->_log->addStreamLog(
-                        \Magento\Framework\Logger::LOGGER_SYSTEM,
-                        $logFile,
-                        $this->_writerModel
-                    );
-                    $this->_log->addStreamLog(
-                        \Magento\Framework\Logger::LOGGER_EXCEPTION,
-                        $logExceptionFile,
-                        $this->_writerModel
-                    );
-                }
             }
         }
         return $this->_cache[$className];
@@ -178,7 +144,7 @@ class StorageFactory
 
         $scopeCode = $arguments['scopeCode'];
         $scopeType = $arguments['scopeType'] ?: ScopeInterface::SCOPE_STORE;
-        if (empty($scopeCode) && false == is_null($storage->getWebsite(true))) {
+        if (empty($scopeCode) && false == ($storage->getWebsite(true) === null)) {
             $scopeCode = $storage->getWebsite(true)->getCode();
             $scopeType = ScopeInterface::SCOPE_WEBSITE;
         }

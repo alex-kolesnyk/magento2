@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -24,12 +25,12 @@ class CopyService
     protected $_fileFactory;
 
     /**
-     * @var \Magento\Core\Model\Layout\Link
+     * @var \Magento\Widget\Model\Layout\Link
      */
     protected $_link;
 
     /**
-     * @var \Magento\Core\Model\Layout\UpdateFactory
+     * @var \Magento\Widget\Model\Layout\UpdateFactory
      */
     protected $_updateFactory;
 
@@ -46,16 +47,16 @@ class CopyService
     /**
      * @param \Magento\Framework\Filesystem $filesystem
      * @param \Magento\Framework\View\Design\Theme\FileFactory $fileFactory
-     * @param \Magento\Core\Model\Layout\Link $link
-     * @param \Magento\Core\Model\Layout\UpdateFactory $updateFactory
+     * @param \Magento\Widget\Model\Layout\Link $link
+     * @param \Magento\Widget\Model\Layout\UpdateFactory $updateFactory
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Framework\View\Design\Theme\Customization\Path $customization
      */
     public function __construct(
         \Magento\Framework\Filesystem $filesystem,
         \Magento\Framework\View\Design\Theme\FileFactory $fileFactory,
-        \Magento\Core\Model\Layout\Link $link,
-        \Magento\Core\Model\Layout\UpdateFactory $updateFactory,
+        \Magento\Widget\Model\Layout\Link $link,
+        \Magento\Widget\Model\Layout\UpdateFactory $updateFactory,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\View\Design\Theme\Customization\Path $customization
     ) {
@@ -90,13 +91,13 @@ class CopyService
      */
     protected function _copyDatabaseCustomization(ThemeInterface $source, ThemeInterface $target)
     {
-        /** @var $themeFile \Magento\Core\Model\Theme\File */
+        /** @var $themeFile \Magento\Theme\Model\Theme\File */
         foreach ($target->getCustomization()->getFiles() as $themeFile) {
             $themeFile->delete();
         }
-        /** @var $newFile \Magento\Core\Model\Theme\File */
+        /** @var $newFile \Magento\Theme\Model\Theme\File */
         foreach ($source->getCustomization()->getFiles() as $themeFile) {
-            /** @var $newThemeFile \Magento\Core\Model\Theme\File */
+            /** @var $newThemeFile \Magento\Theme\Model\Theme\File */
             $newThemeFile = $this->_fileFactory->create();
             $newThemeFile->setData(
                 [
@@ -121,17 +122,17 @@ class CopyService
     protected function _copyLayoutCustomization(ThemeInterface $source, ThemeInterface $target)
     {
         $update = $this->_updateFactory->create();
-        /** @var $targetUpdates \Magento\Core\Model\Resource\Layout\Update\Collection */
+        /** @var $targetUpdates \Magento\Widget\Model\Resource\Layout\Update\Collection */
         $targetUpdates = $update->getCollection();
         $targetUpdates->addThemeFilter($target->getId());
         $targetUpdates->delete();
 
-        /** @var $sourceCollection \Magento\Core\Model\Resource\Layout\Link\Collection */
+        /** @var $sourceCollection \Magento\Widget\Model\Resource\Layout\Link\Collection */
         $sourceCollection = $this->_link->getCollection();
         $sourceCollection->addThemeFilter($source->getId());
-        /** @var $layoutLink \Magento\Core\Model\Layout\Link */
+        /** @var $layoutLink \Magento\Widget\Model\Layout\Link */
         foreach ($sourceCollection as $layoutLink) {
-            /** @var $update \Magento\Core\Model\Layout\Update */
+            /** @var $update \Magento\Widget\Model\Layout\Update */
             $update = $this->_updateFactory->create();
             $update->load($layoutLink->getLayoutUpdateId());
             if ($update->getId()) {
@@ -196,11 +197,10 @@ class CopyService
      */
     protected function _deleteFilesRecursively($targetDir)
     {
-        if (!$this->_directory->isExist($targetDir)) {
-            return;
-        }
-        foreach ($this->_directory->read($targetDir) as $path) {
-            $this->_directory->delete($path);
+        if ($this->_directory->isExist($targetDir)) {
+            foreach ($this->_directory->read($targetDir) as $path) {
+                $this->_directory->delete($path);
+            }
         }
     }
 }

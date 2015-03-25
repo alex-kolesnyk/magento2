@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model\Product\Attribute\Backend;
@@ -69,7 +70,7 @@ class Stock extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      * Validate
      *
      * @param Product $object
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return bool
      */
     public function validate($object)
@@ -77,7 +78,7 @@ class Stock extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
         $attrCode = $this->getAttribute()->getAttributeCode();
         $value = $object->getData($attrCode);
         if (!empty($value['qty']) && !preg_match('/^-?\d*(\.|,)?\d{0,4}$/i', $value['qty'])) {
-            throw new \Magento\Framework\Model\Exception(__('Please enter a valid number in this field.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please enter a valid number in this field.'));
         }
         return true;
     }

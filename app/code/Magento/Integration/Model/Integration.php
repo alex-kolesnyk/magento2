@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Model;
 
@@ -12,8 +13,8 @@ namespace Magento\Integration\Model;
  * @method \string getEmail()
  * @method Integration setEmail(\string $email)
  * @method Integration setStatus(\int $value)
- * @method \int getType()
- * @method Integration setType(\int $value)
+ * @method \int getSetupType()
+ * @method Integration setSetupType(\int $value)
  * @method Integration setConsumerId(\string $consumerId)
  * @method \string getConsumerId()
  * @method \string getEndpoint()

@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GroupedProduct\Test\Constraint;
 
-use Magento\GroupedProduct\Test\Fixture\GroupedProductInjectable;
+use Magento\GroupedProduct\Test\Fixture\GroupedProduct;
 use Magento\Wishlist\Test\Constraint\AssertProductInCustomerWishlistOnBackendGrid;
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class AssertGroupedProductInCustomerWishlistOnBackendGrid
@@ -36,7 +37,7 @@ class AssertGroupedProductInCustomerWishlistOnBackendGrid extends AssertProductI
      */
     protected function prepareOptions(FixtureInterface $product)
     {
-        /** @var GroupedProductInjectable $product */
+        /** @var GroupedProduct $product */
         $productOptions = [];
         $checkoutData = $product->getCheckoutData()['options'];
         if (count($checkoutData)) {

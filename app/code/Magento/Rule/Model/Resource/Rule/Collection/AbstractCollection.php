@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -133,7 +134,7 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
      *
      * @param string $entityType
      *
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return array
      */
     protected function _getAssociatedEntityInfo($entityType)
@@ -142,9 +143,8 @@ abstract class AbstractCollection extends \Magento\Framework\Model\Resource\Db\C
             return $this->_associatedEntitiesMap[$entityType];
         }
 
-        throw new \Magento\Framework\Model\Exception(
-            __('There is no information about associated entity type "%1".', $entityType),
-            0
+        throw new \Magento\Framework\Exception\LocalizedException(
+            __('There is no information about associated entity type "%1".', $entityType)
         );
     }
 }

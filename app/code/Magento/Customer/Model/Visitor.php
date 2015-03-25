@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Model;
@@ -132,12 +133,15 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
         if ($this->skipRequestLogging || $this->isModuleIgnored($observer)) {
             return $this;
         }
+
         if ($this->session->getVisitorData()) {
             $this->setData($this->session->getVisitorData());
         }
+
+        $this->setLastVisitAt((new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT));
+
         if (!$this->getId()) {
             $this->setSessionId($this->session->getSessionId());
-            $this->setLastVisitAt($this->dateTime->now());
             $this->save();
             $this->_eventManager->dispatch('visitor_init', ['visitor' => $this]);
             $this->session->setVisitorData($this->getData());
@@ -164,7 +168,7 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
             $this->_eventManager->dispatch('visitor_activity_save', ['visitor' => $this]);
             $this->session->setVisitorData($this->getData());
         } catch (\Exception $e) {
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
         }
         return $this;
     }

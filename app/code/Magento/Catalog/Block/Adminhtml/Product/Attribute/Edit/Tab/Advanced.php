@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Product attribute add/edit form main tab
@@ -11,7 +14,7 @@
 namespace Magento\Catalog\Block\Adminhtml\Product\Attribute\Edit\Tab;
 
 use Magento\Backend\Block\Widget\Form\Generic;
-use Magento\Backend\Model\Config\Source\Yesno;
+use Magento\Config\Model\Config\Source\Yesno;
 use Magento\Eav\Helper\Data;
 
 class Advanced extends Generic
@@ -53,6 +56,7 @@ class Advanced extends Generic
      * Adding product form elements for editing attribute
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareForm()
     {
@@ -111,7 +115,7 @@ class Advanced extends Generic
             ]
         );
 
-        $dateFormat = $this->_localeDate->getDateFormat(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT);
+        $dateFormat = $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT);
         $fieldset->addField(
             'default_value_date',
             'date',
@@ -119,7 +123,7 @@ class Advanced extends Generic
                 'name' => 'default_value_date',
                 'label' => __('Default Value'),
                 'title' => __('Default Value'),
-                'image' => $this->getViewFileUrl('images/grid-cal.gif'),
+                'image' => $this->getViewFileUrl('images/grid-cal.png'),
                 'value' => $attributeObject->getDefaultValue(),
                 'date_format' => $dateFormat
             ]

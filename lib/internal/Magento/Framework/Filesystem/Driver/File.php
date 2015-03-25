@@ -2,7 +2,8 @@
 /**
  * Origin filesystem driver
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Filesystem\Driver;
 
@@ -274,6 +275,34 @@ class File implements DriverInterface
             throw new FilesystemException(
                 sprintf(
                     'The file or directory "%s" cannot be copied to "%s" %s',
+                    $source,
+                    $destination,
+                    $this->getWarningMessage()
+                )
+            );
+        }
+        return $result;
+    }
+
+    /**
+     * Create symlink on source and place it into destination
+     *
+     * @param string $source
+     * @param string $destination
+     * @param DriverInterface|null $targetDriver
+     * @return bool
+     * @throws FilesystemException
+     */
+    public function symlink($source, $destination, DriverInterface $targetDriver = null)
+    {
+        $result = false;
+        if (get_class($targetDriver) == get_class($this)) {
+            $result = @symlink($this->getScheme() . $source, $destination);
+        }
+        if (!$result) {
+            throw new FilesystemException(
+                sprintf(
+                    'Cannot create a symlink for "%s" and place it to "%s" %s',
                     $source,
                     $destination,
                     $this->getWarningMessage()
@@ -711,5 +740,31 @@ class File implements DriverInterface
     public function getRealPath($path)
     {
         return realpath($path);
+    }
+
+    /**
+     * Return correct path for link
+     *
+     * @param string $path
+     * @return mixed
+     */
+    public function getRealPathSafety($path)
+    {
+        if (strpos($path, DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR) === false) {
+            return $path;
+        }
+        $pathParts = explode(DIRECTORY_SEPARATOR, $path);
+        $realPath = [];
+        foreach ($pathParts as $pathPart) {
+            if ($pathPart == '.') {
+                continue;
+            }
+            if ($pathPart == '..') {
+                array_pop($realPath);
+                continue;
+            }
+            $realPath[] = $pathPart;
+        }
+        return implode(DIRECTORY_SEPARATOR, $realPath);
     }
 }

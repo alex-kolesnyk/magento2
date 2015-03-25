@@ -1,42 +1,42 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\ObjectManager\ConfigLoader;
 
-use Magento\Framework\App\Area;
+use Magento\Framework\ObjectManager\ConfigLoaderInterface;
 
-class Compiled extends \Magento\Framework\App\ObjectManager\ConfigLoader
+class Compiled implements ConfigLoaderInterface
 {
     /**
      * Global config
      *
      * @var array
      */
-    private $globalConfig = [];
+    private $configCache = [];
 
     /**
-     * Compiled construct
-     *
-     * @param array $globalConfig
-     */
-    public function __construct(array $globalConfig = [])
-    {
-        $this->globalConfig = $globalConfig;
-    }
-
-    /**
-     * Load modules DI configuration
-     *
-     * @param string $area
-     * @return array|mixed
+     * {inheritdoc}
      */
     public function load($area)
     {
-        if ($area == Area::AREA_GLOBAL) {
-            return $this->globalConfig;
+        if (isset($this->configCache[$area])) {
+            return $this->configCache[$area];
         }
-        return \unserialize(\file_get_contents(BP . '/var/di/' . $area . '.ser'));
+        $this->configCache[$area] = \unserialize(\file_get_contents(self::getFilePath($area)));
+        return $this->configCache[$area];
+    }
+
+    /**
+     * Returns path to cached configuration
+     *
+     * @param string $area
+     * @return string
+     */
+    public static function getFilePath($area)
+    {
+        return BP . '/var/di/' . $area . '.ser';
     }
 }

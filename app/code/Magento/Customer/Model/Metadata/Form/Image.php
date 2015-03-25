@@ -2,7 +2,8 @@
 /**
  * Form Element Image Data Model
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Metadata\Form;
 
@@ -16,6 +17,8 @@ class Image extends File
      *
      * @param array $value
      * @return string[]
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _validateByRules($value)
     {
@@ -45,7 +48,7 @@ class Image extends File
             'max_file_size'
         );
         $errors = [];
-        if (!is_null($maxFileSize)) {
+        if ($maxFileSize !== null) {
             $size = $value['size'];
             if ($maxFileSize < $size) {
                 $errors[] = __('"%1" exceeds the allowed file size.', $label);
@@ -56,7 +59,7 @@ class Image extends File
             $rules,
             'max_image_width'
         );
-        if (!is_null($maxImageWidth)) {
+        if ($maxImageWidth !== null) {
             if ($maxImageWidth < $imageProp[0]) {
                 $r = $maxImageWidth;
                 $errors[] = __('"%1" width exceeds allowed value of %2 px.', $label, $r);
@@ -67,7 +70,7 @@ class Image extends File
             $rules,
             'max_image_height'
         );
-        if (!is_null($maxImageHeight)) {
+        if ($maxImageHeight !== null) {
             if ($maxImageHeight < $imageProp[1]) {
                 $r = $maxImageHeight;
                 $errors[] = __('"%1" height exceeds allowed value of %2 px.', $label, $r);

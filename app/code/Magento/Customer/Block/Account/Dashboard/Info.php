@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Account\Dashboard;
 
@@ -83,7 +84,7 @@ class Info extends \Magento\Framework\View\Element\Template
      */
     public function getChangePasswordUrl()
     {
-        return $this->_urlBuilder->getUrl('*/account/edit/changepass/1');
+        return $this->_urlBuilder->getUrl('customer/account/edit/changepass/1');
     }
 
     /**
@@ -131,5 +132,13 @@ class Info extends \Magento\Framework\View\Element\Template
     protected function _createSubscriber()
     {
         return $this->_subscriberFactory->create();
+    }
+
+    /**
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        return $this->currentCustomer->getCustomerId() ? parent::_toHtml() : '';
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Helper;
 
@@ -22,24 +23,14 @@ class Carrier extends \Magento\Framework\App\Helper\AbstractHelper
     protected $localeResolver;
 
     /**
-     * Store config
-     *
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Locale\ResolverInterface $localeResolver,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        \Magento\Framework\Locale\ResolverInterface $localeResolver
     ) {
         $this->localeResolver = $localeResolver;
-        $this->scopeConfig = $scopeConfig;
         parent::__construct($context);
     }
 

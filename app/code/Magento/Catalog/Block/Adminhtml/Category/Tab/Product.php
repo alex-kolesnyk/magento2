@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -195,7 +196,7 @@ class Product extends \Magento\Backend\Block\Widget\Grid\Extended
     protected function _getSelectedProducts()
     {
         $products = $this->getRequest()->getPost('selected_products');
-        if (is_null($products)) {
+        if ($products === null) {
             $products = $this->getCategory()->getProductsPosition();
             return array_keys($products);
         }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Email\Block\Adminhtml\Template\Grid\Filter;
 
@@ -44,7 +45,7 @@ class Type extends \Magento\Backend\Block\Widget\Grid\Column\Filter\Select
      */
     public function getCondition()
     {
-        if (is_null($this->getValue())) {
+        if ($this->getValue() === null) {
             return null;
         }
 

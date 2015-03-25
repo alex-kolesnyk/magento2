@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Controller\Adminhtml\Notification;
 
@@ -24,7 +25,7 @@ class MassRemove extends \Magento\AdminNotification\Controller\Adminhtml\Notific
                     }
                 }
                 $this->messageManager->addSuccess(__('Total of %1 record(s) have been removed.', count($ids)));
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
                 $this->messageManager->addException($e, __("We couldn't remove the messages because of an error."));

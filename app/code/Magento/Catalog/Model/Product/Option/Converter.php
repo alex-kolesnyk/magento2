@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model\Product\Option;
@@ -30,7 +31,7 @@ class Converter
     public function toArray(\Magento\Catalog\Api\Data\ProductCustomOptionInterface $option)
     {
         $optionData = $option->getData();
-        $values = $option->getData('values');
+        $values = $option->getValues();
         $valuesData = [];
         if (!empty($values)) {
             foreach ($values as $key => $value) {

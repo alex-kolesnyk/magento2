@@ -1,22 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\User\Test\Constraint;
 
 use Magento\User\Test\Page\Adminhtml\UserEdit;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertImpossibleDeleteYourOwnAccount
  */
 class AssertImpossibleDeleteYourOwnAccount extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     const ERROR_MESSAGE = 'You cannot delete your own account.';
 
     /**

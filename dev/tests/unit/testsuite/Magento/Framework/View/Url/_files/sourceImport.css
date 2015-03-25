@@ -1,8 +1,0 @@
-/**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
- */
-body {background: url(body.gif);}
-@import url(../recursive.css);
-p {background: url(1.gif?param);}
-@import url("deep/recursive.css");
-h1 {background: url('../h1.gif#param');} h2 {background: url(../images/h2.gif?test);}

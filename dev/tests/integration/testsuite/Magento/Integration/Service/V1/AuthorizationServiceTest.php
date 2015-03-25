@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Integration\Service\V1;
@@ -25,8 +26,8 @@ class AuthorizationServiceTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
-        $loggerMock = $this->getMockBuilder('Magento\\Framework\\Logger')->disableOriginalConstructor()->getMock();
-        $loggerMock->expects($this->any())->method('logException')->will($this->returnSelf());
+        $loggerMock = $this->getMockBuilder('Psr\\Log\\LoggerInterface')->disableOriginalConstructor()->getMock();
+        $loggerMock->expects($this->any())->method('critical')->will($this->returnSelf());
         $this->_service = $objectManager->create(
             'Magento\Integration\Service\V1\AuthorizationService',
             [
@@ -55,7 +56,7 @@ class AuthorizationServiceTest extends \PHPUnit_Framework_TestCase
     public function testGrantPermissions()
     {
         $integrationId = rand(1, 1000);
-        $resources = ['Magento_Sales::create', 'Magento_Cms::page', 'Magento_Adminhtml::dashboard'];
+        $resources = ['Magento_Sales::create', 'Magento_Cms::page', 'Magento_Backend::dashboard'];
         /** Preconditions check */
         $this->_ensurePermissionsAreNotGranted($integrationId, $resources);
 
@@ -91,7 +92,7 @@ class AuthorizationServiceTest extends \PHPUnit_Framework_TestCase
         return [
             'integration' => [
                 'integrationId' => rand(1, 1000),
-                'initialResources' => ['Magento_Cms::page', 'Magento_Adminhtml::dashboard'],
+                'initialResources' => ['Magento_Cms::page', 'Magento_Backend::dashboard'],
                 'newResources' => ['Magento_Sales::cancel', 'Magento_Cms::page_delete'],
             ],
             'integration clear permissions' => [
@@ -109,7 +110,7 @@ class AuthorizationServiceTest extends \PHPUnit_Framework_TestCase
     {
         $integrationId = rand(1, 1000);
         $this->_service->grantAllPermissions($integrationId);
-        $this->_ensurePermissionsAreGranted($integrationId, ['Magento_Adminhtml::all']);
+        $this->_ensurePermissionsAreGranted($integrationId, ['Magento_Backend::all']);
     }
 
     /**

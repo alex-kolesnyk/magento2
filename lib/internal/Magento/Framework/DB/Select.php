@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\DB;
 
@@ -44,36 +45,6 @@ class Select extends \Zend_Db_Select
      * Sql straight join
      */
     const SQL_STRAIGHT_JOIN = 'STRAIGHT_JOIN';
-
-    /**
-     * FULLTEXT search in MySQL search mode "natural language"
-     */
-    const FULLTEXT_MODE_NATURAL = 'IN NATURAL LANGUAGE MODE';
-
-    /**
-     * FULLTEXT search in MySQL search mode "natural language with query expansion"
-     */
-    const FULLTEXT_MODE_NATURAL_QUERY = 'IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION';
-
-    /**
-     * FULLTEXT search in MySQL search mode "boolean"
-     */
-    const FULLTEXT_MODE_BOOLEAN = 'IN BOOLEAN MODE';
-
-    /**
-     * FULLTEXT search in MySQL search mode "query expansion"
-     */
-    const FULLTEXT_MODE_QUERY = 'WITH QUERY EXPANSION';
-
-    /**
-     * FULLTEXT search in MySQL MATCH method
-     */
-    const MATCH = 'MATCH';
-
-    /**
-     * FULLTEXT search in MySQL AGAINST method
-     */
-    const AGAINST = 'AGAINST';
 
     /**
      * Class constructor
@@ -137,52 +108,11 @@ class Select extends \Zend_Db_Select
     }
 
     /**
-     * Method for FULLTEXT search in Mysql, will generated MATCH ($columns) AGAINST ('$expression' $mode)
-     *
-     * @param string|string[] $columns Columns which add to MATCH ()
-     * @param string $expression Expression which add to AGAINST ()
-     * @param string $mode
-     * @return string
-     */
-    public function getMatchQuery($columns, $expression, $mode = self::FULLTEXT_MODE_NATURAL)
-    {
-        if (is_array($columns)) {
-            $columns = implode(', ', $columns);
-        }
-
-        $expression = $this->getAdapter()->quote($expression);
-
-        $condition = self::MATCH . " ({$columns}) " . self::AGAINST . " ({$expression} {$mode})";
-        return $condition;
-    }
-
-    /**
-     * Method for FULLTEXT search in Mysql, will added generated
-     * MATCH ($columns) AGAINST ('$expression' $mode) to where clause
-     *
-     * @param string|string[] $columns Columns which add to MATCH ()
-     * @param string $expression Expression which add to AGAINST ()
-     * @param bool $isCondition true=AND, false=OR
-     * @param string $mode
-     * @return $this
-     */
-    public function match($columns, $expression, $isCondition = true, $mode = self::FULLTEXT_MODE_NATURAL)
-    {
-        $fullCondition = $this->getMatchQuery($columns, $expression, $mode);
-
-        if ($isCondition) {
-            $this->where($fullCondition);
-        } else {
-            $this->orWhere($fullCondition);
-        }
-
-        return $this;
-    }
-
-    /**
      * Reset unused LEFT JOIN(s)
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function resetJoinLeft()
     {

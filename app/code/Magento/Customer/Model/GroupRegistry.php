@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Model;
@@ -45,7 +46,7 @@ class GroupRegistry
         }
         $group = $this->groupFactory->create();
         $group->load($groupId);
-        if (is_null($group->getId()) || $group->getId() != $groupId) {
+        if ($group->getId() === null || $group->getId() != $groupId) {
             throw NoSuchEntityException::singleField(GroupInterface::ID, $groupId);
         }
         $this->registry[$groupId] = $group;

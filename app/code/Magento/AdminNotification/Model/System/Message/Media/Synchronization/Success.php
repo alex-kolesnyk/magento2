@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Model\System\Message\Media\Synchronization;
 
@@ -23,13 +24,13 @@ class Success extends \Magento\AdminNotification\Model\System\Message\Media\Abst
         $state = $this->_syncFlag->getState();
         $data = $this->_syncFlag->getFlagData();
         $hasErrors = isset($data['has_errors']) && true == $data['has_errors'] ? true : false;
-        return false == $hasErrors && \Magento\Core\Model\File\Storage\Flag::STATE_FINISHED == $state;
+        return false == $hasErrors && \Magento\MediaStorage\Model\File\Storage\Flag::STATE_FINISHED == $state;
     }
 
     /**
      * Retrieve message text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getText()
     {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Test\Integrity\App\Language;
@@ -29,7 +30,7 @@ class PackageTest extends \PHPUnit_Framework_TestCase
     public function declaredConsistentlyDataProvider()
     {
         $result = [];
-        $root = \Magento\Framework\Test\Utility\Files::init()->getPathToSource();
+        $root = \Magento\Framework\App\Utility\Files::init()->getPathToSource();
         foreach (Package::readDeclarationFiles($root) as $row) {
             $result[] = $row;
         }

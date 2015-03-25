@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model;
 
@@ -65,7 +66,7 @@ class ProductAttributeGroupRepository implements \Magento\Catalog\Api\ProductAtt
         $group = $this->groupFactory->create();
         $this->groupResource->load($group, $groupId);
         if (!$group->getId()) {
-            throw new NoSuchEntityException(sprintf('Group with id "%s" does not exist.', $groupId));
+            throw new NoSuchEntityException(__('Group with id "%1" does not exist.', $groupId));
         }
         return $group;
     }
@@ -88,7 +89,9 @@ class ProductAttributeGroupRepository implements \Magento\Catalog\Api\ProductAtt
     {
         /** @var \Magento\Catalog\Model\Product\Attribute\Group $group */
         if ($group->hasSystemAttributes()) {
-            throw new StateException('Attribute group that contains system attributes can not be deleted');
+            throw new StateException(
+                __('Attribute group that contains system attributes can not be deleted')
+            );
         }
         return $this->groupRepository->delete($group);
     }

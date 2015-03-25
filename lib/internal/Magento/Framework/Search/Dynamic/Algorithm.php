@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Dynamic;
 
@@ -162,13 +163,15 @@ class Algorithm
      *
      * @param IntervalInterface $interval
      * @return array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function calculateSeparators(IntervalInterface $interval)
     {
         $result = [];
         $lastCount = 0;
         $intervalFirstValue = $this->_minValue;
-        $lastSeparator = is_null($this->_lowerLimit) ? 0 : $this->_lowerLimit;
+        $lastSeparator = $this->_lowerLimit === null ? 0 : $this->_lowerLimit;
 
         for ($intervalNumber = 1; $intervalNumber < $this->getIntervalsNumber(); ++$intervalNumber) {
             $separator = $this->_findValueSeparator($intervalNumber, $interval);
@@ -230,7 +233,7 @@ class Algorithm
             $isEqualValue = $intervalFirstValue == $this->_maxValue ? $intervalFirstValue : false;
             $result[$this->getIntervalsNumber()] = [
                 'from' => $isEqualValue ? $isEqualValue : $lastSeparator,
-                'to' => $isEqualValue ? $isEqualValue : (is_null($this->_upperLimit) ? '' : $this->_upperLimit),
+                'to' => $isEqualValue ? $isEqualValue : ($this->_upperLimit === null ? '' : $this->_upperLimit),
                 'count' => $this->_count - $lastCount,
             ];
         }
@@ -245,7 +248,7 @@ class Algorithm
      */
     protected function getIntervalsNumber()
     {
-        if (!is_null($this->_intervalsNumber)) {
+        if ($this->_intervalsNumber !== null) {
             return $this->_intervalsNumber;
         }
 
@@ -258,6 +261,9 @@ class Algorithm
      * @param int $quantileNumber should be from 1 to n-1 where n is number of intervals
      * @param IntervalInterface $interval
      * @return array|null
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _findValueSeparator($quantileNumber, IntervalInterface $interval)
     {
@@ -269,7 +275,7 @@ class Algorithm
         $quantileInterval = $this->_getQuantileInterval($quantileNumber);
         $intervalValuesCount = $quantileInterval[1] - $quantileInterval[0] + 1;
         $offset = $quantileInterval[0];
-        if (!is_null($this->_lastValueLimiter[0])) {
+        if ($this->_lastValueLimiter[0] !== null) {
             $offset -= $this->_lastValueLimiter[0];
         }
         if ($offset < 0) {
@@ -282,7 +288,7 @@ class Algorithm
             $offset = 0;
         }
         $lowerValue = $this->_lastValueLimiter[1];
-        if (!is_null($this->_lowerLimit)) {
+        if ($this->_lowerLimit !== null) {
             $lowerValue = max($lowerValue, $this->_lowerLimit);
         }
         if ($intervalValuesCount >= 0) {
@@ -418,13 +424,15 @@ class Algorithm
      * @param bool $returnEmpty whether empty result is acceptable
      * @param null|float $roundingFactor if given, checks for range to contain the factor
      * @return false|array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _findRoundValue($lowerValue, $upperValue, $returnEmpty = true, $roundingFactor = null)
     {
         $lowerValue = round($lowerValue, 3);
         $upperValue = round($upperValue, 3);
 
-        if (!is_null($roundingFactor)) {
+        if ($roundingFactor !== null) {
             // Can't separate if values are equal
             if ($lowerValue >= $upperValue) {
                 if ($lowerValue > $upperValue || $returnEmpty) {
@@ -547,6 +555,8 @@ class Algorithm
      * @param float $value
      * @param null|float[] $limits search [from, to]
      * @return int
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _binarySearch($value, $limits = null)
     {

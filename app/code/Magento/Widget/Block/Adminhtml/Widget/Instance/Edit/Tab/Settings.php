@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -55,7 +56,7 @@ class Settings extends \Magento\Backend\Block\Widget\Form\Generic implements
     /**
      * Prepare label for tab
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
     {
@@ -65,7 +66,7 @@ class Settings extends \Magento\Backend\Block\Widget\Form\Generic implements
     /**
      * Prepare title for tab
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
     {
@@ -169,7 +170,7 @@ class Settings extends \Magento\Backend\Block\Widget\Form\Generic implements
     {
         return $this->getUrl(
             'adminhtml/*/*',
-            ['_current' => true, 'code' => '{{code}}', 'theme_id' => '{{theme_id}}']
+            ['_current' => true, 'code' => '<%- data.code %>', 'theme_id' => '<%- data.theme_id %>']
         );
     }
 

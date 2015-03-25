@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
-/**
- * Observer of Magento events triggered using Magento_Core_Model_\Magento\TestFramework\EventManager::dispatch()
- */
 namespace Magento\TestFramework\Event;
 
+/**
+ * Observer of Magento events triggered using \Magento\TestFramework\EventManager::dispatch()
+ */
 class Magento
 {
     /**

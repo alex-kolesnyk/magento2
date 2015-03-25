@@ -2,7 +2,8 @@
 /**
  * @category    Magento
  * @package     Magento_Sales
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order;
 
@@ -63,6 +64,9 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
      * Constructor
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _construct()
     {
@@ -269,7 +273,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Get header text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -283,7 +287,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
             'Order # %1 %2 | %3',
             $this->getOrder()->getRealOrderId(),
             $_extOrderId,
-            $this->formatDate($this->getOrder()->getCreatedAtDate(), 'medium', true)
+            $this->formatDate($this->getOrder()->getCreatedAtDate(), \IntlDateFormatter::MEDIUM, true)
         );
     }
 
@@ -448,7 +452,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
 
     /**
      * @param \Magento\Sales\Model\Order $order
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     protected function getEditMessage($order)
     {

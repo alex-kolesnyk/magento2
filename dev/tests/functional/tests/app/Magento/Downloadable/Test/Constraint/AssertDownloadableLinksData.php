@@ -1,14 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Downloadable\Test\Constraint;
 
 use Magento\Catalog\Test\Page\Product\CatalogProductView;
-use Magento\Downloadable\Test\Fixture\DownloadableProductInjectable;
-use Mtf\Client\Browser;
-use Mtf\Constraint\AbstractAssertForm;
+use Magento\Downloadable\Test\Fixture\DownloadableProduct;
+use Magento\Mtf\Client\BrowserInterface;
+use Magento\Mtf\Constraint\AbstractAssertForm;
 
 /**
  * Class AssertDownloadableLinksData
@@ -46,14 +47,14 @@ class AssertDownloadableLinksData extends AbstractAssertForm
      * Assert Link block for downloadable product on front-end
      *
      * @param CatalogProductView $catalogProductView
-     * @param DownloadableProductInjectable $product
-     * @param Browser $browser
+     * @param DownloadableProduct $product
+     * @param BrowserInterface $browser
      * @return void
      */
     public function processAssert(
         CatalogProductView $catalogProductView,
-        DownloadableProductInjectable $product,
-        Browser $browser
+        DownloadableProduct $product,
+        BrowserInterface $browser
     ) {
         $browser->open($_ENV['app_frontend_url'] . $product->getUrlKey() . '.html');
 
@@ -67,10 +68,10 @@ class AssertDownloadableLinksData extends AbstractAssertForm
     /**
      * Prepare fixture data for verify
      *
-     * @param DownloadableProductInjectable $product
+     * @param DownloadableProduct $product
      * @return array
      */
-    protected function prepareFixtureData(DownloadableProductInjectable $product)
+    protected function prepareFixtureData(DownloadableProduct $product)
     {
         $data = $this->sortDataByPath($product->getDownloadableLinks(), 'downloadable/link::sort_order');
 

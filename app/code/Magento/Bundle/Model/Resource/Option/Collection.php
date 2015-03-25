@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model\Resource\Option;
 
@@ -174,7 +175,7 @@ class Collection extends \Magento\Framework\Model\Resource\Db\Collection\Abstrac
      */
     public function getAllIds()
     {
-        if (is_null($this->_itemIds)) {
+        if ($this->_itemIds === null) {
             $this->_itemIds = parent::getAllIds();
         }
         return $this->_itemIds;

@@ -1,17 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
 
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Reports\Test\Page\Adminhtml\CustomerReportReview;
 use Magento\Review\Test\Constraint\AssertProductReviewNotInGrid;
-use Magento\Review\Test\Fixture\ReviewInjectable;
+use Magento\Review\Test\Fixture\Review;
 use Magento\Review\Test\Page\Adminhtml\ReviewIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertProductReportByCustomerNotInGrid
@@ -19,28 +20,24 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertProductReportByCustomerNotInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Asserts Customer Product Review not available in grid
      *
      * @param ReviewIndex $reviewIndex
-     * @param ReviewInjectable $review
+     * @param Review $review
      * @param AssertProductReviewNotInGrid $assertProductReviewNotInGrid
      * @param CustomerReportReview $customerReportReview
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param CatalogProductSimple $product
      * @param string $gridStatus
      * @return void
      */
     public function processAssert(
         ReviewIndex $reviewIndex,
-        ReviewInjectable $review,
+        Review $review,
         AssertProductReviewNotInGrid $assertProductReviewNotInGrid,
         CustomerReportReview $customerReportReview,
-        CustomerInjectable $customer,
+        Customer $customer,
         CatalogProductSimple $product,
         $gridStatus = ''
     ) {

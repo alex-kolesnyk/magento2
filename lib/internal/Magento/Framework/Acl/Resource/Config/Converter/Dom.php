@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Acl\Resource\Config\Converter;
 
@@ -36,22 +37,22 @@ class Dom implements \Magento\Framework\Config\ConverterInterface
         $resourceData = [];
         $resourceAttributes = $resourceNode->attributes;
         $idNode = $resourceAttributes->getNamedItem('id');
-        if (is_null($idNode)) {
+        if ($idNode === null) {
             throw new \Exception('Attribute "id" is required for ACL resource.');
         }
         $resourceData['id'] = $idNode->nodeValue;
         $moduleNode = $resourceAttributes->getNamedItem('module');
-        if (!is_null($moduleNode)) {
+        if ($moduleNode !== null) {
             $resourceData['module'] = $moduleNode->nodeValue;
         }
         $titleNode = $resourceAttributes->getNamedItem('title');
-        if (!is_null($titleNode)) {
+        if ($titleNode !== null) {
             $resourceData['title'] = $titleNode->nodeValue;
         }
         $sortOrderNode = $resourceAttributes->getNamedItem('sortOrder');
-        $resourceData['sortOrder'] = !is_null($sortOrderNode) ? (int)$sortOrderNode->nodeValue : 0;
+        $resourceData['sortOrder'] = $sortOrderNode !== null ? (int)$sortOrderNode->nodeValue : 0;
         $disabledNode = $resourceAttributes->getNamedItem('disabled');
-        $resourceData['disabled'] = !is_null($disabledNode) && $disabledNode->nodeValue == 'true' ? true : false;
+        $resourceData['disabled'] = $disabledNode !== null && $disabledNode->nodeValue == 'true' ? true : false;
         // convert child resource nodes if needed
         $resourceData['children'] = [];
         /** @var $childNode \DOMNode */

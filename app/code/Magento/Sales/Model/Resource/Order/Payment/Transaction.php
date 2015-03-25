@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Order\Payment;
 
@@ -128,7 +129,7 @@ class Transaction extends Entity implements TransactionResourceInterface
      * Also serialize additional information, if any
      *
      * @param \Magento\Framework\Model\AbstractModel|\Magento\Sales\Model\Order\Payment\Transaction $transaction
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     protected function _beforeSave(\Magento\Framework\Model\AbstractModel $transaction)
@@ -141,7 +142,7 @@ class Transaction extends Entity implements TransactionResourceInterface
 
         if ($parentTxnId) {
             if (!$txnId || !$orderId || !$paymentId) {
-                throw new \Magento\Framework\Model\Exception(
+                throw new \Magento\Framework\Exception\LocalizedException(
                     __('We don\'t have enough information to save the parent transaction ID.')
                 );
             }

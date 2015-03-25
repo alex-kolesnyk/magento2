@@ -1,14 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /** @var \Magento\Customer\Api\GroupRepositoryInterface $groupRepository */
 $groupRepository = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
     'Magento\Customer\Api\GroupRepositoryInterface'
 );
 
-$groupBuilder = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Customer\Api\Data\GroupDataBuilder'
+$groupFactory = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
+    'Magento\Customer\Api\Data\GroupInterfaceFactory'
 );
-$groupBuilder->setCode('custom_group')->setTaxClassId(3);
-$groupRepository->save($groupBuilder->create());
+$groupDataObject = $groupFactory->create();
+$groupDataObject->setCode('custom_group')->setTaxClassId(3);
+$groupRepository->save($groupDataObject);

@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Controller\Index;
 
@@ -31,8 +32,9 @@ class Fromcart extends Action\Action implements IndexInterface
     /**
      * Add cart item to wishlist and remove from cart
      *
-     * @return \Zend_Controller_Response_Abstract
+     * @return \Magento\Framework\App\Response\Http
      * @throws NotFoundException
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function execute()
     {
@@ -49,7 +51,9 @@ class Fromcart extends Action\Action implements IndexInterface
         try {
             $item = $cart->getQuote()->getItemById($itemId);
             if (!$item) {
-                throw new \Magento\Framework\Model\Exception(__("The requested cart item doesn't exist."));
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('The requested cart item doesn\'t exist.')
+                );
             }
 
             $productId = $item->getProductId();
@@ -67,7 +71,7 @@ class Fromcart extends Action\Action implements IndexInterface
                 ->escapeHtml($wishlist->getName());
             $this->messageManager->addSuccess(__("%1 has been moved to wish list %2", $productName, $wishlistName));
             $wishlist->save();
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('We can\'t move the item to the wish list.'));

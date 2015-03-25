@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Api\Data;
 
@@ -19,9 +20,25 @@ interface AttributeOptionLabelInterface
     public function getStoreId();
 
     /**
+     * Set store id
+     *
+     * @param int $storeId
+     * @return $this
+     */
+    public function setStoreId($storeId);
+
+    /**
      * Get option label
      *
      * @return string|null
      */
     public function getLabel();
+
+    /**
+     * Set option label
+     *
+     * @param string $label
+     * @return $this
+     */
+    public function setLabel($label);
 }

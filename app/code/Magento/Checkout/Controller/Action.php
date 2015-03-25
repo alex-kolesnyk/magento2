@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Controller;
 
@@ -29,20 +30,28 @@ abstract class Action extends \Magento\Framework\App\Action\Action
     protected $accountManagement;
 
     /**
+     * @var \Magento\Framework\Controller\Result\RedirectFactory
+     */
+    protected $resultRedirectFactory;
+
+    /**
      * @param \Magento\Framework\App\Action\Context $context
      * @param \Magento\Customer\Model\Session $customerSession
      * @param CustomerRepositoryInterface $customerRepository
      * @param AccountManagementInterface $accountManagement
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Customer\Model\Session $customerSession,
         CustomerRepositoryInterface $customerRepository,
-        AccountManagementInterface $accountManagement
+        AccountManagementInterface $accountManagement,
+        \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
     ) {
         $this->_customerSession = $customerSession;
         $this->customerRepository = $customerRepository;
         $this->accountManagement = $accountManagement;
+        $this->resultRedirectFactory = $resultRedirectFactory;
         parent::__construct($context);
     }
 
@@ -53,7 +62,7 @@ abstract class Action extends \Magento\Framework\App\Action\Action
      *
      * @param bool $redirect - stop dispatch and redirect?
      * @param bool $addErrors - add error messages?
-     * @return bool
+     * @return bool|\Magento\Framework\Controller\Result\Redirect
      */
     protected function _preDispatchValidateCustomer($redirect = true, $addErrors = true)
     {
@@ -72,8 +81,8 @@ abstract class Action extends \Magento\Framework\App\Action\Action
                     }
                 }
                 if ($redirect) {
-                    $this->_redirect('customer/account/edit');
                     $this->_actionFlag->set('', self::FLAG_NO_DISPATCH, true);
+                    return $this->resultRedirectFactory->create()->setPath('customer/account/edit');
                 }
                 return false;
             }

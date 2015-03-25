@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -93,7 +94,7 @@ class Theme extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
                     $option['value']
                 ) . '</optgroup>';
             } else {
-                $selected = $option['value'] == $value && !is_null($value) ? ' selected="selected"' : '';
+                $selected = $option['value'] == $value && $value !== null ? ' selected="selected"' : '';
                 $html .= '<option value="' . $option['value'] . '"' . $selected . '>' . $option['label'] . '</option>';
             }
         }
@@ -108,7 +109,7 @@ class Theme extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFil
      */
     public function getCondition()
     {
-        if (is_null($this->getValue())) {
+        if ($this->getValue() === null) {
             return null;
         }
         $value = $this->getValue();

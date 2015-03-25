@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Template filter factory
@@ -33,14 +36,16 @@ class Factory
      * @param string $className
      * @param array $data
      * @return \Magento\Framework\Filter\Template
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function create($className, array $data = [])
     {
         $filter = $this->_objectManager->create($className, $data);
 
         if (!$filter instanceof \Magento\Framework\Filter\Template) {
-            throw new \Magento\Framework\Model\Exception($className . ' doesn\'t extends \Magento\Framework\Filter\Template');
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('%1 doesn\'t extend \Magento\Framework\Filter\Template', $className)
+            );
         }
         return $filter;
     }

@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 namespace Magento\Framework;
 
@@ -52,6 +55,7 @@ namespace Magento\Framework;
  * - F: host_url
  * - G: route_path
  * - H: route_url
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInterface
 {
@@ -158,6 +162,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param string $scopeType
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Route\ConfigInterface $routeConfig,
@@ -229,6 +234,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
      * Retrieve use session rule
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getUseSession()
     {
@@ -425,6 +431,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
      *
      * @param string $data
      * @return \Magento\Framework\UrlInterface
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _setRoutePath($data)
     {
@@ -437,7 +444,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
 
         $route = array_shift($routePieces);
         if ('*' === $route) {
-            $route = $this->_getRequest()->getRequestedRouteName();
+            $route = $this->_getRequest()->getRouteName();
         }
         $this->_setRouteName($route);
 
@@ -445,7 +452,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
         if (!empty($routePieces)) {
             $controller = array_shift($routePieces);
             if ('*' === $controller) {
-                $controller = $this->_getRequest()->getRequestedControllerName();
+                $controller = $this->_getRequest()->getControllerName();
             }
         }
         $this->_setControllerName($controller);
@@ -454,7 +461,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
         if (!empty($routePieces)) {
             $action = array_shift($routePieces);
             if ('*' === $action) {
-                $action = $this->_getRequest()->getRequestedActionName();
+                $action = $this->_getRequest()->getActionName();
             }
         }
         $this->_setActionName($action);
@@ -505,6 +512,7 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
      *
      * @param array $routeParams
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _getRoutePath($routeParams = [])
     {
@@ -762,6 +770,8 @@ class Url extends \Magento\Framework\Object implements \Magento\Framework\UrlInt
      * @param   string|null $routePath
      * @param   array|null $routeParams
      * @return  string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getUrl($routePath = null, $routeParams = null)
     {

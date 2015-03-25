@@ -2,7 +2,8 @@
 /**
  * @category    Magento
  * @package     Magento_CatalogInventory
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogInventory\Model\Indexer\Stock;
@@ -238,7 +239,7 @@ abstract class AbstractAction
      */
     public function useIdxTable($value = null)
     {
-        if (!is_null($value)) {
+        if ($value !== null) {
             $this->_isNeedUseIdxTable = (bool)$value;
         }
         return $this->_isNeedUseIdxTable;

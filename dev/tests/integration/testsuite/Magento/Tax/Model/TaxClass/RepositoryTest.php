@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\TaxClass;
 
 use Magento\Framework\Exception\InputException;
-use Magento\Tax\Api\Data\TaxClassDataBuilder;
+use Magento\Tax\Api\Data\TaxClassInterfaceFactory;
 use Magento\Tax\Api\TaxClassManagementInterface;
 use Magento\Tax\Model\ClassModel as TaxClassModel;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -18,9 +19,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     private $taxClassRepository;
 
     /**
-     * @var TaxClassDataBuilder
+     * @var TaxClassInterfaceFactory
      */
-    private $taxClassBuilder;
+    private $taxClassFactory;
 
     /**
      * @var TaxClassModel
@@ -43,7 +44,7 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->taxClassRepository = $this->objectManager->create('Magento\Tax\Api\TaxClassRepositoryInterface');
-        $this->taxClassBuilder = $this->objectManager->create('Magento\Tax\Api\Data\TaxClassDataBuilder');
+        $this->taxClassFactory = $this->objectManager->create('Magento\Tax\Api\Data\TaxClassInterfaceFactory');
         $this->taxClassModel = $this->objectManager->create('Magento\Tax\Model\ClassModel');
         $this->predefinedTaxClasses = [
             TaxClassManagementInterface::TYPE_PRODUCT => 'Taxable Goods',
@@ -56,10 +57,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        $taxClassDataObject = $this->taxClassBuilder
-            ->setClassName(self::SAMPLE_TAX_CLASS_NAME)
-            ->setClassType(TaxClassManagementInterface::TYPE_CUSTOMER)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName(self::SAMPLE_TAX_CLASS_NAME)
+            ->setClassType(TaxClassManagementInterface::TYPE_CUSTOMER);
         $taxClassId = $this->taxClassRepository->save($taxClassDataObject);
         $this->assertEquals(self::SAMPLE_TAX_CLASS_NAME, $this->taxClassModel->load($taxClassId)->getClassName());
     }
@@ -73,10 +73,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     {
         //ClassType and name combination has to be unique.
         //Testing against existing Tax classes which are already setup when the instance is installed
-        $taxClassDataObject = $this->taxClassBuilder
-            ->setClassName($this->predefinedTaxClasses[TaxClassModel::TAX_CLASS_TYPE_PRODUCT])
-            ->setClassType(TaxClassManagementInterface::TYPE_PRODUCT)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($this->predefinedTaxClasses[TaxClassModel::TAX_CLASS_TYPE_PRODUCT])
+            ->setClassType(TaxClassManagementInterface::TYPE_PRODUCT);
         $this->taxClassRepository->save($taxClassDataObject);
     }
 
@@ -85,9 +84,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSaveThrowsExceptionIfGivenDataIsInvalid()
     {
-        $taxClassDataObject = $this->taxClassBuilder->setClassName(null)
-            ->setClassType('')
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName(null)
+            ->setClassType('');
         try {
             $this->taxClassRepository->save($taxClassDataObject);
         } catch (InputException $e) {
@@ -103,10 +102,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $taxClassName = 'Get Me';
-        $taxClassDataObject = $this->taxClassBuilder
-            ->setClassName($taxClassName)
-            ->setClassType(TaxClassManagementInterface::TYPE_CUSTOMER)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($taxClassName)
+            ->setClassType(TaxClassManagementInterface::TYPE_CUSTOMER);
         $taxClassId = $this->taxClassRepository->save($taxClassDataObject);
         $data = $this->taxClassRepository->get($taxClassId);
         $this->assertEquals($taxClassId, $data->getClassId());
@@ -129,9 +127,9 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function testDeleteById()
     {
         $taxClassName = 'Delete Me';
-        $taxClassDataObject = $this->taxClassBuilder->setClassName($taxClassName)
-            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($taxClassName)
+            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER);
         $taxClassId = $this->taxClassRepository->save($taxClassDataObject);
 
         $this->assertTrue($this->taxClassRepository->deleteById($taxClassId));
@@ -160,17 +158,17 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function testSaveWithExistingTaxClass()
     {
         $taxClassName = 'New Class Name';
-        $taxClassDataObject = $this->taxClassBuilder->setClassName($taxClassName)
-            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($taxClassName)
+            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER);
         $taxClassId = $this->taxClassRepository->save($taxClassDataObject);
         $this->assertEquals($taxClassName, $this->taxClassModel->load($taxClassId)->getClassName());
 
         $updatedTaxClassName = 'Updated Class Name';
-        $taxClassDataObject = $this->taxClassBuilder->setClassName($updatedTaxClassName)
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($updatedTaxClassName)
             ->setClassId($taxClassId)
-            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER)
-            ->create();
+            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER);
 
         $this->assertEquals($taxClassId, $this->taxClassRepository->save($taxClassDataObject));
 
@@ -185,17 +183,17 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
     public function testSaveThrowsExceptionIfTargetTaxClassHasDifferentClassType()
     {
         $taxClassName = 'New Class Name';
-        $taxClassDataObject = $this->taxClassBuilder->setClassName($taxClassName)
-            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER)
-            ->create();
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($taxClassName)
+            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_CUSTOMER);
         $taxClassId = $this->taxClassRepository->save($taxClassDataObject);
         $this->assertEquals($taxClassName, $this->taxClassModel->load($taxClassId)->getClassName());
 
         $updatedTaxClassName = 'Updated Class Name';
-        $taxClassDataObject = $this->taxClassBuilder->setClassName($updatedTaxClassName)
+        $taxClassDataObject = $this->taxClassFactory->create();
+        $taxClassDataObject->setClassName($updatedTaxClassName)
             ->setClassId($taxClassId)
-            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_PRODUCT)
-            ->create();
+            ->setClassType(TaxClassModel::TAX_CLASS_TYPE_PRODUCT);
 
         $this->taxClassRepository->save($taxClassDataObject);
     }

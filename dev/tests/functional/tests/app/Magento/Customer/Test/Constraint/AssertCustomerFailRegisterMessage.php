@@ -1,22 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Constraint;
 
 use Magento\Customer\Test\Page\CustomerAccountCreate;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomerFailRegisterMessage
  */
 class AssertCustomerFailRegisterMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'high';
-    /* end tags */
-
     /**
      * Assert that error message is displayed on "Create New Customer Account" page(frontend)
      *

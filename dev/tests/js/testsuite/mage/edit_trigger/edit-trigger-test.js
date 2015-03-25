@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 EditTriggerTest = TestCase('EditTriggerTest');
 EditTriggerTest.prototype.testInit = function() {
@@ -8,8 +9,8 @@ EditTriggerTest.prototype.testInit = function() {
     editTrigger.editTrigger('destroy');
 };
 EditTriggerTest.prototype.testCreate = function() {
-    /*:DOC += <script id="translate-inline-icon" type="text/x-jQuery-tmpl">
-          <img alt="${alt}" src="${img}" height="16" width="16" class="translate-edit-icon">
+    /*:DOC += <script id="translate-inline-icon" type="text/x-magento-template">
+          <img alt="<%= data.alt %>" src="<%= data.img %>" height="16" width="16" class="translate-edit-icon">
       </script>
      */
     var options = {
@@ -29,8 +30,8 @@ EditTriggerTest.prototype.testShowHideOnMouseMove = function() {
     /*:DOC += <div class="container" style="height:100px;">
      <div class="edit">text</div>
      </div>
-     <script id="translate-inline-icon" type="text/x-jQuery-tmpl">
-          <img alt="${alt}" src="${img}" height="16" width="16" class="translate-edit-icon">
+     <script id="translate-inline-icon" type="text/x-magento-template">
+          <img alt="<%= data.alt %>" src="<%= data.img %>" height="16" width="16" class="translate-edit-icon">
       </script>
      */
     var editTrigger = jQuery('body').editTrigger({
@@ -48,8 +49,8 @@ EditTriggerTest.prototype.testShowHideOnMouseMove = function() {
 };
 EditTriggerTest.prototype.testTriggerClick = function() {
     /*:DOC += <div class="edit">text</div>
-     <script id="translate-inline-icon" type="text/x-jQuery-tmpl">
-          <img alt="${alt}" src="${img}" height="16" width="16" class="translate-edit-icon">
+     <script id="translate-inline-icon" type="text/x-magento-template">
+          <img alt="<%= data.alt %>" src="<%= data.img %>" height="16" width="16" class="translate-edit-icon">
       </script>
     */
     var editTrigger = jQuery('body').editTrigger({
@@ -87,8 +88,8 @@ EditTriggerTestAsync.prototype.testHideEditTriggerWithDelay = function(queue) {
     /*:DOC += <div class="container" style="height:100px;">
      <div class="edit">text</div>
      </div>
-     <script id="translate-inline-icon" type="text/x-jQuery-tmpl">
-          <img alt="${alt}" src="${img}" height="16" width="16" class="translate-edit-icon">
+     <script id="translate-inline-icon" type="text/x-magento-template">
+          <img alt="<%= data.alt %>" src="<%= data.img %>" height="16" width="16" class="translate-edit-icon">
      </script>
      */
     var editTrigger = jQuery(document).editTrigger({

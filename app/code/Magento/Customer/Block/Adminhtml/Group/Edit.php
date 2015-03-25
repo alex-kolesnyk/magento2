@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Group;
 
@@ -77,12 +78,12 @@ class Edit extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Retrieve the header text, either editing an existing group or creating a new one.
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
         $groupId = $this->coreRegistry->registry(RegistryConstants::CURRENT_GROUP_ID);
-        if (is_null($groupId)) {
+        if ($groupId === null) {
             return __('New Customer Group');
         } else {
             $group = $this->groupRepository->getById($groupId);

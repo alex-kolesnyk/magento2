@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\HTTP\PhpEnvironment;
 
@@ -46,7 +47,7 @@ class RemoteAddress
      */
     public function getRemoteAddress($ipToLong = false)
     {
-        if (is_null($this->remoteAddress)) {
+        if ($this->remoteAddress === null) {
             foreach ($this->alternativeHeaders as $var) {
                 if ($this->request->getServer($var, false)) {
                     $this->remoteAddress = $this->request->getServer($var);

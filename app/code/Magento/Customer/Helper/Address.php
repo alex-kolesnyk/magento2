@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Helper;
 
@@ -14,6 +15,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  * Customer address helper
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Address extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -69,9 +71,6 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var \Magento\Store\Model\StoreManagerInterface */
     protected $_storeManager;
 
-    /** @var \Magento\Framework\App\Config\ScopeConfigInterface */
-    protected $_scopeConfig;
-
     /** @var CustomerMetadataInterface */
     protected $_customerMetadataService;
 
@@ -85,7 +84,6 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\View\Element\BlockFactory $blockFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param CustomerMetadataInterface $customerMetadataService
      * @param AddressMetadataInterface $addressMetadataService
      * @param \Magento\Customer\Model\Address\Config $addressConfig
@@ -94,14 +92,12 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\View\Element\BlockFactory $blockFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         CustomerMetadataInterface $customerMetadataService,
         AddressMetadataInterface $addressMetadataService,
         \Magento\Customer\Model\Address\Config $addressConfig
     ) {
         $this->_blockFactory = $blockFactory;
         $this->_storeManager = $storeManager;
-        $this->_scopeConfig = $scopeConfig;
         $this->_customerMetadataService = $customerMetadataService;
         $this->_addressMetadataService = $addressMetadataService;
         $this->_addressConfig = $addressConfig;
@@ -163,7 +159,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
         $store = $this->_storeManager->getStore($store);
         $websiteId = $store->getWebsiteId();
         if (!isset($this->_config[$websiteId])) {
-            $this->_config[$websiteId] = $this->_scopeConfig->getValue(
+            $this->_config[$websiteId] = $this->scopeConfig->getValue(
                 'customer/address',
                 \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
                 $store
@@ -315,7 +311,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isVatValidationEnabled($store = null)
     {
-        return (bool)$this->_scopeConfig->getValue(
+        return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_VAT_VALIDATION_ENABLED,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $store
@@ -329,7 +325,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isDisableAutoGroupAssignDefaultValue()
     {
-        return (bool)$this->_scopeConfig->getValue(
+        return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_VIV_DISABLE_AUTO_ASSIGN_DEFAULT,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
@@ -343,7 +339,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function hasValidateOnEachTransaction($store = null)
     {
-        return (bool)$this->_scopeConfig->getValue(
+        return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_VIV_ON_EACH_TRANSACTION,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $store
@@ -358,7 +354,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getTaxCalculationAddressType($store = null)
     {
-        return (string)$this->_scopeConfig->getValue(
+        return (string)$this->scopeConfig->getValue(
             self::XML_PATH_VIV_TAX_CALCULATION_ADDRESS_TYPE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
             $store
@@ -372,7 +368,7 @@ class Address extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isVatAttributeVisible()
     {
-        return (bool)$this->_scopeConfig->getValue(
+        return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_VAT_FRONTEND_VISIBILITY,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );

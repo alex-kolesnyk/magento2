@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Block\Cart;
 
-use Magento\Sales\Model\Quote;
+use Magento\Quote\Model\Quote;
 
 /**
  * Shopping cart abstract block
@@ -82,7 +83,7 @@ class AbstractCart extends \Magento\Framework\View\Element\Template
      */
     public function getItemRenderer($type = null)
     {
-        if (is_null($type)) {
+        if ($type === null) {
             $type = self::DEFAULT_TYPE;
         }
         $rendererList = $this->_getRendererList();
@@ -120,10 +121,10 @@ class AbstractCart extends \Magento\Framework\View\Element\Template
     /**
      * Get item row html
      *
-     * @param   \Magento\Sales\Model\Quote\Item $item
+     * @param   \Magento\Quote\Model\Quote\Item $item
      * @return  string
      */
-    public function getItemHtml(\Magento\Sales\Model\Quote\Item $item)
+    public function getItemHtml(\Magento\Quote\Model\Quote\Item $item)
     {
         $renderer = $this->getItemRenderer($item->getProductType())->setItem($item);
         return $renderer->toHtml();

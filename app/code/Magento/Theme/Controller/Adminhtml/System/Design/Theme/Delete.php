@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Controller\Adminhtml\System\Design\Theme;
 
@@ -31,11 +32,11 @@ class Delete extends \Magento\Theme\Controller\Adminhtml\System\Design\Theme
                 $theme->delete();
                 $this->messageManager->addSuccess(__('You deleted the theme.'));
             }
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('We cannot delete the theme.'));
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
         /**
          * @todo Temporary solution. Theme module should not know about the existence of editor module.

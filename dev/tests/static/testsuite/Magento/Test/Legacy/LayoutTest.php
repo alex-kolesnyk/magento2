@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -84,7 +85,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
 
     public function testLayoutFile()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $layoutFile
@@ -148,7 +149,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
                     ' is not supposed to be used in layout anymore.'
                 );
             },
-            \Magento\Framework\Test\Utility\Files::init()->getLayoutFiles()
+            \Magento\Framework\App\Utility\Files::init()->getLayoutFiles()
         );
     }
 
@@ -200,7 +201,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
 
     public function testActionNodeMethods()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $layoutFile
@@ -218,7 +219,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
                     );
                 }
             },
-            \Magento\Framework\Test\Utility\Files::init()->getLayoutFiles()
+            \Magento\Framework\App\Utility\Files::init()->getLayoutFiles()
         );
     }
 

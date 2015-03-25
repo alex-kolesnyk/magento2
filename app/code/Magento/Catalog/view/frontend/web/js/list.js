@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /*jshint browser:true jquery:true*/
 define([
@@ -41,14 +42,6 @@ define([
                 e.preventDefault();
                 window.print();
             });
-
-            $.each(this.options.selectors, function(i, selector) {
-                $(selector).on('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = $(this).data('url');
-                });
-            });
-
         }
     });
 

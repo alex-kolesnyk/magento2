@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Controller\Index;
 
@@ -18,7 +19,7 @@ class Update extends Action\Action implements IndexInterface
     protected $wishlistProvider;
 
     /**
-     * @var \Magento\Core\App\Action\FormKeyValidator
+     * @var \Magento\Framework\Data\Form\FormKey\Validator
      */
     protected $_formKeyValidator;
 
@@ -29,13 +30,13 @@ class Update extends Action\Action implements IndexInterface
 
     /**
      * @param Action\Context $context
-     * @param \Magento\Core\App\Action\FormKeyValidator $formKeyValidator
+     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
      * @param \Magento\Wishlist\Controller\WishlistProviderInterface $wishlistProvider
      * @param \Magento\Wishlist\Model\LocaleQuantityProcessor $quantityProcessor
      */
     public function __construct(
         Action\Context $context,
-        \Magento\Core\App\Action\FormKeyValidator $formKeyValidator,
+        \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
         \Magento\Wishlist\Controller\WishlistProviderInterface $wishlistProvider,
         \Magento\Wishlist\Model\LocaleQuantityProcessor $quantityProcessor
     ) {
@@ -50,6 +51,8 @@ class Update extends Action\Action implements IndexInterface
      *
      * @return ResponseInterface|void
      * @throws NotFoundException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function execute()
     {
@@ -61,7 +64,7 @@ class Update extends Action\Action implements IndexInterface
             throw new NotFoundException();
         }
 
-        $post = $this->getRequest()->getPost();
+        $post = $this->getRequest()->getPostValue();
         if ($post && isset($post['description']) && is_array($post['description'])) {
             $updatedItems = 0;
 
@@ -85,7 +88,7 @@ class Update extends Action\Action implements IndexInterface
                 if (isset($post['qty'][$itemId])) {
                     $qty = $this->quantityProcessor->process($post['qty'][$itemId]);
                 }
-                if (is_null($qty)) {
+                if ($qty === null) {
                     $qty = $item->getQty();
                     if (!$qty) {
                         $qty = 1;
@@ -94,7 +97,7 @@ class Update extends Action\Action implements IndexInterface
                     try {
                         $item->delete();
                     } catch (\Exception $e) {
-                        $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+                        $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
                         $this->messageManager->addError(__('Can\'t delete item from wishlist'));
                     }
                 }

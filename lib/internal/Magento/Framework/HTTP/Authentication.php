@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\HTTP;
 
@@ -44,7 +45,7 @@ class Authentication
      */
     public function getCredentials()
     {
-        $server = $this->request->getServer();
+        $server = $this->request->getServerValue();
         $user = '';
         $pass = '';
 
@@ -83,10 +84,8 @@ class Authentication
      */
     public function setAuthenticationFailed($realm)
     {
+        $this->response->setStatusHeader(401, '1.1', 'Unauthorized');
         $this->response->setHeader(
-            'HTTP/1.1',
-            '401 Unauthorized'
-        )->setHeader(
             'WWW-Authenticate',
             'Basic realm="' . $realm . '"'
         )->setBody(

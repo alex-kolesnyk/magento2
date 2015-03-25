@@ -2,7 +2,8 @@
 /**
  * Massaction key processor
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\App\Action\Plugin;
 
@@ -27,7 +28,7 @@ class MassactionKey
         if ($key) {
             $postData = $request->getPost($key);
             $value = is_array($postData) ? $postData : explode(',', $postData);
-            $request->setPost($key, $value ? $value : null);
+            $request->setPostValue($key, $value ? $value : null);
         }
         return $proceed($request);
     }

@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /*jshint jquery:true*/
 define([
@@ -68,7 +69,7 @@ define([
                             click: function() {
                                 $('body').trigger(saveConfirmEvent, eventData);
                             },
-                            'class': 'primary'
+                            'class': 'action-primary'
                         }
                     ]
                 );
@@ -154,7 +155,7 @@ define([
                             this.messages.add(response.message, messageType);
                         }, eventData.dialog);
                     },
-                    'class': 'primary'
+                    'class': 'action-primary'
                 }
             ];
             $(event.target).trigger('assign', eventData);

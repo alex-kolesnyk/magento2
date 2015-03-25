@@ -2,35 +2,36 @@
 /**
  * Localized Exception
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Exception;
 
+use Magento\Framework\Phrase;
 use Magento\Framework\Phrase\Renderer\Placeholder;
 
 class LocalizedException extends \Exception
 {
-    /** @var array */
-    protected $params = [];
-
-    /** @var string */
-    protected $rawMessage;
-
-    /** @var Placeholder */
-    private $renderer;
+    /**
+     * @var \Magento\Framework\Phrase
+     */
+    protected $phrase;
 
     /**
-     * @param string     $message
-     * @param array      $params
+     * @var string
+     */
+    protected $logMessage;
+
+    /**
+     * Constructor
+     *
+     * @param \Magento\Framework\Phrase $phrase
      * @param \Exception $cause
      */
-    public function __construct($message, array $params = [], \Exception $cause = null)
+    public function __construct(Phrase $phrase, \Exception $cause = null)
     {
-        $this->params = $params;
-        $this->rawMessage = $message;
-        $this->renderer = new Placeholder();
-
-        parent::__construct(__($message, $params), 0, $cause);
+        $this->phrase = $phrase;
+        parent::__construct($phrase->render(), 0, $cause);
     }
 
     /**
@@ -40,7 +41,17 @@ class LocalizedException extends \Exception
      */
     public function getRawMessage()
     {
-        return $this->rawMessage;
+        return $this->phrase->getText();
+    }
+
+    /**
+     * Get parameters, corresponding to placeholders in raw exception message
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->phrase->getArguments();
     }
 
     /**
@@ -50,16 +61,10 @@ class LocalizedException extends \Exception
      */
     public function getLogMessage()
     {
-        return $this->renderer->render([$this->rawMessage], $this->params);
-    }
-
-    /**
-     * Returns the array of parameters in the message
-     *
-     * @return array Parameter name => values
-     */
-    public function getParameters()
-    {
-        return $this->params;
+        if ($this->logMessage === null) {
+            $renderer = new Placeholder();
+            $this->logMessage = $renderer->render([$this->getRawMessage()], $this->getParameters());
+        }
+        return $this->logMessage;
     }
 }

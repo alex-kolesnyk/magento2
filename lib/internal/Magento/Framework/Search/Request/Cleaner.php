@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Request;
 
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Search\Request\Aggregation\StatusInterface as AggregationStatus;
+use Magento\Framework\Phrase;
 
 class Cleaner
 {
@@ -64,13 +66,17 @@ class Cleaner
      * @return void
      * @throws StateException
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     private function cleanQuery($queryName)
     {
         if (!isset($this->requestData['queries'][$queryName])) {
             throw new \Exception('Query ' . $queryName . ' does not exist');
         } elseif (in_array($queryName, $this->mappedQueries)) {
-            throw new StateException('Cycle found. Query %1 already used in request hierarchy', [$queryName]);
+            throw new StateException(
+                new Phrase('Cycle found. Query %1 already used in request hierarchy', [$queryName])
+            );
         }
         $this->mappedQueries[] = $queryName;
         $query = $this->requestData['queries'][$queryName];
@@ -129,13 +135,16 @@ class Cleaner
      * @return void
      * @throws StateException
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function cleanFilter($filterName)
     {
         if (!isset($this->requestData['filters'][$filterName])) {
             throw new \Exception('Filter ' . $filterName . ' does not exist');
         } elseif (in_array($filterName, $this->mappedFilters)) {
-            throw new StateException('Cycle found. Filter %1 already used in request hierarchy', [$filterName]);
+            throw new StateException(
+                new Phrase('Cycle found. Filter %1 already used in request hierarchy', [$filterName])
+            );
         }
         $this->mappedFilters[] = $filterName;
         $filter = $this->requestData['filters'][$filterName];

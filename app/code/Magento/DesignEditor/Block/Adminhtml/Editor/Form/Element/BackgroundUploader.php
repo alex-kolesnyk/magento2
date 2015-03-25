@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -78,7 +79,7 @@ class BackgroundUploader extends \Magento\DesignEditor\Block\Adminhtml\Editor\Fo
      * Get component of 'checkbox' type (actually 'tile')
      *
      * @return \Magento\Framework\Data\Form\Element\Checkbox
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getCheckboxElement()
     {
@@ -91,7 +92,7 @@ class BackgroundUploader extends \Magento\DesignEditor\Block\Adminhtml\Editor\Fo
             }
         }
 
-        throw new \Magento\Framework\Model\Exception(
+        throw new \Magento\Framework\Exception\LocalizedException(
             __('Element "%1" is not found in "%2".', $checkboxId, $this->getData('name'))
         );
     }
@@ -100,7 +101,7 @@ class BackgroundUploader extends \Magento\DesignEditor\Block\Adminhtml\Editor\Fo
      * Get component of 'image-uploader' type
      *
      * @return \Magento\DesignEditor\Block\Adminhtml\Editor\Form\Element\ImageUploader
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getImageUploaderElement()
     {
@@ -111,7 +112,7 @@ class BackgroundUploader extends \Magento\DesignEditor\Block\Adminhtml\Editor\Fo
                 return $e;
             }
         }
-        throw new \Magento\Framework\Model\Exception(
+        throw new \Magento\Framework\Exception\LocalizedException(
             __('Element "%1" is not found in "%2".', $imageUploaderId, $this->getData('name'))
         );
     }

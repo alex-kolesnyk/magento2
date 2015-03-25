@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Controller\Adminhtml;
 
@@ -24,7 +25,7 @@ class NewsletterTemplateTest extends \Magento\Backend\Utility\Controller
             'sender_name' => 'Test Sender Name',
             'text' => 'Template Content',
         ];
-        $this->getRequest()->setPost($post);
+        $this->getRequest()->setPostValue($post);
         $this->_model = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
             'Magento\Newsletter\Model\Template'
         );
@@ -98,7 +99,7 @@ class NewsletterTemplateTest extends \Magento\Backend\Utility\Controller
             'sender_name' => 'Test Sender Name',
             'text' => 'Template Content',
         ];
-        $this->getRequest()->setPost($post);
+        $this->getRequest()->setPostValue($post);
         $this->dispatch('backend/newsletter/template/save');
 
         /**

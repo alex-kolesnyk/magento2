@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Email\Model\Resource;
 
@@ -19,13 +20,17 @@ class Template extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $dateTime;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
+     * @param string|null $resourcePrefix
      */
-    public function __construct(\Magento\Framework\App\Resource $resource, \Magento\Framework\Stdlib\DateTime $dateTime)
-    {
+    public function __construct(
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Magento\Framework\Stdlib\DateTime $dateTime,
+        $resourcePrefix = null
+    ) {
         $this->dateTime = $dateTime;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -67,7 +72,7 @@ class Template extends \Magento\Framework\Model\Resource\Db\AbstractDb
      */
     public function checkCodeUsage(\Magento\Email\Model\Template $template)
     {
-        if ($template->getTemplateActual() != 0 || is_null($template->getTemplateActual())) {
+        if ($template->getTemplateActual() != 0 || $template->getTemplateActual() === null) {
             $select = $this->_getReadAdapter()->select()->from(
                 $this->getMainTable(),
                 'COUNT(*)'
@@ -99,7 +104,7 @@ class Template extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected function _beforeSave(AbstractModel $object)
     {
         if ($object->isObjectNew()) {
-            $object->setCreatedAt($this->dateTime->formatDate(true));
+            $object->setAddedAt($this->dateTime->formatDate(true));
         }
         $object->setModifiedAt($this->dateTime->formatDate(true));
         $object->setTemplateType((int)$object->getTemplateType());

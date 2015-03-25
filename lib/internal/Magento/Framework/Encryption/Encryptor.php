@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Encryption;
 
@@ -94,7 +95,7 @@ class Encryptor implements EncryptorInterface
 
         $version = (int)$version;
         if (!in_array($version, $types, true)) {
-            throw new \Exception(__('Not supported cipher version'));
+            throw new \Exception((string)new \Magento\Framework\Phrase('Not supported cipher version'));
         }
         return $version;
     }
@@ -262,7 +263,7 @@ class Encryptor implements EncryptorInterface
     public function validateKey($key)
     {
         if (preg_match('/\s/s', $key)) {
-            throw new \Exception(__('The encryption key format is invalid.'));
+            throw new \Exception((string)new \Magento\Framework\Phrase('The encryption key format is invalid.'));
         }
         return $this->getCrypt($key);
     }

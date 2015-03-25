@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Form;
 
-use Magento\Framework\Model\Exception;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Eav Form Element Model
@@ -88,16 +89,16 @@ class Element extends \Magento\Framework\Model\AbstractModel
     /**
      * Validate data before save data
      *
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     public function beforeSave()
     {
         if (!$this->getTypeId()) {
-            throw new Exception(__('Invalid form type.'));
+            throw new LocalizedException(__('Invalid form type.'));
         }
         if (!$this->getAttributeId()) {
-            throw new Exception(__('Invalid EAV attribute'));
+            throw new LocalizedException(__('Invalid EAV attribute'));
         }
 
         return parent::beforeSave();

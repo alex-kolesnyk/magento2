@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Create\Sidebar;
 
@@ -67,7 +68,7 @@ class Pcompared extends \Magento\Sales\Block\Adminhtml\Order\Create\Sidebar\Abst
     /**
      * Get header text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -82,7 +83,7 @@ class Pcompared extends \Magento\Sales\Block\Adminhtml\Order\Create\Sidebar\Abst
     public function getItemCollection()
     {
         $productCollection = $this->getData('item_collection');
-        if (is_null($productCollection)) {
+        if ($productCollection === null) {
             // get products to skip
             $skipProducts = [];
             if ($collection = $this->getCreateOrderModel()->getCustomerCompareList()) {

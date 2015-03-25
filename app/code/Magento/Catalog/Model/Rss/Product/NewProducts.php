@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Rss\Product;
 
@@ -48,11 +49,13 @@ class NewProducts
     {
         /** @var $product \Magento\Catalog\Model\Product */
         $product = $this->productFactory->create();
-        $todayStartOfDayDate = $this->localeDate->date()->setTime('00:00:00')
-            ->toString(\Magento\Framework\Stdlib\DateTime::DATETIME_INTERNAL_FORMAT);
+        $todayStartOfDayDate = $this->localeDate->date()
+            ->setTime(0, 0)
+            ->format('Y-m-d H:i:s');
 
-        $todayEndOfDayDate = $this->localeDate->date()->setTime('23:59:59')
-            ->toString(\Magento\Framework\Stdlib\DateTime::DATETIME_INTERNAL_FORMAT);
+        $todayEndOfDayDate = $this->localeDate->date()
+            ->setTime(23, 59, 59)
+            ->format('Y-m-d H:i:s');
         /** @var $products \Magento\Catalog\Model\Resource\Product\Collection */
         $products = $product->getResourceCollection();
         $products->setStoreId($storeId);

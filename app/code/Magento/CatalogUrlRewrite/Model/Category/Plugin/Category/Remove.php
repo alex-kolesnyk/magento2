@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model\Category\Plugin\Category;
 
-use Magento\Catalog\Model\Category;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\CatalogUrlRewrite\Model\Category\ChildrenCategoriesProvider;
 use Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator;
 use Magento\CatalogUrlRewrite\Model\ProductUrlRewriteGenerator;
@@ -40,15 +41,20 @@ class Remove
     /**
      * Remove product urls from storage
      *
-     * @param Category $category
+     * @param \Magento\Catalog\Model\Resource\Category $subject
      * @param callable $proceed
+     * @param CategoryInterface $category
      * @return mixed
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function aroundDelete(Category $category, \Closure $proceed)
-    {
+    public function aroundDelete(
+        \Magento\Catalog\Model\Resource\Category $subject,
+        \Closure $proceed,
+        CategoryInterface $category
+    ) {
         $categoryIds = $this->childrenCategoriesProvider->getChildrenIds($category, true);
         $categoryIds[] = $category->getId();
-        $result = $proceed();
+        $result = $proceed($category);
         foreach ($categoryIds as $categoryId) {
             $this->deleteRewritesForCategory($categoryId);
         }

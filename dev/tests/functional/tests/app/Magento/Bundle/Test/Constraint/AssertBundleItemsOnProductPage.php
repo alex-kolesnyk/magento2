@@ -1,14 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Bundle\Test\Constraint;
 
 use Magento\Bundle\Test\Fixture\BundleProduct;
 use Magento\Catalog\Test\Page\Product\CatalogProductView;
-use Mtf\Client\Browser;
-use Mtf\Constraint\AbstractAssertForm;
+use Magento\Mtf\Client\BrowserInterface;
+use Magento\Mtf\Constraint\AbstractAssertForm;
 
 /**
  * Class AssertBundleItemsOnProductPage
@@ -16,22 +17,18 @@ use Mtf\Constraint\AbstractAssertForm;
  */
 class AssertBundleItemsOnProductPage extends AbstractAssertForm
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that displayed product bundle items data on product page equals passed from fixture preset
      *
      * @param CatalogProductView $catalogProductView
      * @param BundleProduct $product
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @return void
      */
     public function processAssert(
         CatalogProductView $catalogProductView,
         BundleProduct $product,
-        Browser $browser
+        BrowserInterface $browser
     ) {
         $browser->open($_ENV['app_frontend_url'] . $product->getUrlKey() . '.html');
 

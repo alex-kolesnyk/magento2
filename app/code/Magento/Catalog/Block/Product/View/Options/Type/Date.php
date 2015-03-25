@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Product\View\Options\Type;
 
@@ -28,20 +29,20 @@ class Date extends \Magento\Catalog\Block\Product\View\Options\AbstractOptions
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Core\Helper\Data $coreHelper
+     * @param \Magento\Framework\Pricing\Helper\Data $pricingHelper
      * @param \Magento\Catalog\Helper\Data $catalogData
      * @param \Magento\Catalog\Model\Product\Option\Type\Date $catalogProductOptionTypeDate
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Core\Helper\Data $coreHelper,
+        \Magento\Framework\Pricing\Helper\Data $pricingHelper,
         \Magento\Catalog\Helper\Data $catalogData,
         \Magento\Catalog\Model\Product\Option\Type\Date $catalogProductOptionTypeDate,
         array $data = []
     ) {
         $this->_catalogProductOptionTypeDate = $catalogProductOptionTypeDate;
-        parent::__construct($context, $coreHelper, $catalogData, $data);
+        parent::__construct($context, $pricingHelper, $catalogData, $data);
     }
 
     /**
@@ -90,9 +91,9 @@ class Date extends \Magento\Catalog\Block\Product\View\Options\AbstractOptions
         )->setClass(
             'product-custom-option datetime-picker input-text'
         )->setImage(
-            $this->getViewFileUrl('Magento_Core::calendar.gif')
+            $this->getViewFileUrl('Magento_Theme::calendar.png')
         )->setDateFormat(
-            $this->_localeDate->getDateFormat(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT)
+            $this->_localeDate->getDateFormat(\IntlDateFormatter::SHORT)
         )->setValue(
             $value
         )->setYearsRange(
@@ -200,12 +201,12 @@ class Date extends \Magento\Catalog\Block\Product\View\Options\AbstractOptions
         $extraParams .= ' data-role="calendar-dropdown" data-calendar-role="' . $name . '"';
         $select->setExtraParams($extraParams);
 
-        if (is_null($value)) {
+        if ($value === null) {
             $value = $this->getProduct()->getPreconfiguredValues()->getData(
                 'options/' . $option->getId() . '/' . $name
             );
         }
-        if (!is_null($value)) {
+        if ($value !== null) {
             $select->setValue($value);
         }
 

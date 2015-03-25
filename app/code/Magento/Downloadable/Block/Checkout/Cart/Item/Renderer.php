@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -26,19 +27,20 @@ class Renderer extends \Magento\Checkout\Block\Cart\Item\Renderer
      * @param \Magento\Catalog\Helper\Product\Configuration $productConfig
      * @param \Magento\Checkout\Model\Session $checkoutSession
      * @param \Magento\Catalog\Helper\Image $imageHelper
-     * @param \Magento\Core\Helper\Url $urlHelper
+     * @param \Magento\Framework\Url\Helper\Data $urlHelper
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param PriceCurrencyInterface $priceCurrency
      * @param \Magento\Downloadable\Helper\Catalog\Product\Configuration $downloadableProductConfiguration
      * @param \Magento\Framework\Module\Manager $moduleManager
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Catalog\Helper\Product\Configuration $productConfig,
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Catalog\Helper\Image $imageHelper,
-        \Magento\Core\Helper\Url $urlHelper,
+        \Magento\Framework\Url\Helper\Data $urlHelper,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         PriceCurrencyInterface $priceCurrency,
         \Magento\Framework\Module\Manager $moduleManager,

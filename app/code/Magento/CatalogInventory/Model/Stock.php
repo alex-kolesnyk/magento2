@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model;
 
@@ -9,6 +10,7 @@ use Magento\Framework\Model\AbstractExtensibleModel;
 
 /**
  * Class Stock
+ *
  */
 class Stock extends AbstractExtensibleModel implements StockInterface
 {
@@ -55,6 +57,7 @@ class Stock extends AbstractExtensibleModel implements StockInterface
         $this->_init('Magento\CatalogInventory\Model\Resource\Stock');
     }
 
+    //@codeCoverageIgnoreStart
     /**
      * Retrieve stock identifier
      *
@@ -84,4 +87,60 @@ class Stock extends AbstractExtensibleModel implements StockInterface
     {
         return $this->_getData(self::STOCK_NAME);
     }
+
+    /**
+     * Set stock identifier
+     *
+     * @param int $stockId
+     * @return $this
+     */
+    public function setStockId($stockId)
+    {
+        return $this->setData(self::STOCK_ID, $stockId);
+    }
+
+    /**
+     * Retrieve website identifier
+     *
+     * @param int $websiteId
+     * @return $this
+     */
+    public function setWebsiteId($websiteId)
+    {
+        return $this->setData(self::WEBSITE_ID, $websiteId);
+    }
+
+    /**
+     * Set stock name
+     *
+     * @param string $stockName
+     * @return $this
+     */
+    public function setStockName($stockName)
+    {
+        return $this->setData(self::STOCK_NAME, $stockName);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Magento\CatalogInventory\Api\Data\StockExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Magento\CatalogInventory\Api\Data\StockExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(
+        \Magento\CatalogInventory\Api\Data\StockExtensionInterface $extensionAttributes
+    ) {
+        return $this->_setExtensionAttributes($extensionAttributes);
+    }
+    //@codeCoverageIgnoreEnd
 }

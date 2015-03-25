@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Account;
 
@@ -26,7 +27,7 @@ class AuthorizationLink extends \Magento\Framework\View\Element\Html\Link
     protected $_customerUrl;
 
     /**
-     * @var \Magento\Core\Helper\PostData
+     * @var \Magento\Framework\Data\Helper\PostHelper
      */
     protected $_postDataHelper;
 
@@ -34,14 +35,14 @@ class AuthorizationLink extends \Magento\Framework\View\Element\Html\Link
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param \Magento\Customer\Model\Url $customerUrl
-     * @param \Magento\Core\Helper\PostData $postDataHelper
+     * @param \Magento\Framework\Data\Helper\PostHelper $postDataHelper
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Framework\App\Http\Context $httpContext,
         \Magento\Customer\Model\Url $customerUrl,
-        \Magento\Core\Helper\PostData $postDataHelper,
+        \Magento\Framework\Data\Helper\PostHelper $postDataHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);

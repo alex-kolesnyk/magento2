@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Product\ProductList;
 
@@ -27,17 +28,19 @@ class Random extends \Magento\Catalog\Block\Product\ListProduct
 
     /**
      * @param \Magento\Catalog\Block\Product\Context $context
-     * @param \Magento\Core\Helper\PostData $postDataHelper
+     * @param \Magento\Framework\Data\Helper\PostHelper $postDataHelper
      * @param \Magento\Catalog\Model\Layer\Resolver $layerResolver
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param \Magento\Framework\Url\Helper\Data $urlHelper
      * @param \Magento\Catalog\Model\Resource\Product\CollectionFactory $productCollectionFactory
      * @param array $data
      */
     public function __construct(
         \Magento\Catalog\Block\Product\Context $context,
-        \Magento\Core\Helper\PostData $postDataHelper,
+        \Magento\Framework\Data\Helper\PostHelper $postDataHelper,
         \Magento\Catalog\Model\Layer\Resolver $layerResolver,
         CategoryRepositoryInterface $categoryRepository,
+        \Magento\Framework\Url\Helper\Data $urlHelper,
         \Magento\Catalog\Model\Resource\Product\CollectionFactory $productCollectionFactory,
         array $data = []
     ) {
@@ -47,6 +50,7 @@ class Random extends \Magento\Catalog\Block\Product\ListProduct
             $postDataHelper,
             $layerResolver,
             $categoryRepository,
+            $urlHelper,
             $data
         );
     }
@@ -56,7 +60,7 @@ class Random extends \Magento\Catalog\Block\Product\ListProduct
      */
     protected function _getProductCollection()
     {
-        if (is_null($this->_productCollection)) {
+        if ($this->_productCollection === null) {
             /** @var \Magento\Catalog\Model\Resource\Product\Collection $collection */
             $collection = $this->_productCollectionFactory->create();
             $this->_catalogLayer->prepareProductCollection($collection);

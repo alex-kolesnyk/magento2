@@ -1,12 +1,13 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /*jshint jquery:true*/
 define([
     "jquery",
     "jquery/ui",
+    "loadingPopup",
     "mage/translate",
-    "jquery/template",
     "Magento_DesignEditor/js/dialog"
 ], function($){
 
@@ -70,7 +71,7 @@ define([
                 {
                     text: $.mage.__('Yes'),
                     click: callback,
-                    'class': 'primary'
+                    'class': 'action-primary'
                 }
             ];
 

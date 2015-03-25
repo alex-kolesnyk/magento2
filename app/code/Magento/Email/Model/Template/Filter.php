@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Email\Model\Template;
 
@@ -51,7 +52,7 @@ class Filter extends \Magento\Framework\Filter\Template
     protected $_assetRepo;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -64,7 +65,7 @@ class Filter extends \Magento\Framework\Filter\Template
      * Core store config
      * Variable factory
      *
-     * @var \Magento\Core\Model\VariableFactory
+     * @var \Magento\Variable\Model\VariableFactory
      */
     protected $_variableFactory;
 
@@ -111,11 +112,11 @@ class Filter extends \Magento\Framework\Filter\Template
 
     /**
      * @param \Magento\Framework\Stdlib\String $string
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Escaper $escaper
      * @param \Magento\Framework\View\Asset\Repository $assetRepo
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Core\Model\VariableFactory $coreVariableFactory
+     * @param \Magento\Variable\Model\VariableFactory $coreVariableFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Framework\View\LayoutInterface $layout
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory
@@ -127,11 +128,11 @@ class Filter extends \Magento\Framework\Filter\Template
      */
     public function __construct(
         \Magento\Framework\Stdlib\String $string,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Escaper $escaper,
         \Magento\Framework\View\Asset\Repository $assetRepo,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Core\Model\VariableFactory $coreVariableFactory,
+        \Magento\Variable\Model\VariableFactory $coreVariableFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Framework\View\LayoutInterface $layout,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
@@ -591,8 +592,8 @@ class Filter extends \Magento\Framework\Filter\Template
                 $params['code']
             );
             $mode = $this->_plainTemplateMode
-                ? \Magento\Core\Model\Variable::TYPE_TEXT
-                : \Magento\Core\Model\Variable::TYPE_HTML;
+                ? \Magento\Variable\Model\Variable::TYPE_TEXT
+                : \Magento\Variable\Model\Variable::TYPE_HTML;
             $value = $variable->getValue($mode);
             if ($value) {
                 $customVarValue = $value;
@@ -615,7 +616,7 @@ class Filter extends \Magento\Framework\Filter\Template
             $value = parent::filter($value);
         } catch (\Exception $e) {
             $value = '';
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
         }
         return $value;
     }

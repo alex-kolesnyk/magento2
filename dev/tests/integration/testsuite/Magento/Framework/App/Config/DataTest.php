@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Config;
 
@@ -57,7 +58,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
     {
         // load the model
         $collection = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-            'Magento\Core\Model\Resource\Config\Data\Collection'
+            'Magento\Config\Model\Resource\Config\Data\Collection'
         );
         $collection->addFieldToFilter(
             'path',

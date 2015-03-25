@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Account\Dashboard;
 
@@ -74,7 +75,7 @@ class Address extends \Magento\Framework\View\Element\Template
     /**
      * HTML for Shipping Address
      *
-     * @return string
+     * @return \Magento\Framework\Phrase|string
      */
     public function getPrimaryShippingAddressHtml()
     {
@@ -94,7 +95,7 @@ class Address extends \Magento\Framework\View\Element\Template
     /**
      * HTML for Billing Address
      *
-     * @return string
+     * @return \Magento\Framework\Phrase|string
      */
     public function getPrimaryBillingAddressHtml()
     {

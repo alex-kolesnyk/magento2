@@ -1,17 +1,17 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Constraint;
 
 use Magento\Sales\Test\Fixture\OrderInjectable;
 use Magento\Sales\Test\Page\Adminhtml\OrderIndex;
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class AssertUnholdButton
  * Assert that 'Unhold' button present on page
  */
 class AssertUnholdButton extends AbstractConstraint
@@ -24,16 +24,16 @@ class AssertUnholdButton extends AbstractConstraint
      * Assert that 'Unhold' button present on order page
      *
      * @param OrderIndex $orderIndex
-     * @param OrderView $orderView
+     * @param SalesOrderView $salesOrderView
      * @param OrderInjectable $order
      * @return void
      */
-    public function processAssert(OrderIndex $orderIndex, OrderView $orderView, OrderInjectable $order)
+    public function processAssert(OrderIndex $orderIndex, SalesOrderView $salesOrderView, OrderInjectable $order)
     {
         $orderIndex->open();
         $orderIndex->getSalesOrderGrid()->searchAndOpen(['id' => $order->getId()]);
         \PHPUnit_Framework_Assert::assertTrue(
-            $orderView->getPageActions()->isActionButtonVisible('Unhold'),
+            $salesOrderView->getPageActions()->isActionButtonVisible('Unhold'),
             'Button "Unhold" is absent on order page.'
         );
     }

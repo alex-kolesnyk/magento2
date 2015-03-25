@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Catalog Product Website Model
@@ -43,14 +46,16 @@ class Website extends \Magento\Framework\Model\AbstractModel
      * @param array $websiteIds
      * @param array $productIds
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function removeProducts($websiteIds, $productIds)
     {
         try {
             $this->_getResource()->removeProducts($websiteIds, $productIds);
         } catch (\Exception $e) {
-            throw new \Magento\Framework\Model\Exception(__('Something went wrong removing products from the websites.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Something went wrong removing products from the websites.')
+            );
         }
         return $this;
     }
@@ -61,14 +66,16 @@ class Website extends \Magento\Framework\Model\AbstractModel
      * @param array $websiteIds
      * @param array $productIds
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function addProducts($websiteIds, $productIds)
     {
         try {
             $this->_getResource()->addProducts($websiteIds, $productIds);
         } catch (\Exception $e) {
-            throw new \Magento\Framework\Model\Exception(__('Something went wrong adding products to websites.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Something went wrong adding products to websites.')
+            );
         }
         return $this;
     }

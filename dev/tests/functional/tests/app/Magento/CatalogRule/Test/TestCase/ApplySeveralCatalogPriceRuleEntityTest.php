@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogRule\Test\TestCase;
@@ -25,6 +26,11 @@ use Magento\Catalog\Test\Fixture\CatalogProductSimple;
  */
 class ApplySeveralCatalogPriceRuleEntityTest extends AbstractCatalogRuleEntityTest
 {
+    /* tags */
+    const MVP = 'yes';
+    const DOMAIN = 'MX';
+    /* end tags */
+
     /**
      * Apply several catalog price rules
      *
@@ -52,12 +58,14 @@ class ApplySeveralCatalogPriceRuleEntityTest extends AbstractCatalogRuleEntityTe
             $this->catalogRuleNew->getFormPageActions()->saveAndApply();
         }
         // Create product
-        $productSimple = $this->fixtureFactory->createByCode(
-            'catalogProductSimple',
-            ['dataSet' => 'simple_for_salesrule_1']
-        );
-        $productSimple->persist();
+        $products = $this->objectManager->create(
+            '\Magento\Catalog\Test\TestStep\CreateProductsStep',
+            ['products' => 'catalogProductSimple::simple_for_salesrule_1']
+        )->run();
 
-        return ['product' => $productSimple];
+        return [
+            'products' => $products['products'],
+            'category' => $products['products'][0]->getDataFieldConfig('category_ids')['source']->getCategories()[0],
+        ];
     }
 }

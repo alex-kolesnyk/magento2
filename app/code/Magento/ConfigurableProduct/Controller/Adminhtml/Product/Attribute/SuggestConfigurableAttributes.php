@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Controller\Adminhtml\Product\Attribute;
 
@@ -16,9 +17,9 @@ class SuggestConfigurableAttributes extends Action
     protected $attributeList;
 
     /**
-     * @var \Magento\Core\Helper\Data
+     * @var \Magento\Framework\Json\Helper\Data
      */
-    protected $coreHelper;
+    protected $jsonHelper;
 
     /**
      * Store manager
@@ -30,17 +31,17 @@ class SuggestConfigurableAttributes extends Action
     /**
      * @param Action\Context $context
      * @param SuggestedAttributeList $attributeList
-     * @param \Magento\Core\Helper\Data $coreHelper
+     * @param \Magento\Framework\Json\Helper\Data $jsonHelper
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         Action\Context $context,
         SuggestedAttributeList $attributeList,
-        \Magento\Core\Helper\Data $coreHelper,
+        \Magento\Framework\Json\Helper\Data $jsonHelper,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->attributeList = $attributeList;
-        $this->coreHelper = $coreHelper;
+        $this->jsonHelper = $jsonHelper;
         $this->storeManager = $storeManager;
         parent::__construct($context);
     }
@@ -65,7 +66,7 @@ class SuggestConfigurableAttributes extends Action
         $this->storeManager->setCurrentStore(\Magento\Store\Model\Store::ADMIN_CODE);
 
         $this->getResponse()->representJson(
-            $this->coreHelper->jsonEncode(
+            $this->jsonHelper->jsonEncode(
                 $this->attributeList->getSuggestedAttributes($this->getRequest()->getParam('label_part'))
             )
         );

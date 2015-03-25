@@ -1,10 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Wishlist\Helper;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Rss extends \Magento\Wishlist\Helper\Data
 {
     /**
@@ -13,9 +17,9 @@ class Rss extends \Magento\Wishlist\Helper\Data
     protected $_customer;
 
     /**
-     * @var \Magento\Customer\Api\Data\CustomerDataBuilder
+     * @var \Magento\Customer\Api\Data\CustomerInterfaceFactory
      */
-    protected $_customerBuilder;
+    protected $_customerFactory;
 
     /**
      * @var \Magento\Customer\Api\CustomerRepositoryInterface
@@ -25,36 +29,34 @@ class Rss extends \Magento\Wishlist\Helper\Data
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      * @param \Magento\Framework\Registry $coreRegistry
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Wishlist\Model\WishlistFactory $wishlistFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Core\Helper\PostData $postDataHelper
+     * @param \Magento\Framework\Data\Helper\PostHelper $postDataHelper
      * @param \Magento\Customer\Helper\View $customerViewHelper
      * @param \Magento\Wishlist\Controller\WishlistProviderInterface $wishlistProvider
-     * @param \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder
+     * @param \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Wishlist\Model\WishlistFactory $wishlistFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Core\Helper\PostData $postDataHelper,
+        \Magento\Framework\Data\Helper\PostHelper $postDataHelper,
         \Magento\Customer\Helper\View $customerViewHelper,
         \Magento\Wishlist\Controller\WishlistProviderInterface $wishlistProvider,
-        \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder,
+        \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
     ) {
-        $this->_customerBuilder = $customerBuilder;
+        $this->_customerFactory = $customerFactory;
         $this->_customerRepository = $customerRepository;
 
         parent::__construct(
             $context,
             $coreRegistry,
-            $scopeConfig,
             $customerSession,
             $wishlistFactory,
             $storeManager,
@@ -71,7 +73,7 @@ class Rss extends \Magento\Wishlist\Helper\Data
      */
     public function getWishlist()
     {
-        if (is_null($this->_wishlist)) {
+        if ($this->_wishlist === null) {
             $this->_wishlist = $this->_wishlistFactory->create();
 
             $wishlistId = $this->_getRequest()->getParam('wishlist_id');
@@ -93,14 +95,14 @@ class Rss extends \Magento\Wishlist\Helper\Data
      */
     public function getCustomer()
     {
-        if (is_null($this->_customer)) {
+        if ($this->_customer === null) {
             $params = $this->urlDecoder->decode($this->_getRequest()->getParam('data'));
             $data   = explode(',', $params);
             $customerId    = abs(intval($data[0]));
             if ($customerId && ($customerId == $this->_customerSession->getCustomerId())) {
                 $this->_customer = $this->_customerRepository->getById($customerId);
             } else {
-                $this->_customer = $this->_customerBuilder->create();
+                $this->_customer = $this->_customerFactory->create();
             }
         }
 
@@ -115,6 +117,9 @@ class Rss extends \Magento\Wishlist\Helper\Data
     public function isRssAllow()
     {
         return $this->_moduleManager->isEnabled('Magento_Rss')
-            && $this->_scopeConfig->isSetFlag('rss/wishlist/active', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+            && $this->scopeConfig->isSetFlag(
+                'rss/wishlist/active',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            );
     }
 }

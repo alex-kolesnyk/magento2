@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\Di\Code\Scanner;
 
@@ -22,7 +23,7 @@ class PluginScanner implements ScannerInterface
             /** @var $node \DOMNode */
             foreach ($xpath->query('//type/plugin|//virtualType/plugin') as $node) {
                 $pluginTypeNode = $node->attributes->getNamedItem('type');
-                if (!is_null($pluginTypeNode)) {
+                if ($pluginTypeNode !== null) {
                     $pluginClassNames[] = $pluginTypeNode->nodeValue;
                 }
             }

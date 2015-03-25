@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Checkout\Test\TestStep;
 
 use Magento\Checkout\Test\Page\CheckoutOnepage;
-use Mtf\TestStep\TestStepInterface;
+use Magento\Mtf\TestStep\TestStepInterface;
+use Magento\Payment\Test\Fixture\CreditCard;
 
 /**
  * Class SelectPaymentMethodStep
@@ -29,14 +31,26 @@ class SelectPaymentMethodStep implements TestStepInterface
     protected $payment;
 
     /**
+     * Credit card information
+     *
+     * @var string
+     */
+    protected $creditCard;
+
+    /**
      * @constructor
      * @param CheckoutOnepage $checkoutOnepage
      * @param array $payment
+     * @param CreditCard|null $creditCard
      */
-    public function __construct(CheckoutOnepage $checkoutOnepage, array $payment)
-    {
+    public function __construct(
+        CheckoutOnepage $checkoutOnepage,
+        array $payment,
+        CreditCard $creditCard = null
+    ) {
         $this->checkoutOnepage = $checkoutOnepage;
         $this->payment = $payment;
+        $this->creditCard = $creditCard;
     }
 
     /**
@@ -47,7 +61,7 @@ class SelectPaymentMethodStep implements TestStepInterface
     public function run()
     {
         if ($this->payment['method'] !== 'free') {
-            $this->checkoutOnepage->getPaymentMethodsBlock()->selectPaymentMethod($this->payment);
+            $this->checkoutOnepage->getPaymentMethodsBlock()->selectPaymentMethod($this->payment, $this->creditCard);
         }
         $this->checkoutOnepage->getPaymentMethodsBlock()->clickContinue();
     }

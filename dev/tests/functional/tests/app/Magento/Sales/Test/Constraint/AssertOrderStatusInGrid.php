@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Constraint;
 
 use Magento\Sales\Test\Fixture\OrderStatus;
 use Magento\Sales\Test\Page\Adminhtml\OrderStatusIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertOrderStatusInGrid
@@ -15,10 +16,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertOrderStatusInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'high';
-    /* end tags */
-
     /**
      * Order status state data mapping
      *

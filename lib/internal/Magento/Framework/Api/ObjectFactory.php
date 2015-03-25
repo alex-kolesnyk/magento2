@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
@@ -30,5 +31,16 @@ class ObjectFactory
     public function create($className, array $arguments)
     {
         return $this->objectManager->create($className, $arguments);
+    }
+
+    /**
+     * Get data object
+     *
+     * @param string $className
+     * @return object
+     */
+    public function get($className)
+    {
+        return $this->objectManager->get($className);
     }
 }

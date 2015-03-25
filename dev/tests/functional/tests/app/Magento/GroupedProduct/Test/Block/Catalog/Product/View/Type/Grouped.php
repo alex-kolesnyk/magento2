@@ -1,17 +1,17 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GroupedProduct\Test\Block\Catalog\Product\View\Type;
 
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
 use Magento\GroupedProduct\Test\Fixture\GroupedProduct;
-use Magento\GroupedProduct\Test\Fixture\GroupedProductInjectable;
-use Mtf\Block\Block;
-use Mtf\Client\Element\Locator;
-use Mtf\Fixture\FixtureInterface;
-use Mtf\Fixture\InjectableFixture;
+use Magento\Mtf\Block\Block;
+use Magento\Mtf\Client\Locator;
+use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\InjectableFixture;
 
 /**
  * Class Grouped
@@ -73,7 +73,7 @@ class Grouped extends Block
      */
     public function fill(FixtureInterface $product)
     {
-        /** @var GroupedProductInjectable $product */
+        /** @var GroupedProduct $product */
         $associatedProducts = $product->getAssociated()['products'];
         $checkoutData = $product->getCheckoutData();
         if (isset($checkoutData['options'])) {
@@ -90,7 +90,7 @@ class Grouped extends Block
                     sprintf($this->subProductByName, $productData['name']),
                     Locator::SELECTOR_XPATH
                 );
-                $subProduct->find($this->qty)->keys([$productData['qty']]);
+                $subProduct->find($this->qty)->setValue($productData['qty']);
                 $this->_rootElement->click();
             }
         }
@@ -104,15 +104,9 @@ class Grouped extends Block
      */
     public function getOptions(FixtureInterface $product)
     {
+        /** @var GroupedProduct $product */
+        $associatedProducts = $product->getAssociated()['products'];
         $options = [];
-        if ($product instanceof InjectableFixture) {
-            /** @var GroupedProductInjectable $product */
-            $associatedProducts = $product->getAssociated()['products'];
-        } else {
-            // TODO: Removed after refactoring(removed) old product fixture.
-            /** @var GroupedProduct $product */
-            $associatedProducts = $product->getAssociatedProducts();
-        }
 
         foreach ($associatedProducts as $subProduct) {
             /** @var CatalogProductSimple $subProduct */

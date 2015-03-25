@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Bundle\Test\Block\Adminhtml\Catalog\Product\Edit\Tab\Bundle\Option\Search;
@@ -18,7 +19,7 @@ class Grid extends GridInterface
      *
      * @var string
      */
-    protected $addProducts = 'button.add';
+    protected $addProducts = 'button.action-add';
 
     /**
      * An element locator which allows to select entities in grid

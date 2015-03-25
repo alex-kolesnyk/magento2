@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Product;
 
@@ -17,7 +18,7 @@ class View extends \Magento\Catalog\Controller\Product
     protected $viewHelper;
 
     /**
-     * @var \Magento\Framework\Controller\Result\Redirect
+     * @var \Magento\Framework\Controller\Result\RedirectFactory
      */
     protected $resultRedirectFactory;
 
@@ -61,7 +62,8 @@ class View extends \Magento\Catalog\Controller\Product
      */
     protected function noProductRedirect()
     {
-        if (isset($_GET['store']) && !$this->getResponse()->isRedirect()) {
+        $store = $this->getRequest()->getQuery('store');
+        if (isset($store) && !$this->getResponse()->isRedirect()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             return $resultRedirect->setPath('');
         } elseif (!$this->getResponse()->isRedirect()) {
@@ -92,6 +94,14 @@ class View extends \Magento\Catalog\Controller\Product
                 $notice = $product->getTypeInstance()->getSpecifyOptionMessage();
                 $this->messageManager->addNotice($notice);
             }
+            if ($this->getRequest()->isAjax()) {
+                $this->getResponse()->representJson(
+                    $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode([
+                        'backUrl' => $this->_redirect->getRedirectUrl()
+                    ])
+                );
+                return;
+            }
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setRefererOrBaseUrl();
             return $resultRedirect;
@@ -107,15 +117,13 @@ class View extends \Magento\Catalog\Controller\Product
             $page = $this->resultPageFactory->create(false, ['isIsolated' => true]);
             $this->viewHelper->prepareAndRender($page, $productId, $this, $params);
             return $page;
+        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+            return $this->noProductRedirect();
         } catch (\Exception $e) {
-            if ($e->getCode() == $this->viewHelper->ERR_NO_PRODUCT_LOADED) {
-                return $this->noProductRedirect();
-            } else {
-                $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
-                $resultForward = $this->resultForwardFactory->create();
-                $resultForward->forward('noroute');
-                return $resultForward;
-            }
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
+            $resultForward = $this->resultForwardFactory->create();
+            $resultForward->forward('noroute');
+            return $resultForward;
         }
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Model;
 
@@ -135,6 +136,7 @@ class Subscriber extends \Magento\Framework\Model\AbstractModel
      * @param \Magento\Framework\Model\Resource\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\Db $resourceCollection
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\Model\Context $context,
@@ -457,13 +459,15 @@ class Subscriber extends \Magento\Framework\Model\AbstractModel
     /**
      * Unsubscribes loaded subscription
      *
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return $this
      */
     public function unsubscribe()
     {
         if ($this->hasCheckCode() && $this->getCode() != $this->getCheckCode()) {
-            throw new \Magento\Framework\Model\Exception(__('This is an invalid subscription confirmation code.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('This is an invalid subscription confirmation code.')
+            );
         }
 
         if ($this->getSubscriberStatus() != self::STATUS_UNSUBSCRIBED) {
@@ -574,7 +578,7 @@ class Subscriber extends \Magento\Framework\Model\AbstractModel
 
         $this->save();
         $sendSubscription = $sendInformationEmail;
-        if (is_null($sendSubscription) xor $sendSubscription) {
+        if ($sendSubscription === null xor $sendSubscription) {
             try {
                 if ($this->isStatusChanged() && $status == self::STATUS_UNSUBSCRIBED) {
                     $this->sendUnsubscriptionEmail();
@@ -583,7 +587,7 @@ class Subscriber extends \Magento\Framework\Model\AbstractModel
                 }
             } catch (MailException $e) {
                 // If we are not able to send a new account email, this should be ignored
-                $this->_logger->logException($e);
+                $this->_logger->critical($e);
             }
         }
         return $this;

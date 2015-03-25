@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\ConfigurableProduct\Test\Fixture\Cart;
 
-use Magento\ConfigurableProduct\Test\Fixture\ConfigurableProductInjectable;
-use Mtf\Fixture\FixtureInterface;
+use Magento\ConfigurableProduct\Test\Fixture\ConfigurableProduct;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class Item
@@ -27,7 +28,7 @@ class Item extends \Magento\Catalog\Test\Fixture\Cart\Item
     {
         parent::__construct($product);
 
-        /** @var ConfigurableProductInjectable $product */
+        /** @var ConfigurableProduct $product */
         $checkoutData = $product->getCheckoutData();
         $cartItem = isset($checkoutData['cartItem']) ? $checkoutData['cartItem'] : [];
         $attributesData = $product->getConfigurableAttributesData()['attributes_data'];

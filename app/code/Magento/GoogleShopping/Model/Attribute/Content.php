@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -23,11 +24,11 @@ class Content extends \Magento\GoogleShopping\Model\Attribute\DefaultAttribute
     {
         $mapValue = $this->getProductAttributeValue($product);
         $description = $this->getGroupAttributeDescription();
-        if (!is_null($description) && !is_null($description->getAttributeId())) {
+        if ($description !== null && $description->getAttributeId() !== null) {
             $mapValue = $description->getProductAttributeValue($product);
         }
 
-        if (!is_null($mapValue)) {
+        if ($mapValue !== null) {
             $descrText = $mapValue;
         } elseif ($product->getDescription()) {
             $descrText = $product->getDescription();

@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
-/** @var $installer \Magento\Catalog\Model\Resource\Setup */
+/** @var $installer \Magento\Catalog\Setup\CategorySetup */
 $installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Model\Resource\Setup',
+    'Magento\Catalog\Setup\CategorySetup',
     ['resourceName' => 'catalog_setup']
 );
 $attributeSetId = $installer->getAttributeSetId('catalog_product', 'Default');

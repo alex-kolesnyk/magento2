@@ -1,18 +1,28 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Sales\Model\AdminOrder;
 
 use Magento\Customer\Api\AddressMetadataInterface;
 use Magento\Customer\Model\Metadata\Form as CustomerForm;
-use Magento\Sales\Model\Quote\Item;
+use Magento\Quote\Model\Quote\Item;
 
 /**
  * Order create model
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Create extends \Magento\Framework\Object implements \Magento\Checkout\Model\Cart\CartInterface
 {
+    /**
+     * Xml default email domain path
+     */
     const XML_PATH_DEFAULT_EMAIL_DOMAIN = 'customer/create_account/email_domain';
 
     /**
@@ -32,7 +42,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Sales Quote instance
      *
-     * @var \Magento\Sales\Model\Quote
+     * @var \Magento\Quote\Model\Quote
      */
     protected $_cart;
 
@@ -74,7 +84,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Quote associated with the model
      *
-     * @var \Magento\Sales\Model\Quote
+     * @var \Magento\Quote\Model\Quote
      */
     protected $_quote;
 
@@ -86,7 +96,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     protected $_coreRegistry = null;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -133,9 +143,9 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     protected $addressRepository;
 
     /**
-     * @var \Magento\Customer\Api\Data\AddressDataBuilder
+     * @var \Magento\Customer\Api\Data\AddressInterfaceFactory
      */
-    protected $addressBuilder;
+    protected $addressFactory;
 
     /**
      * @var \Magento\Customer\Model\Metadata\FormFactory
@@ -163,7 +173,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     protected $emailSender;
 
     /**
-     * @var \Magento\Sales\Model\Quote\Item\Updater
+     * @var \Magento\Quote\Model\Quote\Item\Updater
      */
     protected $quoteItemUpdater;
 
@@ -178,9 +188,9 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     protected $accountManagement;
 
     /**
-     * @var \Magento\Customer\Api\Data\CustomerDataBuilder
+     * @var \Magento\Customer\Api\Data\CustomerInterfaceFactory
      */
-    protected $customerBuilder;
+    protected $customerFactory;
 
     /**
      * Constructor
@@ -190,9 +200,19 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     protected $customerMapper;
 
     /**
-     * @var \Magento\Sales\Model\QuoteRepository
+     * @var \Magento\Quote\Model\QuoteRepository
      */
     protected $quoteRepository;
+
+    /**
+     * @var \Magento\Quote\Model\QuoteManagement
+     */
+    protected $quoteManagement;
+
+    /**
+     * @var \Magento\Framework\Api\DataObjectHelper
+     */
+    protected $dataObjectHelper;
 
     /**
      * @param \Magento\Framework\ObjectManagerInterface $objectManager
@@ -200,13 +220,13 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * @param \Magento\Framework\Registry $coreRegistry
      * @param \Magento\Sales\Model\Config $salesConfig
      * @param \Magento\Backend\Model\Session\Quote $quoteSession
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Object\Copy $objectCopyService
      * @param \Magento\Framework\Message\ManagerInterface $messageManager
      * @param Product\Quote\Initializer $quoteInitializer
      * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
      * @param \Magento\Customer\Api\AddressRepositoryInterface $addressRepository
-     * @param \Magento\Customer\Api\Data\AddressDataBuilder $addressBuilder
+     * @param \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory
      * @param \Magento\Customer\Model\Metadata\FormFactory $metadataFormFactory
      * @param \Magento\Customer\Api\GroupRepositoryInterface $groupRepository
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -214,11 +234,14 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * @param \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
      * @param Item\Updater $quoteItemUpdater
      * @param \Magento\Framework\Object\Factory $objectFactory
-     * @param \Magento\Sales\Model\QuoteRepository $quoteRepository
+     * @param \Magento\Quote\Model\QuoteRepository $quoteRepository
      * @param \Magento\Customer\Api\AccountManagementInterface $accountManagement
-     * @param \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder
+     * @param \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory
      * @param \Magento\Customer\Model\Customer\Mapper $customerMapper
+     * @param \Magento\Quote\Model\QuoteManagement $quoteManagement
+     * @param \Magento\Framework\Api\DataObjectHelper $dataObjectHelper
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
@@ -226,24 +249,26 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         \Magento\Framework\Registry $coreRegistry,
         \Magento\Sales\Model\Config $salesConfig,
         \Magento\Backend\Model\Session\Quote $quoteSession,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Object\Copy $objectCopyService,
         \Magento\Framework\Message\ManagerInterface $messageManager,
         Product\Quote\Initializer $quoteInitializer,
         \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
         \Magento\Customer\Api\AddressRepositoryInterface $addressRepository,
-        \Magento\Customer\Api\Data\AddressDataBuilder $addressBuilder,
+        \Magento\Customer\Api\Data\AddressInterfaceFactory $addressFactory,
         \Magento\Customer\Model\Metadata\FormFactory $metadataFormFactory,
         \Magento\Customer\Api\GroupRepositoryInterface $groupRepository,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Sales\Model\AdminOrder\EmailSender $emailSender,
         \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry,
-        \Magento\Sales\Model\Quote\Item\Updater $quoteItemUpdater,
+        \Magento\Quote\Model\Quote\Item\Updater $quoteItemUpdater,
         \Magento\Framework\Object\Factory $objectFactory,
-        \Magento\Sales\Model\QuoteRepository $quoteRepository,
+        \Magento\Quote\Model\QuoteRepository $quoteRepository,
         \Magento\Customer\Api\AccountManagementInterface $accountManagement,
-        \Magento\Customer\Api\Data\CustomerDataBuilder $customerBuilder,
+        \Magento\Customer\Api\Data\CustomerInterfaceFactory $customerFactory,
         \Magento\Customer\Model\Customer\Mapper $customerMapper,
+        \Magento\Quote\Model\QuoteManagement $quoteManagement,
+        \Magento\Framework\Api\DataObjectHelper $dataObjectHelper,
         array $data = []
     ) {
         $this->_objectManager = $objectManager;
@@ -257,9 +282,9 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         $this->messageManager = $messageManager;
         $this->customerRepository = $customerRepository;
         $this->addressRepository = $addressRepository;
-        $this->addressBuilder = $addressBuilder;
+        $this->addressFactory = $addressFactory;
         $this->_metadataFormFactory = $metadataFormFactory;
-        $this->customerBuilder = $customerBuilder;
+        $this->customerFactory = $customerFactory;
         $this->groupRepository = $groupRepository;
         $this->_scopeConfig = $scopeConfig;
         $this->emailSender = $emailSender;
@@ -269,7 +294,8 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         $this->quoteRepository = $quoteRepository;
         $this->accountManagement = $accountManagement;
         $this->customerMapper = $customerMapper;
-
+        $this->quoteManagement = $quoteManagement;
+        $this->dataObjectHelper = $dataObjectHelper;
         parent::__construct($data);
     }
 
@@ -289,6 +315,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * Return is validate data in import flag
      *
      * @return boolean
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsValidate()
     {
@@ -298,12 +325,12 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Retrieve quote item
      *
-     * @param int|\Magento\Sales\Model\Quote\Item $item
-     * @return \Magento\Sales\Model\Quote\Item|false
+     * @param int|\Magento\Quote\Model\Quote\Item $item
+     * @return \Magento\Quote\Model\Quote\Item|false
      */
     protected function _getQuoteItem($item)
     {
-        if ($item instanceof \Magento\Sales\Model\Quote\Item) {
+        if ($item instanceof \Magento\Quote\Model\Quote\Item) {
             return $item;
         } elseif (is_numeric($item)) {
             return $this->getSession()->getQuote()->getItemById($item);
@@ -394,7 +421,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Retrieve quote object model
      *
-     * @return \Magento\Sales\Model\Quote
+     * @return \Magento\Quote\Model\Quote
      */
     public function getQuote()
     {
@@ -408,10 +435,10 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Set quote object
      *
-     * @param \Magento\Sales\Model\Quote $quote
+     * @param \Magento\Quote\Model\Quote $quote
      * @return $this
      */
-    public function setQuote(\Magento\Sales\Model\Quote $quote)
+    public function setQuote(\Magento\Quote\Model\Quote $quote)
     {
         $this->_quote = $quote;
         return $this;
@@ -422,7 +449,9 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      *
      * @param \Magento\Sales\Model\Order $order
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function initFromOrder(\Magento\Sales\Model\Order $order)
     {
@@ -446,7 +475,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                 if ($qty > 0) {
                     $item = $this->initFromOrderItem($orderItem, $qty);
                     if (is_string($item)) {
-                        throw new \Magento\Framework\Model\Exception($item);
+                        throw new \Magento\Framework\Exception\LocalizedException(__($item));
                     }
                 }
             }
@@ -556,7 +585,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      *
      * @param \Magento\Sales\Model\Order\Item $orderItem
      * @param int $qty
-     * @return \Magento\Sales\Model\Quote\Item|string|$this
+     * @return \Magento\Quote\Model\Quote\Item|string|$this
      */
     public function initFromOrderItem(\Magento\Sales\Model\Order\Item $orderItem, $qty = null)
     {
@@ -636,7 +665,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Retrieve customer cart quote object model
      *
-     * @return \Magento\Sales\Model\Quote
+     * @return \Magento\Quote\Model\Quote
      */
     public function getCustomerCart()
     {
@@ -699,11 +728,13 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Move quote item to another items list
      *
-     * @param int|\Magento\Sales\Model\Quote\Item $item
+     * @param int|\Magento\Quote\Model\Quote\Item $item
      * @param string $moveTo
      * @param int $qty
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function moveQuoteItem($item, $moveTo, $qty)
     {
@@ -728,7 +759,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                     $newItem = $this->getQuote()->addProduct($product, $info);
 
                     if (is_string($newItem)) {
-                        throw new \Magento\Framework\Model\Exception($newItem);
+                        throw new \Magento\Framework\Exception\LocalizedException(__($newItem));
                     }
                     $product->unsSkipCheckRequiredOption();
                     $newItem->checkData();
@@ -763,7 +794,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
 
                         $cartItem = $cart->addProduct($product, $info);
                         if (is_string($cartItem)) {
-                            throw new \Magento\Framework\Model\Exception($cartItem);
+                            throw new \Magento\Framework\Exception\LocalizedException(__($cartItem));
                         }
                         $cartItem->setPrice($item->getProduct()->getPrice());
                         $this->_needCollectCart = true;
@@ -787,7 +818,9 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                         }
                     }
                     if (!$wishlist) {
-                        throw new \Magento\Framework\Model\Exception(__('We couldn\'t find this wish list.'));
+                        throw new \Magento\Framework\Exception\LocalizedException(
+                            __('We couldn\'t find this wish list.')
+                        );
                     }
                     $wishlist->setStore(
                         $this->getSession()->getStore()
@@ -828,7 +861,10 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      *
      * @param array $data
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function applySidebarData($data)
     {
@@ -838,7 +874,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                 $orderItem = $this->_objectManager->create('Magento\Sales\Model\Order\Item')->load($orderItemId);
                 $item = $this->initFromOrderItem($orderItem);
                 if (is_string($item)) {
-                    throw new \Magento\Framework\Model\Exception($item);
+                    throw new \Magento\Framework\Exception\LocalizedException(__($item));
                 }
             }
         }
@@ -940,7 +976,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * @param int|\Magento\Catalog\Model\Product $product
      * @param array|float|int|\Magento\Framework\Object $config
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function addProduct($product, $config = 1)
     {
@@ -961,7 +997,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                 $product
             );
             if (!$product->getId()) {
-                throw new \Magento\Framework\Model\Exception(
+                throw new \Magento\Framework\Exception\LocalizedException(
                     __('We could not add a product to cart by the ID "%1".', $productId)
                 );
             }
@@ -970,7 +1006,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         $item = $this->quoteInitializer->init($this->getQuote(), $product, $config);
 
         if (is_string($item)) {
-            throw new \Magento\Framework\Model\Exception($item);
+            throw new \Magento\Framework\Exception\LocalizedException(__($item));
         }
         $item->checkData();
         $this->setRecollect(true);
@@ -990,7 +1026,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             $config['qty'] = isset($config['qty']) ? (double)$config['qty'] : 1;
             try {
                 $this->addProduct($productId, $config);
-            } catch (\Magento\Framework\Model\Exception $e) {
+            } catch (\Magento\Framework\Exception\LocalizedException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
                 return $e;
@@ -1005,7 +1041,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      *
      * @param array $items
      * @return $this
-     * @throws \Exception|\Magento\Framework\Model\Exception
+     * @throws \Exception|\Magento\Framework\Exception\LocalizedException
      */
     public function updateQuoteItems($items)
     {
@@ -1030,11 +1066,11 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                     $this->moveQuoteItem($item, $info['action'], $item->getQty());
                 }
             }
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->recollectCart();
             throw $e;
         } catch (\Exception $e) {
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
         }
         $this->recollectCart();
 
@@ -1044,12 +1080,12 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Parse additional options and sync them with product options
      *
-     * @param \Magento\Sales\Model\Quote\Item $item
+     * @param \Magento\Quote\Model\Quote\Item $item
      * @param string $additionalOptions
      * @return array
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    protected function _parseOptions(\Magento\Sales\Model\Quote\Item $item, $additionalOptions)
+    protected function _parseOptions(\Magento\Quote\Model\Quote\Item $item, $additionalOptions)
     {
         $productOptions = $this->_objectManager->get(
             'Magento\Catalog\Model\Product\Option\Type\DefaultType'
@@ -1064,11 +1100,11 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             if (strlen(trim($_additionalOption))) {
                 try {
                     if (strpos($_additionalOption, ':') === false) {
-                        throw new \Magento\Framework\Model\Exception(__('There is an error in one of the option rows.'));
+                        throw new \Magento\Framework\Exception\LocalizedException(__('There is an error in one of the option rows.'));
                     }
                     list($label, $value) = explode(':', $_additionalOption, 2);
                 } catch (\Exception $e) {
-                    throw new \Magento\Framework\Model\Exception(__('There is an error in one of the option rows.'));
+                    throw new \Magento\Framework\Exception\LocalizedException(__('There is an error in one of the option rows.'));
                 }
                 $label = trim($label);
                 $value = trim($value);
@@ -1109,11 +1145,11 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Assign options to item
      *
-     * @param \Magento\Sales\Model\Quote\Item $item
+     * @param \Magento\Quote\Model\Quote\Item $item
      * @param array $options
      * @return $this
      */
-    protected function _assignOptionsToItem(\Magento\Sales\Model\Quote\Item $item, $options)
+    protected function _assignOptionsToItem(\Magento\Quote\Model\Quote\Item $item, $options)
     {
         $optionIds = $item->getOptionByCode('option_ids');
         if ($optionIds) {
@@ -1167,7 +1203,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Prepare options array for info buy request
      *
-     * @param \Magento\Sales\Model\Quote\Item $item
+     * @param \Magento\Quote\Model\Quote\Item $item
      * @return array
      */
     protected function _prepareOptionsForRequest($item)
@@ -1213,7 +1249,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Retrieve oreder quote shipping address
      *
-     * @return \Magento\Sales\Model\Quote\Address
+     * @return \Magento\Quote\Model\Quote\Address
      */
     public function getShippingAddress()
     {
@@ -1243,11 +1279,11 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * Set and validate Quote address
      * All errors added to _errors
      *
-     * @param \Magento\Sales\Model\Quote\Address $address
+     * @param \Magento\Quote\Model\Quote\Address $address
      * @param array $data
      * @return $this
      */
-    protected function _setQuoteAddress(\Magento\Sales\Model\Quote\Address $address, array $data)
+    protected function _setQuoteAddress(\Magento\Quote\Model\Quote\Address $address, array $data)
     {
         $isAjax = !$this->getIsValidate();
 
@@ -1268,7 +1304,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
 
         // prepare request
         // save original request structure for files
-        if ($address->getAddressType() == \Magento\Sales\Model\Quote\Address::TYPE_SHIPPING) {
+        if ($address->getAddressType() == \Magento\Quote\Model\Quote\Address::TYPE_SHIPPING) {
             $requestData = ['order' => ['shipping_address' => $data]];
             $requestScope = 'order/shipping_address';
         } else {
@@ -1280,7 +1316,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         if ($this->getIsValidate()) {
             $errors = $addressForm->validateData($addressData);
             if ($errors !== true) {
-                if ($address->getAddressType() == \Magento\Sales\Model\Quote\Address::TYPE_SHIPPING) {
+                if ($address->getAddressType() == \Magento\Quote\Model\Quote\Address::TYPE_SHIPPING) {
                     $typeName = __('Shipping Address: ');
                 } else {
                     $typeName = __('Billing Address: ');
@@ -1302,18 +1338,18 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Set shipping address into quote
      *
-     * @param \Magento\Sales\Model\Quote\Address|array $address
+     * @param \Magento\Quote\Model\Quote\Address|array $address
      * @return $this
      */
     public function setShippingAddress($address)
     {
         if (is_array($address)) {
             $shippingAddress = $this->_objectManager->create(
-                'Magento\Sales\Model\Quote\Address'
+                'Magento\Quote\Model\Quote\Address'
             )->setData(
                 $address
             )->setAddressType(
-                \Magento\Sales\Model\Quote\Address::TYPE_SHIPPING
+                \Magento\Quote\Model\Quote\Address::TYPE_SHIPPING
             );
             if (!$this->getQuote()->isVirtual()) {
                 $this->_setQuoteAddress($shippingAddress, $address);
@@ -1325,7 +1361,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             $saveInAddressBook = (int)(!empty($address['save_in_address_book']));
             $shippingAddress->setData('save_in_address_book', $saveInAddressBook);
         }
-        if ($address instanceof \Magento\Sales\Model\Quote\Address) {
+        if ($address instanceof \Magento\Quote\Model\Quote\Address) {
             $shippingAddress = $address;
         }
 
@@ -1360,7 +1396,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     /**
      * Retrieve quote billing address
      *
-     * @return \Magento\Sales\Model\Quote\Address
+     * @return \Magento\Quote\Model\Quote\Address
      */
     public function getBillingAddress()
     {
@@ -1377,11 +1413,11 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
     {
         if (is_array($address)) {
             $billingAddress = $this->_objectManager->create(
-                'Magento\Sales\Model\Quote\Address'
+                'Magento\Quote\Model\Quote\Address'
             )->setData(
                 $address
             )->setAddressType(
-                \Magento\Sales\Model\Quote\Address::TYPE_BILLING
+                \Magento\Quote\Model\Quote\Address::TYPE_BILLING
             );
             $this->_setQuoteAddress($billingAddress, $address);
             /**
@@ -1391,7 +1427,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             $saveInAddressBook = (int)(!empty($address['save_in_address_book']));
             $billingAddress->setData('save_in_address_book', $saveInAddressBook);
 
-            if ($this->getShippingAddress()->getSameAsBilling()) {
+            if (!$this->getQuote()->isVirtual() && $this->getShippingAddress()->getSameAsBilling()) {
                 $shippingAddress = clone $billingAddress;
                 $shippingAddress->setSameAsBilling(true);
                 $shippingAddress->setSaveInAddressBook(false);
@@ -1513,8 +1549,12 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         $request = $form->prepareRequest($accountData);
         $data = $form->extractData($request);
         $data = $form->restoreData($data);
-        $customer = $this->customerBuilder->mergeDataObjectWithArray($customer, $data)
-            ->create();
+        $customer = $this->customerFactory->create();
+        $this->dataObjectHelper->populateWithArray(
+            $customer,
+            $data,
+            '\Magento\Customer\Api\Data\CustomerInterface'
+        );
         $this->getQuote()->updateCustomerData($customer);
         $data = [];
 
@@ -1542,6 +1582,8 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      *
      * @param   array $data
      * @return  $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function importPostData($data)
     {
@@ -1630,8 +1672,12 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             }
         }
 
-        return $this->customerBuilder->mergeDataObjectWithArray($customer, $data)
-            ->create();
+        $this->dataObjectHelper->populateWithArray(
+            $customer,
+            $data,
+            '\Magento\Customer\Api\Data\CustomerInterface'
+        );
+        return $customer;
     }
 
     /**
@@ -1642,6 +1688,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * Set customer data to quote.
      *
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function _prepareCustomer()
     {
@@ -1654,24 +1701,21 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         if ($customer->getId() && !$this->_customerIsInStore($store)) {
             /** Create a new customer record if it is not available in the specified store */
             /** Unset customer ID to ensure that new customer will be created */
-            $customer = $this->customerBuilder->populate($customer)
-                ->setId(null)
+            $customer->setId(null)
                 ->setStoreId($store->getId())
                 ->setWebsiteId($store->getWebsiteId())
-                ->setCreatedAt(null)->create();
+                ->setCreatedAt(null);
             $customer = $this->_validateCustomerData($customer);
         } else if (!$customer->getId()) {
             /** Create new customer */
             $customerBillingAddressDataObject = $this->getBillingAddress()->exportCustomerAddress();
-            $customer = $this->customerBuilder->populate($customer)
-                ->setSuffix($customerBillingAddressDataObject->getSuffix())
+            $customer->setSuffix($customerBillingAddressDataObject->getSuffix())
                 ->setFirstname($customerBillingAddressDataObject->getFirstname())
                 ->setLastname($customerBillingAddressDataObject->getLastname())
                 ->setMiddlename($customerBillingAddressDataObject->getMiddlename())
                 ->setPrefix($customerBillingAddressDataObject->getPrefix())
                 ->setStoreId($store->getId())
-                ->setEmail($this->_getNewCustomerEmail())
-                ->create();
+                ->setEmail($this->_getNewCustomerEmail());
             $customer = $this->_validateCustomerData($customer);
         }
         $this->getQuote()->setCustomer($customer);
@@ -1684,10 +1728,12 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         }
         $this->getQuote()->updateCustomerData($this->getQuote()->getCustomer());
 
-        $customerData = $this->customerMapper->toFlatArray(
-            $this->customerBuilder->populate($this->getQuote()->getCustomer())->setAddresses([])->create()
-        );
-        foreach ($this->_createCustomerForm($this->getQuote()->getCustomer())->getUserAttributes() as $attribute) {
+        $customer = $this->getQuote()->getCustomer();
+        $origAddresses = $customer->getAddresses(); // save original addresses
+        $customer->setAddresses([]);
+        $customerData = $this->customerMapper->toFlatArray($customer);
+        $customer->setAddresses($origAddresses); // restore original addresses
+        foreach ($this->_createCustomerForm($customer)->getUserAttributes() as $attribute) {
             if (isset($customerData[$attribute->getAttributeCode()])) {
                 $quoteCode = sprintf('customer_%s', $attribute->getAttributeCode());
                 $this->getQuote()->setData($quoteCode, $customerData[$attribute->getAttributeCode()]);
@@ -1701,9 +1747,10 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * Create customer address and save it in the quote so that it can be used to persist later.
      *
      * @param \Magento\Customer\Api\Data\CustomerInterface $customer
-     * @param \Magento\Sales\Model\Quote\Address $quoteCustomerAddress
+     * @param \Magento\Quote\Model\Quote\Address $quoteCustomerAddress
      * @return void
      * @throws \InvalidArgumentException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function _prepareCustomerAddress($customer, $quoteCustomerAddress)
     {
@@ -1716,36 +1763,35 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             /** Update existing address */
             $existingAddressDataObject = $this->addressRepository->getById($quoteAddressId);
             /** Update customer address data */
-            $customerAddress = $this->addressBuilder->mergeDataObjects($existingAddressDataObject, $customerAddress)
-                ->create();
-        } elseif ($addressType == \Magento\Sales\Model\Quote\Address::ADDRESS_TYPE_SHIPPING) {
+            $this->dataObjectHelper->mergeDataObjects(
+                get_class($existingAddressDataObject),
+                $existingAddressDataObject,
+                $customerAddress
+            );
+            $customerAddress = $existingAddressDataObject;
+        } elseif ($addressType == \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING) {
             try {
-                $billingAddressDataObject = $customer->getDefaultBilling();
+                $billingAddressDataObject = $this->accountManagement->getDefaultBillingAddress($customer->getId());
             } catch (\Exception $e) {
                 /** Billing address does not exist. */
             }
             $isShippingAsBilling = $quoteCustomerAddress->getSameAsBilling();
             if (isset($billingAddressDataObject) && $isShippingAsBilling) {
                 /** Set existing billing address as default shipping */
-                $customerAddress = $this->addressBuilder->populate($billingAddressDataObject)
-                    ->setDefaultShipping(true)
-                    ->create();
+                $customerAddress = $billingAddressDataObject;
+                $customerAddress->setIsDefaultShipping(true);
             }
         }
 
         switch ($addressType) {
-            case \Magento\Sales\Model\Quote\Address::ADDRESS_TYPE_BILLING:
+            case \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_BILLING:
                 if (is_null($customer->getDefaultBilling())) {
-                    $customerAddress = $this->addressBuilder->populate($customerAddress)
-                        ->setDefaultBilling(true)
-                        ->create();
+                    $customerAddress->setIsDefaultBilling(true);
                 }
                 break;
-            case \Magento\Sales\Model\Quote\Address::ADDRESS_TYPE_SHIPPING:
+            case \Magento\Quote\Model\Quote\Address::ADDRESS_TYPE_SHIPPING:
                 if (is_null($customer->getDefaultShipping())) {
-                    $customerAddress = $this->addressBuilder->populate($customerAddress)
-                        ->setDefaultShipping(true)
-                        ->create();
+                    $customerAddress->setIsDefaultShipping(true);
                 }
                 break;
             default:
@@ -1790,8 +1836,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
         $quote = $this->getQuote();
         $this->_prepareQuoteItems();
 
-        /** @var $service \Magento\Sales\Model\Service\Quote */
-        $service = $this->_objectManager->create('Magento\Sales\Model\Service\Quote', ['quote' => $quote]);
+        $orderData = [];
         if ($this->getSession()->getOrder()->getId()) {
             $oldOrder = $this->getSession()->getOrder();
             $originalId = $oldOrder->getOriginalIncrementId();
@@ -1806,10 +1851,8 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
                 'increment_id' => $originalId . '-' . ($oldOrder->getEditIncrement() + 1)
             ];
             $quote->setReservedOrderId($orderData['increment_id']);
-            $service->setOrderData($orderData);
         }
-
-        $order = $service->submitOrderWithDataObject();
+        $order = $this->quoteManagement->submit($quote, $orderData);
 
         if ($this->getSession()->getOrder()->getId()) {
             $oldOrder = $this->getSession()->getOrder();
@@ -1831,17 +1874,19 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
      * Validate quote data before order creation
      *
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _validate()
     {
         $customerId = $this->getSession()->getCustomerId();
         if (is_null($customerId)) {
-            throw new \Magento\Framework\Model\Exception(__('Please select a customer.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please select a customer.'));
         }
 
         if (!$this->getSession()->getStore()->getId()) {
-            throw new \Magento\Framework\Model\Exception(__('Please select a store.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please select a store.'));
         }
         $items = $this->getQuote()->getAllItems();
 
@@ -1871,7 +1916,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             } else {
                 try {
                     $method->validate();
-                } catch (\Magento\Framework\Model\Exception $e) {
+                } catch (\Magento\Framework\Exception\LocalizedException $e) {
                     $this->_errors[] = $e->getMessage();
                 }
             }
@@ -1880,7 +1925,7 @@ class Create extends \Magento\Framework\Object implements \Magento\Checkout\Mode
             foreach ($this->_errors as $error) {
                 $this->messageManager->addError($error);
             }
-            throw new \Magento\Framework\Model\Exception('');
+            throw new \Magento\Framework\Exception\LocalizedException(__('Validation is failed.'));
         }
 
         return $this;

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogRule\Model\Indexer;
@@ -11,6 +12,9 @@ use Magento\CatalogRule\Model\Resource\Rule\CollectionFactory as RuleCollectionF
 use Magento\CatalogRule\Model\Rule;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class IndexBuilder
 {
     const SECONDS_IN_DAY = 86400;
@@ -31,7 +35,7 @@ class IndexBuilder
     protected $ruleCollectionFactory;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
@@ -75,19 +79,20 @@ class IndexBuilder
      * @param PriceCurrencyInterface $priceCurrency
      * @param \Magento\Framework\App\Resource $resource
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Eav\Model\Config $eavConfig
      * @param \Magento\Framework\Stdlib\DateTime $dateFormat
      * @param \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
      * @param \Magento\Catalog\Model\ProductFactory $productFactory
      * @param int $batchCount
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         RuleCollectionFactory $ruleCollectionFactory,
         PriceCurrencyInterface $priceCurrency,
         \Magento\Framework\App\Resource $resource,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Eav\Model\Config $eavConfig,
         \Magento\Framework\Stdlib\DateTime $dateFormat,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
@@ -129,7 +134,7 @@ class IndexBuilder
         try {
             $this->doReindexByIds($ids);
         } catch (\Exception $e) {
-            $this->logException($e);
+            $this->critical($e);
             throw new CatalogRuleException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -162,7 +167,7 @@ class IndexBuilder
         try {
             $this->doReindexFull();
         } catch (\Exception $e) {
-            $this->logException($e);
+            $this->critical($e);
             throw new CatalogRuleException($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -209,6 +214,7 @@ class IndexBuilder
      * @param Product $product
      * @return $this
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function applyRule(Rule $rule, $product)
     {
@@ -317,6 +323,8 @@ class IndexBuilder
     /**
      * @param Rule $rule
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function updateRuleProductData(Rule $rule)
     {
@@ -399,6 +407,9 @@ class IndexBuilder
      * @param Product|null $product
      * @throws \Exception
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function applyAllRules(Product $product = null)
     {
@@ -551,7 +562,7 @@ class IndexBuilder
     /**
      * @param int $websiteId
      * @param int|null $productId
-     * @return \Zend\Db\Adapter\Driver\StatementInterface|\Zend_Db_Statement_Interface
+     * @return \Zend_Db_Statement_Interface
      * @throws \Magento\Eav\Exception
      */
     protected function getRuleProductsStmt($websiteId, $productId = null)
@@ -573,7 +584,7 @@ class IndexBuilder
             ['rp.website_id', 'rp.customer_group_id', 'rp.product_id', 'rp.sort_order', 'rp.rule_id']
         );
 
-        if (!is_null($productId)) {
+        if ($productId !== null) {
             $select->where('rp.product_id=?', $productId);
         }
 
@@ -691,8 +702,8 @@ class IndexBuilder
      * @param \Exception $e
      * @return void
      */
-    protected function logException($e)
+    protected function critical($e)
     {
-        $this->logger->logException($e);
+        $this->logger->critical($e);
     }
 }

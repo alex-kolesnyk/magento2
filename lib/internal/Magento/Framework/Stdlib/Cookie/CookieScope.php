@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Stdlib\Cookie;
@@ -57,12 +58,12 @@ class CookieScope implements CookieScopeInterface
      */
     public function getSensitiveCookieMetadata(SensitiveCookieMetadata $override = null)
     {
-        if (!is_null($this->sensitiveCookieMetadata)) {
+        if ($this->sensitiveCookieMetadata !== null) {
             $merged = $this->sensitiveCookieMetadata->__toArray();
         } else {
             $merged = [];
         }
-        if (!is_null($override)) {
+        if ($override !== null) {
             $merged = array_merge($merged, $override->__toArray());
         }
 
@@ -78,12 +79,12 @@ class CookieScope implements CookieScopeInterface
      */
     public function getPublicCookieMetadata(PublicCookieMetadata $override = null)
     {
-        if (!is_null($this->publicCookieMetadata)) {
+        if ($this->publicCookieMetadata !== null) {
             $merged = $this->publicCookieMetadata->__toArray();
         } else {
             $merged = [];
         }
-        if (!is_null($override)) {
+        if ($override !== null) {
             $merged = array_merge($merged, $override->__toArray());
         }
 
@@ -99,12 +100,12 @@ class CookieScope implements CookieScopeInterface
      */
     public function getCookieMetadata(CookieMetadata $override = null)
     {
-        if (!is_null($this->cookieMetadata)) {
+        if ($this->cookieMetadata !== null) {
             $merged = $this->cookieMetadata->__toArray();
         } else {
             $merged = [];
         }
-        if (!is_null($override)) {
+        if ($override !== null) {
             $merged = array_merge($merged, $override->__toArray());
         }
 

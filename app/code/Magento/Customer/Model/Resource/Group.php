@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Resource;
 
@@ -24,18 +25,20 @@ class Group extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_customersFactory;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Customer\Api\GroupManagementInterface $groupManagement
      * @param Customer\CollectionFactory $customersFactory
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Customer\Api\GroupManagementInterface $groupManagement,
-        \Magento\Customer\Model\Resource\Customer\CollectionFactory $customersFactory
+        \Magento\Customer\Model\Resource\Customer\CollectionFactory $customersFactory,
+        $resourcePrefix = null
     ) {
         $this->_groupManagement = $groupManagement;
         $this->_customersFactory = $customersFactory;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -65,12 +68,14 @@ class Group extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param  \Magento\Framework\Model\AbstractModel $group
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _beforeDelete(\Magento\Framework\Model\AbstractModel $group)
     {
         if ($group->usesAsDefault()) {
-            throw new \Magento\Framework\Model\Exception(__('The group "%1" cannot be deleted', $group->getCode()));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('The group "%1" cannot be deleted', $group->getCode())
+            );
         }
         return parent::_beforeDelete($group);
     }

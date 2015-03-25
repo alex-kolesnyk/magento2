@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Multishipping\Controller\Checkout;
 
 use Magento\Multishipping\Model\Checkout\Type\Multishipping\State;
 use Magento\Customer\Api\AccountManagementInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\Exception\PaymentException;
 
 /**
  * Class OverviewPost
@@ -14,7 +16,7 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 class OverviewPost extends \Magento\Multishipping\Controller\Checkout
 {
     /**
-     * @var \Magento\Core\App\Action\FormKeyValidator
+     * @var \Magento\Framework\Data\Form\FormKey\Validator
      */
     protected $formKeyValidator;
 
@@ -25,23 +27,32 @@ class OverviewPost extends \Magento\Multishipping\Controller\Checkout
      * @param \Magento\Customer\Model\Session $customerSession
      * @param CustomerRepositoryInterface $customerRepository
      * @param AccountManagementInterface $accountManagement
-     * @param \Magento\Core\App\Action\FormKeyValidator $formKeyValidator
+     * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
+     * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Customer\Model\Session $customerSession,
         CustomerRepositoryInterface $customerRepository,
         AccountManagementInterface $accountManagement,
-        \Magento\Core\App\Action\FormKeyValidator $formKeyValidator
+        \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory,
+        \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
     ) {
         $this->formKeyValidator = $formKeyValidator;
-        parent::__construct($context, $customerSession, $customerRepository, $accountManagement);
+        parent::__construct(
+            $context,
+            $customerSession,
+            $customerRepository,
+            $accountManagement,
+            $resultRedirectFactory
+        );
     }
 
     /**
      * Overview action
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
     {
@@ -77,7 +88,7 @@ class OverviewPost extends \Magento\Multishipping\Controller\Checkout
             $this->_getCheckout()->getCheckoutSession()->clearQuote();
             $this->_getCheckout()->getCheckoutSession()->setDisplaySuccess(true);
             $this->_redirect('*/*/success');
-        } catch (\Magento\Payment\Model\Info\Exception $e) {
+        } catch (PaymentException $e) {
             $message = $e->getMessage();
             if (!empty($message)) {
                 $this->messageManager->addError($message);
@@ -94,7 +105,7 @@ class OverviewPost extends \Magento\Multishipping\Controller\Checkout
             $this->_getCheckout()->getCheckoutSession()->clearQuote();
             $this->messageManager->addError($e->getMessage());
             $this->_redirect('*/cart');
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->_objectManager->get(
                 'Magento\Checkout\Helper\Data'
             )->sendPaymentFailedEmail(
@@ -105,7 +116,7 @@ class OverviewPost extends \Magento\Multishipping\Controller\Checkout
             $this->messageManager->addError($e->getMessage());
             $this->_redirect('*/*/billing');
         } catch (\Exception $e) {
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             $this->_objectManager->get(
                 'Magento\Checkout\Helper\Data'
             )->sendPaymentFailedEmail(

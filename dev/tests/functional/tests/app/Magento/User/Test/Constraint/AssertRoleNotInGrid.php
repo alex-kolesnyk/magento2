@@ -1,33 +1,30 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\User\Test\Constraint;
 
-use Magento\User\Test\Fixture\AdminUserRole;
+use Magento\User\Test\Fixture\Role;
 use Magento\User\Test\Page\Adminhtml\UserRoleIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertRoleNotInGrid
  */
 class AssertRoleNotInGrid extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Asserts that role is not present in Role Grid.
      *
      * @param UserRoleIndex $rolePage
-     * @param AdminUserRole $role
+     * @param Role $role
      * @return void
      */
     public function processAssert(
         UserRoleIndex $rolePage,
-        AdminUserRole $role
+        Role $role
     ) {
         $filter = ['rolename' => $role->getRoleName()];
         $rolePage->open();

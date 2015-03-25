@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -75,7 +76,7 @@ class Currencysymbol extends \Magento\Backend\Block\Widget\Form
     /**
      * Returns page header
      *
-     * @return bool|string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeader()
     {
@@ -128,7 +129,7 @@ class Currencysymbol extends \Magento\Backend\Block\Widget\Form
     /**
      * Returns inheritance text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getInheritText()
     {

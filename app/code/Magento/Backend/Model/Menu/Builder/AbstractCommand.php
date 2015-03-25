@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Menu\Builder;
 
@@ -37,7 +38,7 @@ abstract class AbstractCommand
     public function __construct(array $data = [])
     {
         foreach ($this->_requiredParams as $param) {
-            if (!isset($data[$param]) || is_null($data[$param])) {
+            if (!isset($data[$param]) || $data[$param] === null) {
                 throw new \InvalidArgumentException("Missing required param " . $param);
             }
         }
@@ -63,7 +64,7 @@ abstract class AbstractCommand
      */
     public function chain(\Magento\Backend\Model\Menu\Builder\AbstractCommand $command)
     {
-        if (is_null($this->_next)) {
+        if ($this->_next === null) {
             $this->_next = $command;
         } else {
             $this->_next->chain($command);
@@ -80,7 +81,7 @@ abstract class AbstractCommand
     public function execute(array $itemParams = [])
     {
         $itemParams = $this->_execute($itemParams);
-        if (!is_null($this->_next)) {
+        if ($this->_next !== null) {
             $itemParams = $this->_next->execute($itemParams);
         }
         return $itemParams;

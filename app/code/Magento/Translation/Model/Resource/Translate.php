@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Translation\Model\Resource;
 
@@ -18,18 +19,20 @@ class Translate extends \Magento\Framework\Model\Resource\Db\AbstractDb implemen
     protected $scope;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\App\ScopeResolverInterface $scopeResolver
+     * @param string|null $resourcePrefix
      * @param null|string $scope
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Framework\App\ScopeResolverInterface $scopeResolver,
+        $resourcePrefix = null,
         $scope = null
     ) {
         $this->scopeResolver = $scopeResolver;
         $this->scope = $scope;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -51,7 +54,7 @@ class Translate extends \Magento\Framework\Model\Resource\Db\AbstractDb implemen
      */
     public function getTranslationArray($storeId = null, $locale = null)
     {
-        if (is_null($storeId)) {
+        if ($storeId === null) {
             $storeId = $this->getStoreId();
         }
 
@@ -80,7 +83,7 @@ class Translate extends \Magento\Framework\Model\Resource\Db\AbstractDb implemen
      */
     public function getTranslationArrayByStrings(array $strings, $storeId = null)
     {
-        if (is_null($storeId)) {
+        if ($storeId === null) {
             $storeId = $this->getStoreId();
         }
 

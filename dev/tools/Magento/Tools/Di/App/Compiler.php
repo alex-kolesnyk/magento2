@@ -1,69 +1,81 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\Di\App;
 
 use Magento\Framework\App;
-use Magento\Framework\Interception\Code\Generator\Interceptor;
-use Magento\Tools\Di\Code\Generator\InterceptionConfigurationBuilder;
-use Magento\Tools\Di\Code\Reader\ClassesScanner;
-use Magento\Tools\Di\Compiler\Config;
-use Magento\Tools\Di\Definition\Collection as DefinitionsCollection;
+use Magento\Framework\App\Console\Response;
+use Magento\Framework\ObjectManagerInterface;
 
 /**
  * Class Compiler
  * @package Magento\Tools\Di\App
  *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Compiler implements \Magento\Framework\AppInterface
 {
     /**
-     * @var App\AreaList
+     * @var ObjectManagerInterface
      */
-    private $areaList;
+    private $objectManager;
 
     /**
-     * @var ClassesScanner
+     * @var Task\Manager
      */
-    private $classesScanner;
+    private $taskManager;
 
     /**
-     * @var InterceptionConfigurationBuilder
+     * @var Response
      */
-    private $interceptionConfigurationBuilder;
+    private $response;
 
     /**
-     * @var Config\Reader
+     * @var array
      */
-    private $configReader;
+    private $compiledPathsList = [];
 
     /**
-     * @var Config\Writer\Filesystem
+     * @var array
      */
-    private $configWriter;
+    private $excludedPathsList = [];
 
     /**
-     * @param App\AreaList $areaList
-     * @param ClassesScanner $classesScanner
-     * @param InterceptionConfigurationBuilder $interceptionConfigurationBuilder
-     * @param Config\Reader $configReader
-     * @param Config\Writer\Filesystem $configWriter
+     * @param Task\Manager $taskManager
+     * @param ObjectManagerInterface $objectManager
+     * @param Response $response
+     * @param array $compiledPathsList
+     * @param array $excludedPathsList
      */
     public function __construct(
-        App\AreaList $areaList,
-        ClassesScanner $classesScanner,
-        InterceptionConfigurationBuilder $interceptionConfigurationBuilder,
-        Config\Reader $configReader,
-        Config\Writer\Filesystem $configWriter
+        Task\Manager $taskManager,
+        ObjectManagerInterface $objectManager,
+        Response $response,
+        $compiledPathsList = [],
+        $excludedPathsList = []
     ) {
-        $this->areaList = $areaList;
-        $this->classesScanner = $classesScanner;
-        $this->interceptionConfigurationBuilder = $interceptionConfigurationBuilder;
-        $this->configReader = $configReader;
-        $this->configWriter = $configWriter;
+        $this->taskManager = $taskManager;
+        $this->objectManager = $objectManager;
+        $this->response = $response;
+
+        if (empty($compiledPathsList)) {
+            $compiledPathsList = [
+                'application' => BP . '/'  . 'app/code',
+                'library' => BP . '/'  . 'lib/internal/Magento/Framework',
+                'generated_helpers' => BP . '/'  . 'var/generation'
+            ];
+        }
+        $this->compiledPathsList = $compiledPathsList;
+
+        if (empty($excludedPathsList)) {
+            $excludedPathsList = [
+                'application' => '#^' . BP . '/app/code/[\\w]+/[\\w]+/Test#',
+                'framework' => '#^' . BP . '/lib/internal/[\\w]+/[\\w]+/([\\w]+/)?Test#'
+            ];
+        }
+        $this->excludedPathsList = $excludedPathsList;
     }
 
     /**
@@ -73,30 +85,94 @@ class Compiler implements \Magento\Framework\AppInterface
      */
     public function launch()
     {
-        $paths = ['app/code', 'lib/internal/Magento/Framework', 'var/generation'];
-        $definitionsCollection = new DefinitionsCollection();
-        foreach ($paths as $path) {
-            $definitionsCollection->addCollection($this->getDefinitionsCollection(BP . '/' . $path));
-        }
-
-        $this->configWriter->write(
-            App\Area::AREA_GLOBAL,
-            $this->configReader->generateCachePerScope($definitionsCollection, App\Area::AREA_GLOBAL)
+        $this->objectManager->configure(
+            [
+                'preferences' =>
+                [
+                    'Magento\Tools\Di\Compiler\Config\WriterInterface' =>
+                        'Magento\Tools\Di\Compiler\Config\Writer\Filesystem',
+                    'Magento\Tools\Di\Compiler\Log\Writer\WriterInterface' =>
+                        'Magento\Tools\Di\Compiler\Log\Writer\Console'
+                ],
+                'Magento\Tools\Di\Compiler\Config\ModificationChain' => [
+                    'arguments' => [
+                        'modificationsList' => [
+                            'BackslashTrim' =>
+                                ['instance' => 'Magento\Tools\Di\Compiler\Config\Chain\BackslashTrim'],
+                            'PreferencesResolving' =>
+                                ['instance' => 'Magento\Tools\Di\Compiler\Config\Chain\PreferencesResolving'],
+                            'InterceptorSubstitution' =>
+                                ['instance' => 'Magento\Tools\Di\Compiler\Config\Chain\InterceptorSubstitution'],
+                            'InterceptionPreferencesResolving' =>
+                                ['instance' => 'Magento\Tools\Di\Compiler\Config\Chain\PreferencesResolving'],
+                            'ArgumentsSerialization' =>
+                                ['instance' => 'Magento\Tools\Di\Compiler\Config\Chain\ArgumentsSerialization'],
+                        ]
+                    ]
+                ],
+                'Magento\Tools\Di\Code\Generator\PluginList' => [
+                    'arguments' => [
+                        'cache' => [
+                            'instance' => 'Magento\Framework\App\Interception\Cache\CompiledConfig'
+                        ]
+                    ]
+                ],
+                'Magento\Tools\Di\Code\Reader\ClassesScanner' => [
+                    'arguments' => [
+                        'excludePatterns' => $this->excludedPathsList
+                    ]
+                ]
+            ]
         );
-        $this->interceptionConfigurationBuilder->addAreaCode(App\Area::AREA_GLOBAL);
-        foreach ($this->areaList->getCodes() as $areaCode) {
-            $this->interceptionConfigurationBuilder->addAreaCode($areaCode);
-            $this->configWriter->write(
-                $areaCode,
-                $this->configReader->generateCachePerScope($definitionsCollection, $areaCode, true)
-            );
+
+        $operations = [
+            Task\OperationFactory::REPOSITORY_GENERATOR => [
+                'path' => $this->compiledPathsList['application'],
+                'filePatterns' => ['di' => '/\/etc\/([a-zA-Z_]*\/di|di)\.xml$/']
+            ],
+            Task\OperationFactory::APPLICATION_CODE_GENERATOR => [
+                $this->compiledPathsList['application'],
+                $this->compiledPathsList['library'],
+                $this->compiledPathsList['generated_helpers'],
+            ],
+            Task\OperationFactory::INTERCEPTION =>
+                [
+                    'intercepted_paths' => [
+                        $this->compiledPathsList['application'],
+                        $this->compiledPathsList['library'],
+                        $this->compiledPathsList['generated_helpers'],
+                    ],
+                    'path_to_store' => $this->compiledPathsList['generated_helpers'],
+                ],
+            Task\OperationFactory::AREA_CONFIG_GENERATOR => [
+                $this->compiledPathsList['application'],
+                $this->compiledPathsList['library'],
+                $this->compiledPathsList['generated_helpers'],
+            ],
+            Task\OperationFactory::INTERCEPTION_CACHE => [
+                $this->compiledPathsList['application'],
+                $this->compiledPathsList['library'],
+                $this->compiledPathsList['generated_helpers'],
+            ]
+        ];
+
+        $responseCode = Response::SUCCESS;
+        try {
+            foreach ($operations as $operationCode => $arguments) {
+                $this->taskManager->addOperation(
+                    $operationCode,
+                    $arguments
+                );
+            }
+            $this->taskManager->process();
+
+        } catch (Task\OperationException $e) {
+            $responseCode = Response::ERROR;
+            $this->response->setBody($e->getMessage());
         }
 
-        $this->generateInterceptors();
-
-        $response = new \Magento\Framework\App\Console\Response();
-        $response->setCode(0);
-        return $response;
+        $this->response->setCode($responseCode);
+        return $this->response;
     }
 
     /**
@@ -115,41 +191,5 @@ class Compiler implements \Magento\Framework\AppInterface
     public function catchException(App\Bootstrap $bootstrap, \Exception $exception)
     {
         return false;
-    }
-
-    /**
-     * Returns definitions collection
-     *
-     * @param string $path
-     * @return DefinitionsCollection
-     */
-    protected function getDefinitionsCollection($path)
-    {
-        $definitions = new DefinitionsCollection();
-        foreach ($this->classesScanner->getList($path) as $className => $constructorArguments) {
-            $definitions->addDefinition($className, $constructorArguments);
-        }
-        return $definitions;
-    }
-
-    /**
-     * Creates interceptors configuration and generates code
-     *
-     * @return void
-     */
-    private function generateInterceptors()
-    {
-        $generatorIo = new \Magento\Framework\Code\Generator\Io(
-            new \Magento\Framework\Filesystem\Driver\File(),
-            BP . '/var/generation'
-        );
-        $generator = new \Magento\Tools\Di\Code\Generator(
-            $generatorIo,
-            [
-                Interceptor::ENTITY_TYPE => 'Magento\Tools\Di\Code\Generator\Interceptor',
-            ]
-        );
-        $configuration = $this->interceptionConfigurationBuilder->getInterceptionConfiguration(get_declared_classes());
-        $generator->generateList($configuration);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Controller\Adminhtml\System\Design\Theme;
 
@@ -11,7 +12,7 @@ class UploadJs extends \Magento\Theme\Controller\Adminhtml\System\Design\Theme
      * Upload js file
      *
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute()
     {
@@ -25,7 +26,9 @@ class UploadJs extends \Magento\Theme\Controller\Adminhtml\System\Design\Theme
         try {
             $theme = $themeFactory->create($themeId);
             if (!$theme) {
-                throw new \Magento\Framework\Model\Exception(__('We cannot find a theme with id "%1".', $themeId));
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('We cannot find a theme with id "%1".', $themeId)
+                );
             }
             $jsFileData = $serviceModel->uploadJsFile('js_files_uploader');
             $jsFile = $jsService->create();
@@ -43,14 +46,14 @@ class UploadJs extends \Magento\Theme\Controller\Adminhtml\System\Design\Theme
                 \Magento\Framework\View\Design\Theme\Customization\File\Js::TYPE
             );
             $result = ['error' => false, 'files' => $customization->generateFileInfo($customJsFiles)];
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => __('We cannot upload the JS file.')];
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
         $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
+            $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($result)
         );
     }
 }

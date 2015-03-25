@@ -1,22 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Core\Test\Constraint;
 
 use Magento\Core\Test\Page\Adminhtml\SystemVariableIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomVariableSuccessDeleteMessage
  */
 class AssertCustomVariableSuccessDeleteMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     const SUCCESS_DELETE_MESSAGE = 'You deleted the custom variable.';
 
     /**

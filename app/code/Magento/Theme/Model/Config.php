@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -107,7 +108,7 @@ class Config
      *
      * @param string $scope
      * @param string $configPath
-     * @return \Magento\Core\Model\Resource\Config\Data\Collection
+     * @return \Magento\Config\Model\Resource\Config\Data\Collection
      */
     protected function _getAssignedScopesCollection($scope, $configPath)
     {

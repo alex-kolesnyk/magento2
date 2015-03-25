@@ -1,9 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
-require __DIR__ . '/../../../Magento/Core/_files/store.php';
+// @codingStandardsIgnoreFile
+
+require __DIR__ . '/../../../Magento/Store/_files/core_fixturestore.php';
 
 require __DIR__ . '/../../../Magento/Catalog/_files/product_simple_duplicated.php';
 /** @var \Magento\Catalog\Model\Product $product */

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\TestCase;
@@ -8,17 +9,13 @@ namespace Magento\Reports\Test\TestCase;
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
 use Magento\Catalog\Test\Page\Product\CatalogProductView;
 use Magento\Cms\Test\Page\CmsIndex;
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Customer\Test\Page\CustomerAccountLogin;
 use Magento\Customer\Test\Page\CustomerAccountLogout;
-use Mtf\Client\Browser;
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\Client\BrowserInterface;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Test Creation for ProductsInCartReportEntity
- *
- * Test Flow:
- *
  * Preconditions:
  * 1. Create customer
  * 2. Create product
@@ -35,6 +32,11 @@ use Mtf\TestCase\Injectable;
  */
 class ProductsInCartReportEntity extends Injectable
 {
+    /* tags */
+    const MVP = 'no';
+    const DOMAIN = 'MX';
+    /* end tags */
+
     /**
      * Cms index page
      *
@@ -66,10 +68,10 @@ class ProductsInCartReportEntity extends Injectable
     /**
      * Prepare data
      *
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @return array
      */
-    public function __prepare(CustomerInjectable $customer)
+    public function __prepare(Customer $customer)
     {
         $customer->persist();
 
@@ -100,17 +102,17 @@ class ProductsInCartReportEntity extends Injectable
     /**
      * Create products in cart report entity
      *
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param CatalogProductSimple $product
      * @param string $isGuest
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @return void
      */
     public function test(
-        CustomerInjectable $customer,
+        Customer $customer,
         CatalogProductSimple $product,
         $isGuest,
-        Browser $browser
+        BrowserInterface $browser
     ) {
         // Preconditions
         $product->persist();

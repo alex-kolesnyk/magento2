@@ -1,12 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Store\Model;
 
 interface StoreManagerInterface
 {
+    /**
+     * Store cache context
+     */
+    const CONTEXT_STORE = 'store';
+
     /**
      * Allow or disallow single store mode
      *
@@ -51,7 +57,7 @@ interface StoreManagerInterface
      *
      * @param null|bool|int|string|\Magento\Store\Model\Website $websiteId
      * @return \Magento\Store\Model\Website
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getWebsite($websiteId = null);
 

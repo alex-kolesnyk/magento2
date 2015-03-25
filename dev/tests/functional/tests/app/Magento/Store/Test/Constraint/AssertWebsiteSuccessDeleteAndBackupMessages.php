@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Store\Test\Constraint;
 
 use Magento\Backend\Test\Page\Adminhtml\StoreIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertWebsiteSuccessDeleteAndBackupMessages
@@ -14,10 +15,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertWebsiteSuccessDeleteAndBackupMessages extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Success backup message
      */

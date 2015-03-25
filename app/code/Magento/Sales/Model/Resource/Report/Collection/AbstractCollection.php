@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Report\Collection;
 
@@ -19,16 +20,16 @@ class AbstractCollection extends \Magento\Reports\Model\Resource\Report\Collecti
     protected $_orderStatus = null;
 
     /**
-     * @param \Magento\Core\Model\EntityFactory $entityFactory
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Data\Collection\EntityFactory $entityFactory
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Sales\Model\Resource\Report $resource
-     * @param \Zend_Db_Adapter_Abstract $connection
+     * @param null $connection
      */
     public function __construct(
-        \Magento\Core\Model\EntityFactory $entityFactory,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Data\Collection\EntityFactory $entityFactory,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Sales\Model\Resource\Report $resource,
@@ -57,7 +58,7 @@ class AbstractCollection extends \Magento\Reports\Model\Resource\Report\Collecti
      */
     protected function _applyOrderStatusFilter()
     {
-        if (is_null($this->_orderStatus)) {
+        if ($this->_orderStatus === null) {
             return $this;
         }
         $orderStatus = $this->_orderStatus;

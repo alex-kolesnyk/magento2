@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\System\Store;
 
@@ -15,7 +16,6 @@ class DeleteStore extends \Magento\Backend\Controller\Adminhtml\System\Store
         $itemId = $this->getRequest()->getParam('item_id', null);
         if (!($model = $this->_objectManager->create('Magento\Store\Model\Store')->load($itemId))) {
             $this->messageManager->addError(__('Unable to proceed. Please, try again.'));
-            $this->_redirect('adminhtml/*/');
             /** @var \Magento\Backend\Model\View\Result\Redirect $redirectResult */
             $redirectResult = $this->resultRedirectFactory->create();
             return $redirectResult->setPath('adminhtml/*/');

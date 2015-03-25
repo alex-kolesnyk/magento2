@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Controller;
 
@@ -24,7 +25,7 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
     protected function setUp()
     {
         parent::setUp();
-        $logger = $this->getMock('Magento\Framework\Logger', [], [], '', false);
+        $logger = $this->getMock('Psr\Log\LoggerInterface', [], [], '', false);
         $this->_customerSession = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             'Magento\Customer\Model\Session',
             [$logger]
@@ -126,7 +127,7 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
             'rss_url' => null, // no rss
         ];
 
-        $this->getRequest()->setPost($request);
+        $this->getRequest()->setPostValue($request);
 
         $this->_objectManager->get('Magento\Framework\Registry')->register(
             'wishlist',

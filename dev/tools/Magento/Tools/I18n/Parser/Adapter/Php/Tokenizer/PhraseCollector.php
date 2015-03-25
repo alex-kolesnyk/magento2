@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\I18n\Parser\Adapter\Php\Tokenizer;
 
@@ -31,13 +32,22 @@ class PhraseCollector
     protected $_file;
 
     /**
+     * Are the Phrase objects are parsed as well
+     *
+     * @var bool
+     */
+    protected $includeObjects = false;
+
+    /**
      * Construct
      *
      * @param Tokenizer $tokenizer
+     * @param bool $includeObjects
      */
-    public function __construct(Tokenizer $tokenizer)
+    public function __construct(Tokenizer $tokenizer, $includeObjects = false)
     {
         $this->_tokenizer = $tokenizer;
+        $this->includeObjects = $includeObjects;
     }
 
     /**
@@ -61,7 +71,7 @@ class PhraseCollector
         $this->_phrases = [];
         $this->_file = $file;
         $this->_tokenizer->parse($file);
-        while (!$this->_tokenizer->isLastToken()) {
+        while (!$this->_tokenizer->isEndOfLoop()) {
             $this->_extractPhrases();
         }
     }
@@ -73,14 +83,48 @@ class PhraseCollector
      */
     protected function _extractPhrases()
     {
-        $phraseStartToken = $this->_tokenizer->getNextToken();
-        if ($phraseStartToken->isEqualFunction('__') && $this->_tokenizer->getNextToken()->isOpenBrace()) {
+        if ($firstToken = $this->_tokenizer->getNextRealToken()) {
+            if (!$this->extractMethodPhrase($firstToken) && $this->includeObjects) {
+                $this->extractObjectPhrase($firstToken);
+            }
+        }
+    }
+
+    /**
+     * @param Token $firstToken
+     * @return bool
+     */
+    protected function extractMethodPhrase(Token $firstToken)
+    {
+        if ($firstToken->isEqualFunction('__')) {
+            $secondToken = $this->_tokenizer->getNextRealToken();
+            if ($secondToken && $secondToken->isOpenBrace()) {
+                $arguments = $this->_tokenizer->getFunctionArgumentsTokens();
+                $phrase = $this->_collectPhrase(array_shift($arguments));
+                if (null !== $phrase) {
+                    $this->_addPhrase($phrase, count($arguments), $this->_file, $firstToken->getLine());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Token $firstToken
+     * @return bool
+     */
+    protected function extractObjectPhrase(Token $firstToken)
+    {
+        if ($firstToken->isNew() && $this->_tokenizer->isMatchingClass('Phrase')) {
             $arguments = $this->_tokenizer->getFunctionArgumentsTokens();
             $phrase = $this->_collectPhrase(array_shift($arguments));
             if (null !== $phrase) {
-                $this->_addPhrase($phrase, count($arguments), $this->_file, $phraseStartToken->getLine());
+                $this->_addPhrase($phrase, count($arguments), $this->_file, $firstToken->getLine());
+                return true;
             }
         }
+        return false;
     }
 
     /**
@@ -123,5 +167,15 @@ class PhraseCollector
             'file' => $file,
             'line' => $line,
         ];
+    }
+
+    /**
+     * @param bool $includeObjects
+     * @return $this
+     */
+    public function setIncludeObjects($includeObjects = true)
+    {
+        $this->includeObjects = (bool)$includeObjects;
+        return $this;
     }
 }

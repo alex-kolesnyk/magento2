@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Block\Adminhtml\Product\Downloads\Renderer;
 
@@ -15,7 +16,7 @@ class Purchases extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\Abstr
      * Renders Purchases value
      *
      * @param \Magento\Framework\Object $row
-     * @return string
+     * @return \Magento\Framework\Phrase|string
      */
     public function render(\Magento\Framework\Object $row)
     {

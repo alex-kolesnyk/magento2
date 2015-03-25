@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Search\Dynamic\Algorithm;
 
+use Magento\Framework\Search\Adapter\OptionsInterface;
 use Magento\Framework\Search\Dynamic\DataProviderInterface;
 use Magento\Framework\Search\Request\BucketInterface;
 
@@ -15,11 +17,18 @@ class Auto implements AlgorithmInterface
     private $dataProvider;
 
     /**
-     * @param DataProviderInterface $dataProvider
+     * @var OptionsInterface
      */
-    public function __construct(DataProviderInterface $dataProvider)
+    private $options;
+
+    /**
+     * @param DataProviderInterface $dataProvider
+     * @param OptionsInterface $options
+     */
+    public function __construct(DataProviderInterface $dataProvider, OptionsInterface $options)
     {
         $this->dataProvider = $dataProvider;
+        $this->options = $options;
     }
 
     /**
@@ -29,7 +38,7 @@ class Auto implements AlgorithmInterface
     {
         $data = [];
         $range = $this->dataProvider->getRange();
-        if (!$range) {
+        if (!$range && !empty($entityIds)) {
             $range = $this->getRange($bucket, $dimensions, $entityIds);
             $dbRanges = $this->dataProvider->getAggregation($bucket, $dimensions, $range, $entityIds, 'count');
             $data = $this->dataProvider->prepareData($range, $dbRanges);
@@ -78,7 +87,7 @@ class Auto implements AlgorithmInterface
      */
     private function getMinRangePower()
     {
-        $options = $this->dataProvider->getOptions();
+        $options = $this->options->get();
 
         return $options['min_range_power'];
     }

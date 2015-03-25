@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Attribute\Data;
 
@@ -31,6 +32,8 @@ class Date extends \Magento\Eav\Model\Attribute\Data\AbstractData
      *
      * @param array|string $value
      * @return bool|array
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function validateValue($value)
     {
@@ -135,13 +138,13 @@ class Date extends \Magento\Eav\Model\Attribute\Data\AbstractData
                 case \Magento\Eav\Model\AttributeDataFactory::OUTPUT_FORMAT_TEXT:
                 case \Magento\Eav\Model\AttributeDataFactory::OUTPUT_FORMAT_HTML:
                 case \Magento\Eav\Model\AttributeDataFactory::OUTPUT_FORMAT_PDF:
-                    $this->_dateFilterFormat(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_MEDIUM);
+                    $this->_dateFilterFormat(\IntlDateFormatter::MEDIUM);
                     break;
             }
             $value = $this->_applyOutputFilter($value);
         }
 
-        $this->_dateFilterFormat(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT);
+        $this->_dateFilterFormat(\IntlDateFormatter::SHORT);
 
         return $value;
     }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model;
 
@@ -62,18 +63,22 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
      */
     public function testClean()
     {
+        $customerIdNow = 1;
         $lastVisitNow = date('Y-m-d H:i:s', time());
         $sessionIdNow = 'asaswljxvgklasdflkjasieasd';
+        $customerIdPast = null;
         $lastVisitPast = date('Y-m-d H:i:s', time() - 172800);
         $sessionIdPast = 'kui0aa57nqddl8vk7k6ohgi352';
 
         /** @var \Magento\Customer\Model\Visitor $visitor */
         $visitor = Bootstrap::getObjectManager()->get('Magento\Customer\Model\Visitor');
+        $visitor->setCustomerId($customerIdPast);
         $visitor->setSessionId($sessionIdPast);
         $visitor->setLastVisitAt($lastVisitPast);
         $visitor->save();
         $visitorIdPast = $visitor->getId();
         $visitor->unsetData();
+        $visitor->setCustomerId($customerIdNow);
         $visitor->setSessionId($sessionIdNow);
         $visitor->setLastVisitAt($lastVisitNow);
         $visitor->save();
@@ -86,7 +91,12 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
         $visitor->unsetData();
         $visitor->load($visitorIdNow);
         $this->assertEquals(
-            ['visitor_id' => $visitorIdNow, 'session_id' => $sessionIdNow, 'last_visit_at' => $lastVisitNow],
+            [
+                'visitor_id' => $visitorIdNow,
+                'customer_id' => $customerIdNow,
+                'session_id' => $sessionIdNow,
+                'last_visit_at' => $lastVisitNow
+            ],
             $visitor->getData()
         );
     }

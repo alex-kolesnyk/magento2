@@ -2,7 +2,8 @@
 /**
  * Rule for searching dependencies in layout files
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework\Dependency;
 
@@ -89,7 +90,7 @@ class LayoutRule implements \Magento\TestFramework\Dependency\RuleInterface
         $this->_mapRouters = $mapRouters;
         $this->_mapLayoutBlocks = $mapLayoutBlocks;
         $this->_mapLayoutHandles = $mapLayoutHandles;
-        $this->_namespaces = implode('|', \Magento\Framework\Test\Utility\Files::init()->getNamespaces());
+        $this->_namespaces = implode('|', \Magento\Framework\App\Utility\Files::init()->getNamespaces());
     }
 
     /**
@@ -486,20 +487,6 @@ class LayoutRule implements \Magento\TestFramework\Dependency\RuleInterface
     }
 
     /**
-     * Retrieve default module name (by area)
-     *
-     * @param string $area
-     * @return null
-     */
-    protected function _getDefaultModuleName($area = 'default')
-    {
-        if (isset($this->_defaultModules[$area])) {
-            return $this->_defaultModules[$area];
-        }
-        return null;
-    }
-
-    /**
      * Retrieve unique dependencies
      *
      * @param array $dependencies
@@ -512,5 +499,19 @@ class LayoutRule implements \Magento\TestFramework\Dependency\RuleInterface
             $result[] = ['module' => $module, 'type' => $value['type'], 'source' => $value['source']];
         }
         return $result;
+    }
+
+    /**
+     * Retrieve default module name (by area)
+     *
+     * @param string $area
+     * @return null
+     */
+    protected function _getDefaultModuleName($area = 'default')
+    {
+        if (isset($this->_defaultModules[$area])) {
+            return $this->_defaultModules[$area];
+        }
+        return null;
     }
 }

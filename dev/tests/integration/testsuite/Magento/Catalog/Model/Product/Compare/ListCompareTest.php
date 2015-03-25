@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model\Product\Compare;
@@ -31,11 +32,8 @@ class ListCompareTest extends \PHPUnit_Framework_TestCase
             ->get('Magento\Customer\Model\Session');
         $this->_visitor = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->create('Magento\Customer\Model\Visitor');
-        /** @var \Magento\Framework\Stdlib\DateTime $dateTime */
-        $dateTime = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
-            ->create('Magento\Framework\Stdlib\DateTime');
         $this->_visitor->setSessionId(md5(time()) . md5(microtime()))
-            ->setLastVisitAt($dateTime->now())
+            ->setLastVisitAt((new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT))
             ->save();
         $this->_model = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->create('Magento\Catalog\Model\Product\Compare\ListCompare', ['customerVisitor' => $this->_visitor]);

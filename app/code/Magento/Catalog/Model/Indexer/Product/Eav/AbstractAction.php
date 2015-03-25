@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Eav;
 
@@ -53,7 +54,7 @@ abstract class AbstractAction
      */
     public function getIndexers()
     {
-        if (is_null($this->_types)) {
+        if ($this->_types === null) {
             $this->_types = [
                 'source' => $this->_eavSourceFactory->create(),
                 'decimal' => $this->_eavDecimalFactory->create(),
@@ -68,13 +69,13 @@ abstract class AbstractAction
      *
      * @param string $type
      * @return \Magento\Catalog\Model\Resource\Product\Indexer\Eav\AbstractEav
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getIndexer($type)
     {
         $indexers = $this->getIndexers();
         if (!isset($indexers[$type])) {
-            throw new \Magento\Framework\Model\Exception(__('Unknown EAV indexer type "%1".', $type));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Unknown EAV indexer type "%1".', $type));
         }
         return $indexers[$type];
     }
@@ -88,7 +89,7 @@ abstract class AbstractAction
     public function reindex($ids = null)
     {
         foreach ($this->getIndexers() as $indexer) {
-            if (is_null($ids)) {
+            if ($ids === null) {
                 $indexer->reindexAll();
             } else {
                 $indexer->reindexEntities($ids);

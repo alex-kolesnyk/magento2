@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\TaxClass\Type;
 
@@ -20,7 +21,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
     {
         /** @var $objectManager \Magento\TestFramework\ObjectManager */
         $this->_objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
-        $builder = $this->_objectManager->create('Magento\Customer\Api\Data\GroupDataBuilder');
+        $groupFactory = $this->_objectManager->create('Magento\Customer\Api\Data\GroupInterfaceFactory');
 
         /* Create a tax class */
         $model = $this->_objectManager->create('Magento\Tax\Model\ClassModel');
@@ -33,8 +34,7 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         $model->setId($taxClassId);
         /** @var $groupRepository \Magento\Customer\Api\GroupRepositoryInterface */
         $groupRepository = $this->_objectManager->create('Magento\Customer\Api\GroupRepositoryInterface');
-        $group = $builder->setId(null)->setCode(self::GROUP_CODE)->setTaxClassId($taxClassId)
-            ->create();
+        $group = $groupFactory->create()->setId(null)->setCode(self::GROUP_CODE)->setTaxClassId($taxClassId);
         $groupRepository->save($group);
 
         /** @var $model \Magento\Tax\Model\TaxClass\Type\Customer */

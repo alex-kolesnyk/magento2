@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Massaction;
 
@@ -43,7 +44,7 @@ class Item extends \Magento\Backend\Block\Widget
      *
      * @param string|\Magento\Framework\View\Element\AbstractBlock $block
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function setAdditionalActionBlock($block)
     {
@@ -52,7 +53,7 @@ class Item extends \Magento\Backend\Block\Widget
         } elseif (is_array($block)) {
             $block = $this->_createFromConfig($block);
         } elseif (!$block instanceof \Magento\Framework\View\Element\AbstractBlock) {
-            throw new \Magento\Framework\Model\Exception('Unknown block type');
+            throw new \Magento\Framework\Exception\LocalizedException(__('Unknown block type'));
         }
 
         $this->setChild('additional_action', $block);

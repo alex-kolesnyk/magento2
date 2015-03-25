@@ -1,11 +1,12 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\Cache;
 
-use Magento\Framework\Model\Exception;
+use Magento\Framework\Exception\LocalizedException;
 
 class MassDisable extends \Magento\Backend\Controller\Adminhtml\Cache
 {
@@ -34,7 +35,7 @@ class MassDisable extends \Magento\Backend\Controller\Adminhtml\Cache
                 $this->_cacheState->persist();
                 $this->messageManager->addSuccess(__("%1 cache type(s) disabled.", $updatedTypes));
             }
-        } catch (Exception $e) {
+        } catch (LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addException($e, __('An error occurred while disabling cache.'));

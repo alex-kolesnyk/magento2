@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\App\Language;
 
@@ -22,7 +23,7 @@ class TranslationFiles extends \PHPUnit_Framework_TestCase
      */
     public function getLocalePlacePath()
     {
-        $pathToSource = \Magento\Framework\Test\Utility\Files::init()->getPathToSource();
+        $pathToSource = \Magento\Framework\App\Utility\Files::init()->getPathToSource();
         $places = [];
         foreach (glob("{$pathToSource}/app/code/*/*", GLOB_ONLYDIR) as $modulePath) {
             $places[basename($modulePath)] = ['placePath' => $modulePath];

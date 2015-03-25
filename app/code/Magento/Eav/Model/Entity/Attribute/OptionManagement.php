@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Eav\Model\Entity\Attribute;
@@ -39,12 +40,12 @@ class OptionManagement implements \Magento\Eav\Api\AttributeOptionManagementInte
     public function add($entityType, $attributeCode, $option)
     {
         if (empty($attributeCode)) {
-            throw new InputException('Empty attribute code');
+            throw new InputException(__('Empty attribute code'));
         }
 
         $attribute = $this->attributeRepository->get($entityType, $attributeCode);
         if (!$attribute->usesSource()) {
-            throw new StateException(sprintf('Attribute %s doesn\'t work with options', $attributeCode));
+            throw new StateException(__('Attribute %1 doesn\'t work with options', $attributeCode));
         }
         $key = 'new_option';
 
@@ -66,7 +67,7 @@ class OptionManagement implements \Magento\Eav\Api\AttributeOptionManagementInte
         try {
             $this->resourceModel->save($attribute);
         } catch (\Exception $e) {
-            throw new StateException(sprintf('Cannot save attribute %s', $attributeCode));
+            throw new StateException(__('Cannot save attribute %1', $attributeCode));
         }
 
         return true;
@@ -78,17 +79,17 @@ class OptionManagement implements \Magento\Eav\Api\AttributeOptionManagementInte
     public function delete($entityType, $attributeCode, $optionId)
     {
         if (empty($attributeCode)) {
-            throw new InputException('Empty attribute code');
+            throw new InputException(__('Empty attribute code'));
         }
 
         $attribute = $this->attributeRepository->get($entityType, $attributeCode);
         if (!$attribute->usesSource()) {
-            throw new StateException(sprintf('Attribute %s doesn\'t have any option', $attributeCode));
+            throw new StateException(__('Attribute %1 doesn\'t have any option', $attributeCode));
         }
 
         if (!$attribute->getSource()->getOptionText($optionId)) {
             throw new NoSuchEntityException(
-                sprintf('Attribute %s does not contain option with Id %s', $attribute->getId(), $optionId)
+                __('Attribute %1 does not contain option with Id %2', $attribute->getId(), $optionId)
             );
         }
 
@@ -102,7 +103,7 @@ class OptionManagement implements \Magento\Eav\Api\AttributeOptionManagementInte
         try {
             $this->resourceModel->save($attribute);
         } catch (\Exception $e) {
-            throw new StateException(sprintf('Cannot save attribute %s', $attributeCode));
+            throw new StateException(__('Cannot save attribute %1', $attributeCode));
         }
 
         return true;
@@ -114,14 +115,14 @@ class OptionManagement implements \Magento\Eav\Api\AttributeOptionManagementInte
     public function getItems($entityType, $attributeCode)
     {
         if (empty($attributeCode)) {
-            throw new InputException('Empty attribute code');
+            throw new InputException(__('Empty attribute code'));
         }
         $attribute = $this->attributeRepository->get($entityType, $attributeCode);
 
         try {
             $options = $attribute->getOptions();
         } catch (\Exception $e) {
-            throw new StateException(sprintf('Cannot load options for attribute %s', $attributeCode));
+            throw new StateException(__('Cannot load options for attribute %1', $attributeCode));
         }
 
         return $options;

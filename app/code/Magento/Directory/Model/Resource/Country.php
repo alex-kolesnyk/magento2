@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Directory\Model\Resource;
 
@@ -25,7 +26,7 @@ class Country extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param \Magento\Directory\Model\Country $country
      * @param string $code
      * @return \Magento\Directory\Model\Resource\Country
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function loadByCode(\Magento\Directory\Model\Country $country, $code)
     {
@@ -39,7 +40,9 @@ class Country extends \Magento\Framework\Model\Resource\Db\AbstractDb
                 break;
 
             default:
-                throw new \Magento\Framework\Model\Exception(__('Please correct the country code: %1.', $code));
+                throw new \Magento\Framework\Exception\LocalizedException(
+                    __('Please correct the country code: %1.', $code)
+                );
         }
 
         return $this->load($country, $code, $field);

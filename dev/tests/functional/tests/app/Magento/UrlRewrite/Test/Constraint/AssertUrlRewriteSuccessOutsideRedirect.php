@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\UrlRewrite\Test\Constraint;
 
 use Magento\UrlRewrite\Test\Fixture\UrlRewrite;
-use Mtf\Client\Browser;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Client\BrowserInterface;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertUrlRewriteSuccessOutsideRedirect
@@ -15,19 +16,15 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertUrlRewriteSuccessOutsideRedirect extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that outside redirect was success
      *
      * @param UrlRewrite $urlRewrite
-     * @param Browser $browser
+     * @param BrowserInterface $browser
      * @param UrlRewrite|null $initialRewrite [optional]
      * @return void
      */
-    public function processAssert(UrlRewrite $urlRewrite, Browser $browser, UrlRewrite $initialRewrite = null)
+    public function processAssert(UrlRewrite $urlRewrite, BrowserInterface $browser, UrlRewrite $initialRewrite = null)
     {
         $urlRequestPath = $urlRewrite->hasData('request_path')
             ? $urlRewrite->getRequestPath()

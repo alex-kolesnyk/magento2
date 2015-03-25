@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Layer\Filter\Price;
 
@@ -17,7 +18,7 @@ class AlgorithmAdvancedTest extends \PHPUnit_Framework_TestCase
     /**
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
-     * @magentoConfigFixture current_store catalog/search/engine Magento\CatalogSearch\Model\Resource\Engine
+     * @magentoConfigFixture current_store catalog/search/engine mysql
      * @covers \Magento\Framework\Search\Dynamic\Algorithm::calculateSeparators
      */
     public function testWithoutLimits()
@@ -62,7 +63,7 @@ class AlgorithmAdvancedTest extends \PHPUnit_Framework_TestCase
                 ['layer' => $layer, 'resource' => $priceResource, 'priceAlgorithm' => $model]
             );
         $filter->setLayer($layer)->setAttributeModel(new Object(['attribute_code' => 'price']));
-        if (!is_null($request)) {
+        if ($request !== null) {
             $filter->apply(
                 $request,
                 Bootstrap::getObjectManager()->get(
@@ -89,7 +90,7 @@ class AlgorithmAdvancedTest extends \PHPUnit_Framework_TestCase
     /**
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
-     * @magentoConfigFixture current_store catalog/search/engine Magento\CatalogSearch\Model\Resource\Engine
+     * @magentoConfigFixture current_store catalog/search/engine mysql
      * @covers \Magento\Framework\Search\Dynamic\Algorithm::calculateSeparators
      */
     public function testWithLimits()

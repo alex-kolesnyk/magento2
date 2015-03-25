@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\TestStep;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Sales\Test\Page\Adminhtml\OrderCreateIndex;
-use Mtf\TestStep\TestStepInterface;
+use Magento\Mtf\TestStep\TestStepInterface;
 
 /**
  * Class SelectCustomerOrderStep
@@ -25,16 +26,16 @@ class SelectCustomerOrderStep implements TestStepInterface
     /**
      * Customer
      *
-     * @var CustomerInjectable
+     * @var Customer
      */
     protected $customer;
 
     /**
      * @constructor
      * @param OrderCreateIndex $orderCreateIndex
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      */
-    public function __construct(OrderCreateIndex $orderCreateIndex, CustomerInjectable $customer)
+    public function __construct(OrderCreateIndex $orderCreateIndex, Customer $customer)
     {
         $this->orderCreateIndex = $orderCreateIndex;
         $this->customer = $customer;

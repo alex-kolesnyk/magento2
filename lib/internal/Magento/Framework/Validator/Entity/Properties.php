@@ -2,7 +2,8 @@
 /**
  * Validates properties of entity (\Magento\Framework\Object).
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Validator\Entity;
 
@@ -47,7 +48,9 @@ class Properties extends \Magento\Framework\Validator\AbstractValidator
             }
             foreach ($this->_readOnlyProperties as $property) {
                 if ($this->_hasChanges($value->getData($property), $value->getOrigData($property))) {
-                    $this->_messages[__CLASS__] = [__("Read-only property cannot be changed.")];
+                    $this->_messages[__CLASS__] = [
+                        (string)new \Magento\Framework\Phrase("Read-only property cannot be changed.")
+                    ];
                     break;
                 }
             }

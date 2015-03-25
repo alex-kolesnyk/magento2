@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\DesignEditor\Model\Editor\Tools\Controls;
 
@@ -39,12 +40,12 @@ class Configuration
     protected $_filesystem;
 
     /**
-     * @var \Magento\Core\Model\Theme
+     * @var \Magento\Theme\Model\Theme
      */
     protected $_theme;
 
     /**
-     * @var \Magento\Core\Model\Theme
+     * @var \Magento\Theme\Model\Theme
      */
     protected $_parentTheme;
 
@@ -188,12 +189,14 @@ class Configuration
      *
      * @param string $controlName
      * @return array
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getControlData($controlName)
     {
         if (!isset($this->_controlList[$controlName])) {
-            throw new \Magento\Framework\Model\Exception("Unknown control: \"{$controlName}\"");
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Unknown control: "%1"', $controlName)
+            );
         }
         return $this->_controlList[$controlName];
     }

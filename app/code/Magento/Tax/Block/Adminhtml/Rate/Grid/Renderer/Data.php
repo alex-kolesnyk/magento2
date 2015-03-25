@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -22,7 +23,7 @@ class Data extends \Magento\Backend\Block\Widget\Grid\Column\Renderer\AbstractRe
         if (intval($data) == $data) {
             return (string)number_format($data, 2);
         }
-        if (!is_null($data)) {
+        if ($data !== null) {
             return $data * 1;
         }
         return $this->getColumn()->getDefault();

@@ -1,9 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\OfflinePayments\Model;
 
+/**
+ * Class Purchaseorder
+ *
+ * @method \Magento\Quote\Api\Data\PaymentMethodExtensionInterface getExtensionAttributes()
+ */
 class Purchaseorder extends \Magento\Payment\Model\Method\AbstractMethod
 {
     /**
@@ -20,6 +26,13 @@ class Purchaseorder extends \Magento\Payment\Model\Method\AbstractMethod
      * @var string
      */
     protected $_infoBlockType = 'Magento\OfflinePayments\Block\Info\Purchaseorder';
+
+    /**
+     * Availability option
+     *
+     * @var bool
+     */
+    protected $_isOffline = true;
 
     /**
      * Assign data to info model instance

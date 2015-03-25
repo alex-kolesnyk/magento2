@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Block;
 
@@ -13,14 +14,16 @@ class Form extends \Magento\Framework\View\Element\Template
      * Retrieve payment method model
      *
      * @return \Magento\Payment\Model\MethodInterface
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getMethod()
     {
         $method = $this->getData('method');
 
         if (!$method instanceof \Magento\Payment\Model\MethodInterface) {
-            throw new \Magento\Framework\Model\Exception(__('We cannot retrieve the payment method model object.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('We cannot retrieve the payment method model object.')
+            );
         }
         return $method;
     }

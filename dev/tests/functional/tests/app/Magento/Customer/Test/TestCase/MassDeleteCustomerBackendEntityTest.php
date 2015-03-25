@@ -1,15 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\TestCase;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Customer\Test\Page\Adminhtml\CustomerIndex;
 use Magento\Customer\Test\Page\Adminhtml\CustomerIndexEdit;
-use Mtf\Fixture\FixtureFactory;
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\Fixture\FixtureFactory;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
  * Test creation for MassDeleteCustomerBackendEntityTest
@@ -31,6 +32,11 @@ use Mtf\TestCase\Injectable;
  */
 class MassDeleteCustomerBackendEntityTest extends Injectable
 {
+    /* tags */
+    const MVP = 'yes';
+    const DOMAIN = 'CS';
+    /* end tags */
+
     /**
      * Customer Index page
      *
@@ -96,13 +102,13 @@ class MassDeleteCustomerBackendEntityTest extends Injectable
      * Create Customers
      *
      * @param int $customersQty
-     * @return CustomerInjectable[]
+     * @return Customer[]
      */
     protected function createCustomers($customersQty)
     {
         $customers = [];
         for ($i = 0; $i < $customersQty; $i++) {
-            $customer = $this->fixtureFactory->createByCode('customerInjectable', ['dataSet' => 'default']);
+            $customer = $this->fixtureFactory->createByCode('customer', ['dataSet' => 'default']);
             $customer->persist();
             $customers[] = $customer;
         }

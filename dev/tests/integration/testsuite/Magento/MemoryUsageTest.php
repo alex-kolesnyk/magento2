@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento;
 
@@ -18,6 +19,9 @@ class MemoryUsageTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped("For HHVM it's not relevant while MAGETWO-33679 is not resolved");
+        }
         $this->_helper = new \Magento\TestFramework\Helper\Memory(
             new \Magento\Framework\Shell(new \Magento\Framework\Shell\CommandRenderer())
         );

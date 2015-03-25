@@ -1,20 +1,26 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Model;
+
+use Magento\Store\Model\ScopeInterface;
 
 class QueueTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @magentoDataFixture Magento/Newsletter/_files/queue.php
-     * @magentoConfigFixture fixturestore_store general/locale/code de_DE
      * @magentoAppIsolation enabled
      */
     public function testSendPerSubscriber()
     {
         /** @var $objectManager \Magento\TestFramework\ObjectManager */
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+
+        /** @var \Magento\Framework\App\Config\MutableScopeConfigInterface $mutableConfig */
+        $mutableConfig = $objectManager->get('Magento\Framework\App\Config\MutableScopeConfigInterface');
+        $mutableConfig->setValue('general/locale/code', 'de_DE', ScopeInterface::SCOPE_STORE, 'fixturestore');
 
         $objectManager->get('Magento\Framework\App\State')->setAreaCode(\Magento\Framework\App\Area::AREA_FRONTEND);
         $area = $objectManager->get('Magento\Framework\App\AreaList')

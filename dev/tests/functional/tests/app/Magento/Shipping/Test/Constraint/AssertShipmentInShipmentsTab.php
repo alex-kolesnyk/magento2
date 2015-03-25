@@ -1,43 +1,39 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Shipping\Test\Constraint;
 
 use Magento\Sales\Test\Fixture\OrderInjectable;
 use Magento\Sales\Test\Page\Adminhtml\OrderIndex;
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class AssertShipmentInShipmentsTab
  * Assert that shipment is present in the Shipments tab with correct shipped items quantity
  */
 class AssertShipmentInShipmentsTab extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that shipment is present in the Shipments tab with correct shipped items quantity
      *
-     * @param OrderView $orderView
+     * @param SalesOrderView $salesOrderView
      * @param OrderIndex $orderIndex
      * @param OrderInjectable $order
      * @param array $ids
      * @return void
      */
     public function processAssert(
-        OrderView $orderView,
+        SalesOrderView $salesOrderView,
         OrderIndex $orderIndex,
         OrderInjectable $order,
         array $ids
     ) {
         $orderIndex->open();
         $orderIndex->getSalesOrderGrid()->searchAndOpen(['id' => $order->getId()]);
-        $orderView->getOrderForm()->openTab('shipments');
+        $salesOrderView->getOrderForm()->openTab('shipments');
         $totalQty = $order->getTotalQtyOrdered();
         $totalQty = is_array($totalQty) ? $totalQty : [$totalQty];
 
@@ -48,7 +44,7 @@ class AssertShipmentInShipmentsTab extends AbstractConstraint
                 'qty_to' => $totalQty[$key],
             ];
             \PHPUnit_Framework_Assert::assertTrue(
-                $orderView->getOrderForm()->getTabElement('shipments')->getGridBlock()->isRowVisible($filter),
+                $salesOrderView->getOrderForm()->getTabElement('shipments')->getGridBlock()->isRowVisible($filter),
                 'Shipment is absent on shipments tab.'
             );
         }

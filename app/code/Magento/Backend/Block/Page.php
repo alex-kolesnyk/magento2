@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -51,7 +52,7 @@ class Page extends \Magento\Backend\Block\Template
     public function getLang()
     {
         if (!$this->hasData('lang')) {
-            $this->setData('lang', substr($this->_localeResolver->getLocaleCode(), 0, 2));
+            $this->setData('lang', substr($this->_localeResolver->getLocale(), 0, 2));
         }
         return $this->getData('lang');
     }

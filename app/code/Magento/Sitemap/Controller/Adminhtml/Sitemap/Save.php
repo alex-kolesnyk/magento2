@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sitemap\Controller\Adminhtml\Sitemap;
 
@@ -14,11 +15,12 @@ class Save extends \Magento\Sitemap\Controller\Adminhtml\Sitemap
      * Save action
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
     {
         // check if data sent
-        $data = $this->getRequest()->getPost();
+        $data = $this->getRequest()->getPostValue();
         if ($data) {
             // init model and set data
             /** @var \Magento\Sitemap\Model\Sitemap $model */
@@ -28,8 +30,8 @@ class Save extends \Magento\Sitemap\Controller\Adminhtml\Sitemap
             if (!empty($data['sitemap_filename']) && !empty($data['sitemap_path'])) {
                 $data['sitemap_path'] = '/' . ltrim($data['sitemap_path'], '/');
                 $path = rtrim($data['sitemap_path'], '\\/') . '/' . $data['sitemap_filename'];
-                /** @var $validator \Magento\Core\Model\File\Validator\AvailablePath */
-                $validator = $this->_objectManager->create('Magento\Core\Model\File\Validator\AvailablePath');
+                /** @var $validator \Magento\MediaStorage\Model\File\Validator\AvailablePath */
+                $validator = $this->_objectManager->create('Magento\MediaStorage\Model\File\Validator\AvailablePath');
                 /** @var $helper \Magento\Sitemap\Helper\Data */
                 $helper = $this->_objectManager->get('Magento\Sitemap\Helper\Data');
                 $validator->setPaths($helper->getValidPaths());

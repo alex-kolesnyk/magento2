@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -75,7 +76,7 @@ class Website extends \Magento\Backend\Block\Widget\Grid\Column\Filter\Select
      */
     public function getCollection()
     {
-        if (is_null($this->_websiteCollection)) {
+        if ($this->_websiteCollection === null) {
             $this->_websiteCollection = $this->_websitesFactory->create()->load();
         }
 

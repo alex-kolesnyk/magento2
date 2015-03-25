@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Element;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Filesystem;
+use Magento\Framework\View\Template\Html\Minifier;
 
 /**
  * Base html block
@@ -251,7 +253,7 @@ class Template extends AbstractBlock
             $html = $templateEngine->render($this->templateContext, $fileName, $this->_viewVars);
         } else {
             $html = '';
-            $this->_logger->log("Invalid template file: '{$fileName}'", \Zend_Log::CRIT);
+            $this->_logger->critical("Invalid template file: '{$fileName}'");
         }
 
         \Magento\Framework\Profiler::stop('TEMPLATE:' . $fileName);
@@ -371,7 +373,12 @@ class Template extends AbstractBlock
 
         $themesDir = $this->_filesystem->getDirectoryRead(DirectoryList::THEMES)->getAbsolutePath();
         $appDir = $this->_filesystem->getDirectoryRead(DirectoryList::APP)->getAbsolutePath();
+        $compiledDir = $this->_filesystem->getDirectoryRead(DirectoryList::TEMPLATE_MINIFICATION_DIR)
+            ->getAbsolutePath();
         return ($this->isPathInDirectory(
+            $fileName,
+            $compiledDir
+        ) || $this->isPathInDirectory(
             $fileName,
             $appDir
         ) || $this->isPathInDirectory(

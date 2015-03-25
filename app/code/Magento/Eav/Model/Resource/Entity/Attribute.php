@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Resource\Entity;
 
@@ -36,18 +37,20 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
     /**
      * Class constructor
      *
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param Type $eavEntityType
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        Type $eavEntityType
+        Type $eavEntityType,
+        $resourcePrefix = null
     ) {
         $this->_storeManager = $storeManager;
         $this->_eavEntityType = $eavEntityType;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -149,14 +152,14 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param EntityAttribute|AbstractModel $object
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _beforeSave(AbstractModel $object)
     {
         $frontendLabel = $object->getFrontendLabel();
         if (is_array($frontendLabel)) {
-            if (!isset($frontendLabel[0]) || is_null($frontendLabel[0]) || $frontendLabel[0] == '') {
-                throw new \Magento\Framework\Model\Exception(__('Frontend label is not defined'));
+            if (!isset($frontendLabel[0]) || $frontendLabel[0] === null || $frontendLabel[0] == '') {
+                throw new \Magento\Framework\Exception\LocalizedException(__('Frontend label is not defined'));
             }
             $object->setFrontendLabel($frontendLabel[0])->setStoreLabels($frontendLabel);
         }
@@ -260,6 +263,7 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param null $attributeGroupId
      * @param null $attributeSortOrder
      * @return $this
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function saveInSetIncluding(
         AbstractModel $object,
@@ -268,10 +272,10 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
         $attributeGroupId = null,
         $attributeSortOrder = null
     ) {
-        $attributeId = is_null($attributeEntityId) ? (int)$object->getId() : (int)$attributeEntityId;
-        $setId = is_null($attributeSetId) ? (int)$object->getAttributeSetId() : (int)$attributeSetId;
-        $groupId = is_null($attributeGroupId) ? (int)$object->getAttributeGroupId() : (int)$attributeGroupId;
-        $attributeSortOrder = is_null($attributeSortOrder) ? (int)$object->getSortOrder() : (int)$attributeSortOrder;
+        $attributeId = $attributeEntityId === null ? (int)$object->getId() : (int)$attributeEntityId;
+        $setId = $attributeSetId === null ? (int)$object->getAttributeSetId() : (int)$attributeSetId;
+        $groupId = $attributeGroupId === null ? (int)$object->getAttributeGroupId() : (int)$attributeGroupId;
+        $attributeSortOrder = $attributeSortOrder === null ? (int)$object->getSortOrder() : (int)$attributeSortOrder;
 
         if ($setId && $groupId && $object->getEntityTypeId()) {
             $adapter = $this->_getWriteAdapter();
@@ -346,12 +350,12 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param array $values
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _checkDefaultOptionValue($values)
     {
         if (!isset($values[0])) {
-            throw new \Magento\Framework\Model\Exception(__('Default option value is not defined'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Default option value is not defined'));
         }
     }
 

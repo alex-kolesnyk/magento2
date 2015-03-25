@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api\Code\Generator;
 
@@ -21,7 +22,6 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getClassProperties()
     {
-        $qualifiedClassName = $this->_getFullyQualifiedClassName($this->_getSourceClassName());
         $properties = [
             [
                 'name' => $this->_getSourceBuilderPropertyName(),
@@ -31,7 +31,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
                     'tags' => [
                         [
                             'name' => 'var',
-                            'description' => $qualifiedClassName . 'Builder',
+                            'description' => $this->getSourceClassName() . 'Builder',
                         ],
                     ],
                 ],
@@ -41,7 +41,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
                 'visibility' => 'protected',
                 'defaultValue' => [],
                 'docblock' => [
-                    'shortDescription' => $this->_getSourceClassName() . '[]',
+                    'shortDescription' => $this->getSourceClassName() . '[]',
                     'tags' => [['name' => 'var', 'description' => 'array']],
                 ]
             ],
@@ -56,8 +56,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getSourceBuilderPropertyName()
     {
-        $parts = explode('\\', $this->_getSourceClassName());
-        return lcfirst(end($parts)) . 'Builder';
+        return lcfirst($this->getSourceClassNameWithoutNamespace()) . 'Builder';
     }
 
     /**
@@ -72,7 +71,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
             'parameters' => [
                 [
                     'name' => $this->_getSourceBuilderPropertyName(),
-                    'type' => $this->_getFullyQualifiedClassName($this->_getSourceClassName()) . 'Builder',
+                    'type' => $this->getSourceClassName() . 'Builder',
                 ],
             ],
             'body' => "\$this->"
@@ -83,8 +82,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
                 'tags' => [
                     [
                         'name' => 'param',
-                        'description' => '\\' . $this->_getSourceClassName()
-                            . " \$" . $this->_getSourceBuilderPropertyName(),
+                        'description' => $this->getSourceClassName() . " \$" . $this->_getSourceBuilderPropertyName(),
                     ],
                 ],
             ]
@@ -119,7 +117,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
                     ],
                     [
                         'name' => 'return',
-                        'description' => $this->_getFullyQualifiedClassName($this->_getSourceClassName()),
+                        'description' => $this->getSourceClassName(),
                     ],
                 ],
             ],
@@ -135,7 +133,7 @@ class Mapper extends \Magento\Framework\Code\Generator\EntityAbstract
         $result = parent::_validateData();
 
         if ($result) {
-            $sourceClassName = $this->_getSourceClassName();
+            $sourceClassName = $this->getSourceClassName();
             $resultClassName = $this->_getResultClassName();
 
             if ($resultClassName !== $sourceClassName . 'Mapper') {

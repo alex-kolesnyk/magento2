@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
@@ -18,10 +19,19 @@
             <argument name="cacheId" xsi:type="string">widget_config</argument>
         </arguments>
     </type>
+    <type name="Magento\Widget\Model\Resource\Layout\Update">
+        <arguments>
+            <argument name="cache" xsi:type="object">Magento\Framework\App\Cache\Type\Layout</argument>
+        </arguments>
+    </type>
     <type name="Magento\Cms\Model\Template\FilterProvider">
         <arguments>
             <argument name="pageFilter" xsi:type="string">Magento\Widget\Model\Template\Filter</argument>
             <argument name="blockFilter" xsi:type="string">Magento\Widget\Model\Template\Filter</argument>
         </arguments>
+    </type>
+    <type name="Magento\Framework\View\Model\Layout\Merge">
+        <plugin name="widget-layout-update-plugin"
+                type="Magento\Widget\Model\Resource\Layout\Plugin" sortOrder="10"/>
     </type>
 </config>

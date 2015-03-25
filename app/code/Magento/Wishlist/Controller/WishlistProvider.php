@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Controller;
 
@@ -54,6 +55,7 @@ class WishlistProvider implements WishlistProviderInterface
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getWishlist($wishlistId = null)
     {
@@ -79,7 +81,7 @@ class WishlistProvider implements WishlistProviderInterface
 
             if (!$wishlist->getId() || $wishlist->getCustomerId() != $customerId) {
                 throw new \Magento\Framework\Exception\NoSuchEntityException(
-                    __("The requested wish list doesn't exist.")
+                    __('The requested wish list doesn\'t exist.')
                 );
             }
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {

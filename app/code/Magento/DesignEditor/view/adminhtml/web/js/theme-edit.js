@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /*jshint jquery:true*/
 define([
@@ -52,7 +53,7 @@ define([
             dialog.title.set(this.options.title);
             var buttons = (data.confirm && data.confirm.buttons) || [{
                 text: $.mage.__('OK'),
-                'class': 'primary',
+                'class': 'action-primary',
                 click: $.proxy(this._reloadPage, this)
             }];
 

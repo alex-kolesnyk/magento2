@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -55,7 +56,7 @@ class Helper extends \Magento\Framework\DB\Helper
         $entityStatus = $adapter->showTableStatus($tableName);
 
         if (empty($entityStatus['Auto_increment'])) {
-            throw new \Magento\Framework\Model\Exception(__('Cannot get autoincrement value'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Cannot get autoincrement value'));
         }
         return $entityStatus['Auto_increment'];
     }

@@ -1,14 +1,15 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Category;
 
 class Move extends \Magento\Catalog\Controller\Adminhtml\Category
 {
     /**
-     * @var \Magento\Framework\Controller\Result\JSONFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $resultJsonFactory;
 
@@ -18,23 +19,23 @@ class Move extends \Magento\Catalog\Controller\Adminhtml\Category
     protected $layoutFactory;
 
     /**
-     * @var \Magento\Framework\Logger $logger
+     * @var \Psr\Log\LoggerInterface $logger
      */
     protected $logger;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory
-     * @param \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      * @param \Magento\Framework\View\LayoutFactory $layoutFactory,
-     * @param \Magento\Framework\Logger $logger,
+     * @param \Psr\Log\LoggerInterface $logger,
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Backend\Model\View\Result\RedirectFactory $resultRedirectFactory,
-        \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory,
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
         \Magento\Framework\View\LayoutFactory $layoutFactory,
-        \Magento\Framework\Logger $logger
+        \Psr\Log\LoggerInterface $logger
     ) {
         parent::__construct($context, $resultRedirectFactory);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -68,7 +69,7 @@ class Move extends \Magento\Catalog\Controller\Adminhtml\Category
                 throw new \Exception(__('Category is not available for requested store.'));
             }
             $category->move($parentNodeId, $prevNodeId);
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $error = true;
             $this->messageManager->addError(__('There was a category move error.'));
         } catch (\Magento\UrlRewrite\Model\Storage\DuplicateEntryException $e) {
@@ -77,7 +78,7 @@ class Move extends \Magento\Catalog\Controller\Adminhtml\Category
         } catch (\Exception $e) {
             $error = true;
             $this->messageManager->addError(__('There was a category move error.'));
-            $this->logger->logException($e);
+            $this->logger->critical($e);
         }
 
         if (!$error) {

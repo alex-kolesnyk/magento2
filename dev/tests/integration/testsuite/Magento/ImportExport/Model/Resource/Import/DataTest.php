@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ImportExport\Model\Resource\Import;
 
@@ -45,7 +46,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getUniqueColumnData() in case when in data stored in requested column is NOT unique
      *
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      */
     public function testGetUniqueColumnDataException()
     {

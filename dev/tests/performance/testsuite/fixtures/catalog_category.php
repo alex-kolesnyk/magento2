@@ -1,12 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /** @var \Magento\TestFramework\Application $this */
 
+/** @var \Magento\Catalog\Setup\CategorySetup $installer */
 $installer = $this->getObjectManager()->create(
-    'Magento\Catalog\Model\Resource\Setup',
+    'Magento\Catalog\Setup\CategorySetup',
     ['resourceName' => 'catalog_setup']
 );
 /**

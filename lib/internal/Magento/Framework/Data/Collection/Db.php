@@ -1,16 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data\Collection;
 
 use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\DB\Select;
-use Magento\Framework\Logger;
+use Psr\Log\LoggerInterface as Logger;
 
 /**
  * Base items collection class
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Db extends \Magento\Framework\Data\Collection
 {
@@ -97,7 +99,7 @@ class Db extends \Magento\Framework\Data\Collection
     ) {
         parent::__construct($entityFactory);
         $this->_fetchStrategy = $fetchStrategy;
-        if (!is_null($connection)) {
+        if ($connection !== null) {
             $this->setConnection($connection);
         }
         $this->_logger = $logger;
@@ -198,7 +200,7 @@ class Db extends \Magento\Framework\Data\Collection
      */
     public function getSize()
     {
-        if (is_null($this->_totalRecords)) {
+        if ($this->_totalRecords === null) {
             $sql = $this->getSelectCountSql();
             $this->_totalRecords = $this->getConnection()->fetchOne($sql, $this->_bindParams);
         }
@@ -692,7 +694,7 @@ class Db extends \Magento\Framework\Data\Collection
     public function printLogQuery($printQuery = false, $logQuery = false, $sql = null)
     {
         if ($printQuery || $this->getFlag('print_query')) {
-            echo is_null($sql) ? $this->getSelect()->__toString() : $sql;
+            echo $sql === null ? $this->getSelect()->__toString() : $sql;
         }
 
         if ($logQuery || $this->getFlag('log_query')) {
@@ -709,7 +711,7 @@ class Db extends \Magento\Framework\Data\Collection
      */
     protected function _logQuery($sql)
     {
-        $this->_logger->log(is_null($sql) ? $this->getSelect()->__toString() : $sql);
+        $this->_logger->info($sql === null ? $this->getSelect()->__toString() : $sql);
     }
 
     /**
@@ -748,7 +750,7 @@ class Db extends \Magento\Framework\Data\Collection
      */
     public function addFilterToMap($filter, $alias, $group = 'fields')
     {
-        if (is_null($this->_map)) {
+        if ($this->_map === null) {
             $this->_map = [$group => []];
         } elseif (empty($this->_map[$group])) {
             $this->_map[$group] = [];

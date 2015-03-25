@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -42,7 +43,7 @@ abstract class AbstractView extends \Magento\Catalog\Block\Product\AbstractProdu
     public function getProduct()
     {
         $product = parent::getProduct();
-        if ($product && is_null($product->getTypeInstance()->getStoreFilter($product))) {
+        if ($product && $product->getTypeInstance()->getStoreFilter($product) === null) {
             $product->getTypeInstance()->setStoreFilter($this->_storeManager->getStore(), $product);
         }
         return $product;

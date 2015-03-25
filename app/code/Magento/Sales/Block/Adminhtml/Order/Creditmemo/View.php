@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order\Creditmemo;
 
@@ -124,7 +125,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Retrieve text for header
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -136,7 +137,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
         return __(
             'Credit Memo #%1 | %3 | %2 (%4)',
             $this->getCreditmemo()->getIncrementId(),
-            $this->formatDate($this->getCreditmemo()->getCreatedAtDate(), 'medium', true),
+            $this->formatDate($this->getCreditmemo()->getCreatedAtDate(), \IntlDateFormatter::MEDIUM, true),
             $this->getCreditmemo()->getStateName(),
             $emailSent
         );

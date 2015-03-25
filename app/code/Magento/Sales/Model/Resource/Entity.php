@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource;
 
@@ -9,6 +10,7 @@ use Magento\Sales\Model\EntityInterface;
 
 /**
  * Flat sales resource abstract
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class Entity extends AbstractDb
 {
@@ -54,21 +56,23 @@ abstract class Entity extends AbstractDb
     protected $gridAggregator;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param Attribute $attribute
      * @param \Magento\Sales\Model\Increment $salesIncrement
+     * @param string|null $resourcePrefix
      * @param GridInterface|null $gridAggregator
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Sales\Model\Resource\Attribute $attribute,
         \Magento\Sales\Model\Increment $salesIncrement,
+        $resourcePrefix = null,
         \Magento\Sales\Model\Resource\GridInterface $gridAggregator = null
     ) {
         $this->attribute = $attribute;
         $this->salesIncrement = $salesIncrement;
         $this->gridAggregator = $gridAggregator;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**

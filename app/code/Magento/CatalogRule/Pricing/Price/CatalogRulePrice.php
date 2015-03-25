@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\CatalogRule\Pricing\Price;
@@ -81,7 +82,7 @@ class CatalogRulePrice extends AbstractPrice implements BasePriceProviderInterfa
         if (null === $this->value) {
             $this->value = $this->resourceRuleFactory->create()
                 ->getRulePrice(
-                    $this->dateTime->scopeTimeStamp($this->storeManager->getStore()->getId()),
+                    $this->dateTime->scopeDate($this->storeManager->getStore()->getId()),
                     $this->storeManager->getStore()->getWebsiteId(),
                     $this->customerSession->getCustomerGroupId(),
                     $this->product->getId()

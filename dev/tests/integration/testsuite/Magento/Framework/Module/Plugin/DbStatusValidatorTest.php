@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Module\Plugin;
 
@@ -23,22 +24,19 @@ class DbStatusValidatorTest extends \Magento\TestFramework\TestCase\AbstractCont
         /** @var \Magento\Framework\Module\ModuleListInterface $moduleList */
         $moduleList = $objectManager->get('Magento\Framework\Module\ModuleListInterface');
 
-        /** @var \Magento\Framework\Module\ResourceResolverInterface $resourceResolver */
-        $resourceResolver = $objectManager->get('\Magento\Framework\Module\ResourceResolverInterface');
-
-        // get first resource, we don't care which one it is.
+        $moduleNameToTest = '';
+        
+        // get first module name, we don't care which one it is.
         foreach ($moduleList->getNames() as $moduleName) {
-            if ($resourceList = $resourceResolver->getResourceList($moduleName)) {
-                $resourceName = $resourceList[0];
-                break;
-            }
+            $moduleNameToTest = $moduleName;
+            break;
         }
 
         // Prepend '0.' to DB Version, to cause it to be an older version
         /** @var \Magento\Framework\Module\ResourceInterface $resource */
         $resource = $objectManager->create('Magento\Framework\Module\ResourceInterface');
-        $currentDbVersion = $resource->getDbVersion($resourceName);
-        $resource->setDbVersion($resourceName, '0.' . $currentDbVersion);
+        $currentDbVersion = $resource->getDbVersion($moduleNameToTest);
+        $resource->setDbVersion($moduleNameToTest, '0.' . $currentDbVersion);
 
         /** @var \Magento\Framework\Cache\FrontendInterface $cache */
         $cache = $this->_objectManager->get('Magento\Framework\App\Cache\Type\Config');

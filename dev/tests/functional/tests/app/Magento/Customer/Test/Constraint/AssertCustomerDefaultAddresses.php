@@ -1,33 +1,31 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\AddressInjectable;
+use Magento\Customer\Test\Fixture\Address;
 use Magento\Customer\Test\Page\CustomerAccountIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomerDefaultAddresses
  */
 class AssertCustomerDefaultAddresses extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Asserts that Default Billing Address and Default Shipping Address equal to data from fixture
      *
      * @param CustomerAccountIndex $customerAccountIndex
-     * @param AddressInjectable $address
+     * @param Address $address
      * @return void
      */
-    public function processAssert(CustomerAccountIndex $customerAccountIndex, AddressInjectable $address)
+    public function processAssert(CustomerAccountIndex $customerAccountIndex, Address $address)
     {
         $customerAccountIndex->getAccountMenuBlock()->openMenuItem('Account Dashboard');
+        sleep(6);
         $defaultBillingAddress = explode(
             "\n",
             $customerAccountIndex->getDashboardAddress()->getDefaultBillingAddressText()
@@ -79,10 +77,10 @@ class AssertCustomerDefaultAddresses extends AbstractConstraint
     /**
      * Make pattern for form verifying
      *
-     * @param AddressInjectable $address
+     * @param Address $address
      * @return array
      */
-    protected function makeAddressPattern(AddressInjectable $address)
+    protected function makeAddressPattern(Address $address)
     {
         $pattern = [];
         $regionId = $address->getRegionId();
@@ -94,7 +92,9 @@ class AssertCustomerDefaultAddresses extends AbstractConstraint
         $pattern[] = $address->getCity() . ", " . $region . ", " . $address->getPostcode();
         $pattern[] = $address->getCountryId();
         $pattern[] = "T: " . $address->getTelephone();
-        $pattern[] = "F: " . $address->getFax();
+        if ($address->hasData('fax')) {
+            $pattern[] = "F: " . $address->getFax();
+        }
         return $pattern;
     }
 }

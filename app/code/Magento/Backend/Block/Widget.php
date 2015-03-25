@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block;
 
@@ -87,19 +88,5 @@ class Widget extends \Magento\Backend\Block\Template
         )->setDataAttribute(
             $dataAttr
         )->toHtml();
-    }
-
-    /**
-     * @return string
-     */
-    public function getGlobalIcon()
-    {
-        return '<img src="' . $this->getViewFileUrl(
-            'images/fam_link.gif'
-        ) . '" alt="' . __(
-            'Global Attribute'
-        ) . '" title="' . __(
-            'This attribute shares the same value in all stores.'
-        ) . '" class="attribute-global"/>';
     }
 }

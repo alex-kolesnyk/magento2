@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Test\Integrity\Xml;
@@ -9,7 +10,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 {
     public function testXmlFiles()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $filename
@@ -55,19 +56,23 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
     public function getXmlFiles()
     {
-        $codeXml = $this->_getFiles(BP . '/app', '*.xml');
+        $codeXml = $this->_getFiles(BP . '/app', '*.xml', '/.\/Test\/Unit\/./');
         $this->_filterSpecialCases($codeXml);
         $designXml = $this->_getFiles(BP . '/app/design', '*.xml');
         $libXml = $this->_getFiles(BP . '/lib/Magento', '*.xml');
         return $this->_dataSet(array_merge($codeXml, $designXml, $libXml));
     }
 
-    protected function _getFiles($dir, $pattern)
+    protected function _getFiles($dir, $pattern, $skipDirPattern = '')
     {
         $files = glob($dir . '/' . $pattern, GLOB_NOSORT);
-        foreach (glob($dir . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $newDir) {
-            $files = array_merge($files, $this->_getFiles($newDir, $pattern));
+
+        if (empty($skipDirPattern) || !preg_match($skipDirPattern, $dir)) {
+            foreach (glob($dir . '/*', GLOB_ONLYDIR | GLOB_NOSORT) as $newDir) {
+                $files = array_merge($files, $this->_getFiles($newDir, $pattern, $skipDirPattern));
+            }
         }
+
         return $files;
     }
 
@@ -80,6 +85,8 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
     {
         $list = [
             '#Dhl/etc/countries.xml$#',
+            '#conf/schema.xml$#',
+            '#conf/solrconfig.xml$#',
         ];
         foreach ($list as $pattern) {
             foreach ($files as $key => $value) {

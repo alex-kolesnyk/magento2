@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend\Time;
 
@@ -30,7 +31,10 @@ class Updated extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBacken
      */
     public function beforeSave($object)
     {
-        $object->setData($this->getAttribute()->getAttributeCode(), $this->dateTime->now());
+        $object->setData(
+            $this->getAttribute()->getAttributeCode(),
+            (new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT)
+        );
         return $this;
     }
 }

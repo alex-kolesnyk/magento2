@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Model\Resource\Report;
 
@@ -24,8 +25,8 @@ class Refunded extends AbstractReport
     /**
      * Aggregate Refunded data
      *
-     * @param string|int|\Zend_Date|array|null $from
-     * @param string|int|\Zend_Date|array|null $to
+     * @param string|int|\DateTime|array|null $from
+     * @param string|int|\DateTime|array|null $to
      * @return $this
      */
     public function aggregate($from = null, $to = null)
@@ -34,7 +35,6 @@ class Refunded extends AbstractReport
         $from = $this->_dateToUtc($from);
         $to = $this->_dateToUtc($to);
 
-        $this->_checkDates($from, $to);
         $this->_aggregateByOrderCreatedAt($from, $to);
         $this->_aggregateByRefundCreatedAt($from, $to);
 
@@ -136,6 +136,7 @@ class Refunded extends AbstractReport
      * @param string|null $to
      * @return $this
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _aggregateByRefundCreatedAt($from, $to)
     {

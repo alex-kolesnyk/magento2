@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model;
 
@@ -13,6 +14,7 @@ use Magento\Customer\Model\Resource\Customer as ResourceCustomer;
 /**
  * Customer session model
  * @method string getNoReferer()
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Session extends \Magento\Framework\Session\SessionManager
 {
@@ -47,7 +49,7 @@ class Session extends \Magento\Framework\Session\SessionManager
     /**
      * Core url
      *
-     * @var \Magento\Core\Helper\Url|null
+     * @var \Magento\Framework\Url\Helper\Data|null
      */
     protected $_coreUrl = null;
 
@@ -101,7 +103,7 @@ class Session extends \Magento\Framework\Session\SessionManager
      * @param \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager
      * @param \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory
      * @param Share $configShare
-     * @param \Magento\Core\Helper\Url $coreUrl
+     * @param \Magento\Framework\Url\Helper\Data $coreUrl
      * @param \Magento\Customer\Model\Url $customerUrl
      * @param ResourceCustomer $customerResource
      * @param CustomerFactory $customerFactory
@@ -111,6 +113,7 @@ class Session extends \Magento\Framework\Session\SessionManager
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param CustomerRepositoryInterface $customerRepository
      * @param GroupManagementInterface $groupManagement
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Request\Http $request,
@@ -122,7 +125,7 @@ class Session extends \Magento\Framework\Session\SessionManager
         \Magento\Framework\Stdlib\CookieManagerInterface $cookieManager,
         \Magento\Framework\Stdlib\Cookie\CookieMetadataFactory $cookieMetadataFactory,
         Config\Share $configShare,
-        \Magento\Core\Helper\Url $coreUrl,
+        \Magento\Framework\Url\Helper\Data $coreUrl,
         \Magento\Customer\Model\Url $customerUrl,
         Resource\Customer $customerResource,
         CustomerFactory $customerFactory,

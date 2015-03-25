@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Bundle\Model\Plugin;
@@ -14,20 +15,21 @@ class BundleLoadOptions
     protected $productOptionList;
 
     /**
-     * @var \Magento\Framework\Api\AttributeDataBuilder
+     * @var \Magento\Catalog\Api\Data\ProductExtensionFactory
      */
-    protected $customAttributeBuilder;
+    protected $productExtensionFactory;
 
     /**
      * @param \Magento\Bundle\Model\Product\OptionList $productOptionList
      * @param \Magento\Framework\Api\AttributeDataBuilder $customAttributeBuilder
+     * @param \Magento\Catalog\Api\Data\ProductExtensionFactory $productExtensionFactory
      */
     public function __construct(
         \Magento\Bundle\Model\Product\OptionList $productOptionList,
-        \Magento\Framework\Api\AttributeDataBuilder $customAttributeBuilder
+        \Magento\Catalog\Api\Data\ProductExtensionFactory $productExtensionFactory
     ) {
         $this->productOptionList = $productOptionList;
-        $this->customAttributeBuilder = $customAttributeBuilder;
+        $this->productExtensionFactory = $productExtensionFactory;
     }
 
     /**
@@ -49,12 +51,12 @@ class BundleLoadOptions
         if ($product->getTypeId() != \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
             return $product;
         }
-        $customAttribute = $this->customAttributeBuilder
-            ->setAttributeCode('bundle_product_options')
-            ->setValue($this->productOptionList->getItems($product))
-            ->create();
-        $attributes = array_merge($product->getCustomAttributes(), ['bundle_product_options' => $customAttribute]);
-        $product->setData('custom_attributes', $attributes);
+
+        $productExtension = $this->productExtensionFactory->create();
+        $productExtension->setBundleProductOptions($this->productOptionList->getItems($product));
+
+        $product->setExtensionAttributes($productExtension);
+
         return $product;
     }
 }

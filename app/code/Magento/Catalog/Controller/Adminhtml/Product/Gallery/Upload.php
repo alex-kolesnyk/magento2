@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product\Gallery;
 
@@ -10,20 +11,20 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 class Upload extends \Magento\Backend\App\Action
 {
     /**
-     * @var \Magento\Framework\Controller\Result\JSONFactory
+     * @var \Magento\Framework\Controller\Result\RawFactory
      */
-    protected $resultJsonFactory;
+    protected $resultRawFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\RawFactory $resultRawFactory
     ) {
         parent::__construct($context);
-        $this->resultJsonFactory = $resultJsonFactory;
+        $this->resultRawFactory = $resultRawFactory;
     }
 
     /**
@@ -35,12 +36,15 @@ class Upload extends \Magento\Backend\App\Action
     }
 
     /**
-     * @return \Magento\Framework\Controller\Result\JSON
+     * @return \Magento\Framework\Controller\Result\Raw
      */
     public function execute()
     {
         try {
-            $uploader = $this->_objectManager->create('Magento\Core\Model\File\Uploader', ['fileId' => 'image']);
+            $uploader = $this->_objectManager->create(
+                'Magento\MediaStorage\Model\File\Uploader',
+                ['fileId' => 'image']
+            );
             $uploader->setAllowedExtensions(['jpg', 'jpeg', 'gif', 'png']);
             /** @var \Magento\Framework\Image\Adapter\AdapterInterface $imageAdapter */
             $imageAdapter = $this->_objectManager->get('Magento\Framework\Image\AdapterFactory')->create();
@@ -68,6 +72,10 @@ class Upload extends \Magento\Backend\App\Action
             $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
         }
 
-        return $this->resultJsonFactory->create()->setData($result);
+        /** @var \Magento\Framework\Controller\Result\Raw $response */
+        $response = $this->resultRawFactory->create();
+        $response->setHeader('Content-type', 'text/plain');
+        $response->setContents(json_encode($result));
+        return $response;
     }
 }

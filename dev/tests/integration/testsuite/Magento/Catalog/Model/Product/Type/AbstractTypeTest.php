@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Product\Type;
 
@@ -27,11 +28,10 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
-        $coreData = $this->getMock('Magento\Core\Helper\Data', [], [], '', false);
-        $fileStorageDb = $this->getMock('Magento\Core\Helper\File\Storage\Database', [], [], '', false);
+        $fileStorageDb = $this->getMock('Magento\MediaStorage\Helper\File\Storage\Database', [], [], '', false);
         $filesystem = $this->getMock('Magento\Framework\Filesystem', [], [], '', false);
         $registry = $this->getMock('Magento\Framework\Registry', [], [], '', false);
-        $logger = $this->getMock('Magento\Framework\Logger', [], [], '', false);
+        $logger = $this->getMock('Psr\Log\LoggerInterface', [], [], '', false);
         $this->_model = $this->getMockForAbstractClass(
             'Magento\Catalog\Model\Product\Type\AbstractType',
             [
@@ -39,7 +39,6 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
                 \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Eav\Model\Config'),
                 $catalogProductType,
                 $eventManager,
-                $coreData,
                 $fileStorageDb,
                 $filesystem,
                 $registry,
@@ -235,7 +234,7 @@ class AbstractTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @magentoDataFixture Magento/Catalog/_files/product_simple.php
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      */
     public function testCheckProductBuyStateException()
     {

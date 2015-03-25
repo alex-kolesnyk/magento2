@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Model;
@@ -41,10 +42,11 @@ class GroupManagementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @magentoDataFixture Magento/Core/_files/second_third_store.php
+     * @magentoDataFixture Magento/Store/_files/core_second_third_fixturestore.php
      */
     public function testGetDefaultGroupWithNonDefaultStoreId()
-    {        /** @var \Magento\Store\Model\StoreManagerInterface  $storeManager */
+    {
+        /** @var \Magento\Store\Model\StoreManagerInterface  $storeManager */
         $storeManager = Bootstrap::getObjectManager()->get('Magento\Store\Model\StoreManagerInterface');
         $nonDefaultStore = $storeManager->getStore('secondstore');
         $nonDefaultStoreId = $nonDefaultStore->getId();

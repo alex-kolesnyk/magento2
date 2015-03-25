@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -141,9 +142,9 @@ abstract class AbstractController extends \PHPUnit_Framework_TestCase
         $headerFound = false;
         $headers = $this->getResponse()->getHeaders();
         foreach ($headers as $header) {
-            if ($header['name'] === $headerName) {
+            if ($header->getFieldName() === $headerName) {
                 $headerFound = true;
-                $this->assertRegExp($valueRegex, $header['value']);
+                $this->assertRegExp($valueRegex, $header->getFieldValue());
             }
         }
         if (!$headerFound) {
@@ -168,8 +169,8 @@ abstract class AbstractController extends \PHPUnit_Framework_TestCase
         if ($urlConstraint) {
             $actualUrl = '';
             foreach ($this->getResponse()->getHeaders() as $header) {
-                if ($header['name'] == 'Location') {
-                    $actualUrl = $header['value'];
+                if ($header->getFieldName() == 'Location') {
+                    $actualUrl = $header->getFieldValue();
                     break;
                 }
             }
@@ -198,7 +199,7 @@ abstract class AbstractController extends \PHPUnit_Framework_TestCase
         /** @var $messageManager \Magento\Framework\Message\ManagerInterface */
         $messageManager = $this->_objectManager->get($messageManagerClass);
         /** @var $messages \Magento\Framework\Message\AbstractMessage[] */
-        if (is_null($messageType)) {
+        if ($messageType === null) {
             $messages = $messageManager->getMessages()->getItems();
         } else {
             $messages = $messageManager->getMessages()->getItemsByType($messageType);

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Layout;
 
@@ -21,16 +22,38 @@ class GeneratorPool
     protected $generators = [];
 
     /**
-     * Constructor
-     *
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
+     * @var \Magento\Framework\App\ScopeResolverInterface
+     */
+    protected $scopeResolver;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param ScheduledStructure\Helper $helper
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Framework\App\ScopeResolverInterface $scopeResolver
+     * @param \Psr\Log\LoggerInterface $logger
      * @param array $generators
      */
     public function __construct(
         ScheduledStructure\Helper $helper,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\ScopeResolverInterface $scopeResolver,
+        \Psr\Log\LoggerInterface $logger,
         array $generators = null
     ) {
         $this->helper = $helper;
+        $this->scopeConfig = $scopeConfig;
+        $this->scopeResolver = $scopeResolver;
+        $this->logger = $logger;
         $this->addGenerators($generators);
     }
 
@@ -98,6 +121,14 @@ class GeneratorPool
         foreach ($scheduledStructure->getListToRemove() as $elementToRemove) {
             $this->removeElement($scheduledStructure, $structure, $elementToRemove);
         }
+        foreach ($scheduledStructure->getIfconfigList() as $elementToCheckConfig) {
+            list($configPath, $scopeType) = $scheduledStructure->getIfconfigElement($elementToCheckConfig);
+            if (!empty($configPath)
+                && !$this->scopeConfig->isSetFlag($configPath, $scopeType, $this->scopeResolver->getScope())
+            ) {
+                $this->removeIfConfigElement($scheduledStructure, $structure, $elementToCheckConfig);
+            }
+        }
         return $this;
     }
 
@@ -129,6 +160,33 @@ class GeneratorPool
     }
 
     /**
+     * Remove scheduled element if config isn't true
+     *
+     * @param ScheduledStructure $scheduledStructure
+     * @param Data\Structure $structure
+     * @param string $elementName
+     * @param bool $isChild
+     * @return $this
+     */
+    protected function removeIfConfigElement(
+        ScheduledStructure $scheduledStructure,
+        Data\Structure $structure,
+        $elementName,
+        $isChild = false
+    ) {
+        $elementsToRemove = array_keys($structure->getChildren($elementName));
+        $scheduledStructure->unsetElement($elementName);
+        foreach ($elementsToRemove as $element) {
+            $this->removeIfConfigElement($scheduledStructure, $structure, $element, true);
+        }
+        if (!$isChild) {
+            $structure->unsetElement($elementName);
+            $scheduledStructure->unsetElementFromIfconfigList($elementName);
+        }
+        return $this;
+    }
+
+    /**
      * Move element in scheduled structure
      *
      * @param ScheduledStructure $scheduledStructure
@@ -146,8 +204,14 @@ class GeneratorPool
         if (!$alias && false === $structure->getChildId($destination, $childAlias)) {
             $alias = $childAlias;
         }
-        $structure->unsetChild($element, $alias)->setAsChild($element, $destination, $alias);
-        $structure->reorderChildElement($destination, $element, $siblingName, $isAfter);
+        $structure->unsetChild($element, $alias);
+        try {
+            $structure->setAsChild($element, $destination, $alias);
+            $structure->reorderChildElement($destination, $element, $siblingName, $isAfter);
+        } catch (\OutOfBoundsException $e) {
+            $this->logger->critical('Broken reference: '. $e->getMessage());
+        }
+        $scheduledStructure->unsetElementFromBrokenParentList($element);
         return $this;
     }
 }

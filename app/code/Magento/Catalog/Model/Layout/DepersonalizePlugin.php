@@ -2,9 +2,12 @@
 /**
  * Depersonalize catalog session data
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Layout;
+
+use Magento\PageCache\Model\DepersonalizeChecker;
 
 /**
  * Class DepersonalizePlugin
@@ -12,19 +15,9 @@ namespace Magento\Catalog\Model\Layout;
 class DepersonalizePlugin
 {
     /**
-     * @var \Magento\Framework\App\RequestInterface
+     * @var DepersonalizeChecker
      */
-    protected $request;
-
-    /**
-     * @var \Magento\Framework\Module\Manager
-     */
-    protected $moduleManager;
-
-    /**
-     * @var \Magento\PageCache\Model\Config
-     */
-    protected $cacheConfig;
+    protected $depersonalizeChecker;
 
     /**
      * Catalog session
@@ -34,21 +27,15 @@ class DepersonalizePlugin
     protected $catalogSession;
 
     /**
+     * @param DepersonalizeChecker $depersonalizeChecker
      * @param \Magento\Catalog\Model\Session $catalogSession
-     * @param \Magento\Framework\App\RequestInterface $request
-     * @param \Magento\Framework\Module\Manager $moduleManager
-     * @param \Magento\PageCache\Model\Config $cacheConfig
      */
     public function __construct(
-        \Magento\Catalog\Model\Session $catalogSession,
-        \Magento\Framework\Module\Manager $moduleManager,
-        \Magento\Framework\App\RequestInterface $request,
-        \Magento\PageCache\Model\Config $cacheConfig
+        DepersonalizeChecker $depersonalizeChecker,
+        \Magento\Catalog\Model\Session $catalogSession
     ) {
         $this->catalogSession = $catalogSession;
-        $this->request = $request;
-        $this->moduleManager = $moduleManager;
-        $this->cacheConfig = $cacheConfig;
+        $this->depersonalizeChecker = $depersonalizeChecker;
     }
 
     /**
@@ -60,11 +47,7 @@ class DepersonalizePlugin
      */
     public function afterGenerateXml(\Magento\Framework\View\LayoutInterface $subject, $result)
     {
-        if ($this->moduleManager->isEnabled('Magento_PageCache')
-            && $this->cacheConfig->isEnabled()
-            && !$this->request->isAjax()
-            && $subject->isCacheable()
-        ) {
+        if ($this->depersonalizeChecker->checkIfDepersonalize($subject)) {
             $this->catalogSession->clearStorage();
         }
         return $result;

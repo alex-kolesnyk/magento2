@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Block\Adminhtml\Order;
 
@@ -22,12 +23,14 @@ class Totalbar extends \Magento\Sales\Block\Adminhtml\Order\AbstractOrder
      * Retrieve required options from parent
      *
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _beforeToHtml()
     {
         if (!$this->getParentBlock()) {
-            throw new \Magento\Framework\Model\Exception(__('Please correct the parent block for this block.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Please correct the parent block for this block.')
+            );
         }
         $this->setOrder($this->getParentBlock()->getOrder());
         $this->setSource($this->getParentBlock()->getSource());

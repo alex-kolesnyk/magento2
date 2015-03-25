@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -12,7 +13,7 @@ class ObsoleteSystemConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     public function testSystemConfigurationDeclaration()
     {
-        $fileList = \Magento\Framework\Test\Utility\Files::init()->getConfigFiles(
+        $fileList = \Magento\Framework\App\Utility\Files::init()->getConfigFiles(
             'system.xml',
             ['wsdl.xml', 'wsdl2.xml', 'wsi.xml'],
             false

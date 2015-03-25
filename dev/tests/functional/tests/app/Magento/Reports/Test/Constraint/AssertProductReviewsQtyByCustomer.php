@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Reports\Test\Page\Adminhtml\CustomerReportReview;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertProductReviewsQtyByCustomer
@@ -15,24 +16,20 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertProductReviewsQtyByCustomer extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert product reviews qty column in Review Report by Customer grid
      *
      * @param CustomerReportReview $customerReportReview
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param int $reviewsCount
      * @return void
      */
     public function processAssert(
         CustomerReportReview $customerReportReview,
-        CustomerInjectable $customer,
+        Customer $customer,
         $reviewsCount
     ) {
-        $customerName = $customer->getFirstName() . ' ' . $customer->getLastName();
+        $customerName = $customer->getFirstname() . ' ' . $customer->getLastname();
         $customerReportReview->open();
         \PHPUnit_Framework_Assert::assertEquals(
             $reviewsCount,

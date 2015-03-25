@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Model\Resource\Oauth;
 
@@ -17,13 +18,17 @@ class Token extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_dateTime;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
+     * @param string|null $resourcePrefix
      */
-    public function __construct(\Magento\Framework\App\Resource $resource, \Magento\Framework\Stdlib\DateTime $dateTime)
-    {
+    public function __construct(
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Magento\Framework\Stdlib\DateTime $dateTime,
+        $resourcePrefix = null
+    ) {
         $this->_dateTime = $dateTime;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**
@@ -40,13 +45,13 @@ class Token extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * Clean up old authorized tokens for specified consumer-user pairs
      *
      * @param \Magento\Integration\Model\Oauth\Token $exceptToken Token just created to exclude from delete
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return int The number of affected rows
      */
     public function cleanOldAuthorizedTokensExcept(\Magento\Integration\Model\Oauth\Token $exceptToken)
     {
         if (!$exceptToken->getId() || !$exceptToken->getAuthorized()) {
-            throw new \Magento\Framework\Model\Exception('Invalid token to except');
+            throw new \Magento\Framework\Exception\LocalizedException(__('Invalid token to except'));
         }
         $adapter = $this->_getWriteAdapter();
         $where = $adapter->quoteInto(
@@ -61,7 +66,7 @@ class Token extends \Magento\Framework\Model\Resource\Db\AbstractDb
         } elseif ($exceptToken->getAdminId()) {
             $where .= $adapter->quoteInto(' AND admin_id = ?', $exceptToken->getAdminId(), \Zend_Db::INT_TYPE);
         } else {
-            throw new \Magento\Framework\Model\Exception('Invalid token to except');
+            throw new \Magento\Framework\Exception\LocalizedException(__('Invalid token to except'));
         }
         return $adapter->delete($this->getMainTable(), $where);
     }

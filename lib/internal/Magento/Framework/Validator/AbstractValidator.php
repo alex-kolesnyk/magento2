@@ -2,7 +2,8 @@
 /**
  * Abstract validator class.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Validator;
 
@@ -65,7 +66,7 @@ abstract class AbstractValidator implements \Magento\Framework\Validator\Validat
      */
     public function getTranslator()
     {
-        if (is_null($this->_translator)) {
+        if ($this->_translator === null) {
             return self::getDefaultTranslator();
         }
         return $this->_translator;
@@ -78,7 +79,7 @@ abstract class AbstractValidator implements \Magento\Framework\Validator\Validat
      */
     public function hasTranslator()
     {
-        return !is_null($this->_translator);
+        return $this->_translator !== null;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GroupedProduct\Pricing\Price;
@@ -49,7 +50,7 @@ class FinalPrice extends \Magento\Catalog\Pricing\Price\FinalPrice implements Fi
                 $price = $product->getPriceInfo()
                     ->getPrice(FinalPrice::PRICE_CODE)
                     ->getValue();
-                if (($price !== false) && ($price <= (is_null($minPrice) ? $price : $minPrice))) {
+                if (($price !== false) && ($price <= ($minPrice === null ? $price : $minPrice))) {
                     $this->minProduct = $product;
                     $minPrice = $price;
                 }

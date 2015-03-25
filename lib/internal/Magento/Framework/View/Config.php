@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View;
 
@@ -98,7 +99,7 @@ class Config implements \Magento\Framework\View\ConfigInterface
         $this->assetRepo->updateDesignParams($params);
         /** @var $currentTheme \Magento\Framework\View\Design\ThemeInterface */
         $currentTheme = $params['themeModel'];
-        $key = $currentTheme->getId();
+        $key = $currentTheme->getCode();
         if (isset($this->viewConfigs[$key])) {
             return $this->viewConfigs[$key];
         }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Layer\Filter;
 
@@ -87,7 +88,7 @@ interface FilterInterface
      * Get attribute model associated with filter
      *
      * @return \Magento\Catalog\Model\Resource\Eav\Attribute
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getAttributeModel();
 
@@ -95,7 +96,7 @@ interface FilterInterface
      * Get filter text label
      *
      * @return string
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getName();
 

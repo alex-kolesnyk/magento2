@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\I18n\Parser\Adapter\Php\Tokenizer;
 
@@ -72,6 +73,16 @@ class Token
     public function getLine()
     {
         return $this->_line;
+    }
+
+    /**
+     * Is "new" operator
+     *
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->getName() == T_NEW;
     }
 
     /**
@@ -153,5 +164,25 @@ class Token
     public function isSemicolon()
     {
         return $this->getValue() == ';';
+    }
+
+    /**
+     * Is namespace separator
+     *
+     * @return bool
+     */
+    public function isNamespaceSeparator()
+    {
+        return $this->getName() == T_NS_SEPARATOR;
+    }
+
+    /**
+     * Is identifier
+     *
+     * @return bool
+     */
+    public function isIdentifier()
+    {
+        return $this->getName() == T_STRING;
     }
 }

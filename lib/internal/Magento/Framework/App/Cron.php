@@ -2,7 +2,8 @@
 /**
  * Cron application
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App;
 
@@ -48,7 +49,7 @@ class Cron implements \Magento\Framework\AppInterface
         $this->_eventManager = $eventManager;
         $this->_state = $state;
         $this->_request = $request;
-        $this->_request->setParam($parameters);
+        $this->_request->setParams($parameters);
         $this->_response = $response;
     }
 

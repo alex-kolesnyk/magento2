@@ -1,24 +1,25 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\Auth;
 
 class DeniedJson extends \Magento\Backend\Controller\Adminhtml\Auth
 {
     /**
-     * @var \Magento\Framework\Controller\Result\JSONFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $resultJsonFactory;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -40,11 +41,11 @@ class DeniedJson extends \Magento\Backend\Controller\Adminhtml\Auth
     /**
      * Denied JSON action
      *
-     * @return \Magento\Framework\Controller\Result\JSON
+     * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
     {
-        /** @var \Magento\Framework\Controller\Result\JSON $resultJson */
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         return $resultJson->setData($this->_getDeniedJson());
     }

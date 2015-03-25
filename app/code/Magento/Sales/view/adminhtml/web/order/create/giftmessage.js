@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /********************* GIFT OPTIONS POPUP ***********************/
 /********************* GIFT OPTIONS SET ***********************/
@@ -99,7 +100,14 @@ window.giftMessagesController = {
 
         new Ajax.Request($(this.getFieldId(container, 'form')).action, {
             parameters: Form.serialize($(this.getFieldId(container, 'form')), true),
-            loaderArea: container
+            loaderArea: container,
+            onSuccess: function(response) {
+                var message = '<div class="messages"><div class="message message-success success">'
+                    + response.responseText
+                    + '<div data-ui-id="messages-message-success"></div></div></div>';
+                jQuery('#messages').html(message);
+                jQuery(document).scrollTop(0);
+            }
         });
     },
     getFieldId: function(container, name) {
@@ -158,8 +166,23 @@ GiftOptionsPopup.prototype = {
             autoOpen:   false,
             modal:      true,
             resizable:  false,
+            dialogClass: 'gift-options-popup',
             minWidth:   500,
-            dialogClass: 'gift-options-popup'
+            width:      '75%',
+            position: {
+                my: 'left+12.5% top',
+                at: 'center top',
+                of: 'body'
+            },
+            open: function () {
+                jQuery(this).closest('.ui-dialog').addClass('ui-dialog-active');
+
+                var topMargin = jQuery(this).closest('.ui-dialog').children('.ui-dialog-titlebar').outerHeight() + 30;
+                jQuery(this).closest('.ui-dialog').css('margin-top', topMargin);
+            },
+            close: function() {
+                jQuery(this).closest('.ui-dialog').removeClass('ui-dialog-active');
+            }
         });
     },
 

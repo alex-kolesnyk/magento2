@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
@@ -10,7 +11,7 @@ use Magento\Framework\Api\Search\FilterGroupBuilder;
 /**
  * Builder for SearchCriteria Service Data Object
  */
-class SearchCriteriaBuilder extends Builder
+class SearchCriteriaBuilder extends AbstractSimpleObjectBuilder
 {
     /**
      * @var FilterGroupBuilder
@@ -19,35 +20,14 @@ class SearchCriteriaBuilder extends Builder
 
     /**
      * @param ObjectFactory $objectFactory
-     * @param MetadataServiceInterface $metadataService
-     * @param AttributeDataBuilder $attributeValueBuilder
-     * @param \Magento\Framework\Reflection\DataObjectProcessor $objectProcessor
-     * @param \Magento\Framework\Reflection\TypeProcessor $typeProcessor
-     * @param \Magento\Framework\Serialization\DataBuilderFactory $dataBuilderFactory
-     * @param \Magento\Framework\ObjectManager\ConfigInterface $objectManagerConfig
      * @param FilterGroupBuilder $filterGroupBuilder
-     * @param string|null $modelClassInterface
      */
     public function __construct(
         ObjectFactory $objectFactory,
-        MetadataServiceInterface $metadataService,
-        AttributeDataBuilder $attributeValueBuilder,
-        \Magento\Framework\Reflection\DataObjectProcessor $objectProcessor,
-        \Magento\Framework\Reflection\TypeProcessor $typeProcessor,
-        \Magento\Framework\Serialization\DataBuilderFactory $dataBuilderFactory,
-        \Magento\Framework\ObjectManager\ConfigInterface $objectManagerConfig,
-        FilterGroupBuilder $filterGroupBuilder,
-        $modelClassInterface = null
+        FilterGroupBuilder $filterGroupBuilder
     ) {
         parent::__construct(
-            $objectFactory,
-            $metadataService,
-            $attributeValueBuilder,
-            $objectProcessor,
-            $typeProcessor,
-            $dataBuilderFactory,
-            $objectManagerConfig,
-            $modelClassInterface
+            $objectFactory
         );
         $this->_filterGroupBuilder = $filterGroupBuilder;
     }

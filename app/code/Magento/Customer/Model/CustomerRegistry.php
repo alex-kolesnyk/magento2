@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Model;
@@ -99,7 +100,7 @@ class CustomerRegistry
      */
     public function retrieveByEmail($customerEmail, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
         }
         $emailKey = $this->getEmailKey($customerEmail, $websiteId);
@@ -118,13 +119,15 @@ class CustomerRegistry
         if (!$customer->getEmail()) {
             // customer does not exist
             throw new NoSuchEntityException(
-                NoSuchEntityException::MESSAGE_DOUBLE_FIELDS,
-                [
+                __(
+                    NoSuchEntityException::MESSAGE_DOUBLE_FIELDS,
+                    [
                     'fieldName' => 'email',
-                    'fieldValue' => $customerEmail,
-                    'field2Name' => 'websiteId',
-                    'field2Value' => $websiteId,
-                ]
+                        'fieldValue' => $customerEmail,
+                        'field2Name' => 'websiteId',
+                        'field2Value' => $websiteId,
+                    ]
+                )
             );
         } else {
             $this->customerRegistryById[$customer->getId()] = $customer;
@@ -185,7 +188,7 @@ class CustomerRegistry
      */
     public function removeByEmail($customerEmail, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->storeManager->getStore()->getWebsiteId();
         }
         $emailKey = $this->getEmailKey($customerEmail, $websiteId);

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model;
 
@@ -92,7 +93,7 @@ class ObserverTest extends \PHPUnit_Framework_TestCase
     {
         $request = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->get('Magento\Framework\App\RequestInterface');
-        $request->setPost(
+        $request->setPostValue(
             'login',
             [
                 'username' => \Magento\TestFramework\Bootstrap::ADMIN_NAME,

@@ -1,16 +1,21 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Eav\Model\Attribute\Data;
 
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\Model\Exception as CoreException;
+use Magento\Framework\Exception\LocalizedException as CoreException;
 
 /**
  * EAV Attribute Abstract Data Model
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractData
 {
@@ -75,18 +80,18 @@ abstract class AbstractData
     protected $_localeResolver;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
     /**
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Locale\ResolverInterface $localeResolver
     ) {
         $this->_localeDate = $localeDate;
@@ -250,7 +255,7 @@ abstract class AbstractData
         if (is_null($format)) {
             // get format
             if (is_null($this->_dateFilterFormat)) {
-                $this->_dateFilterFormat = \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT;
+                $this->_dateFilterFormat = \IntlDateFormatter::SHORT;
             }
             return $this->_localeDate->getDateFormat($this->_dateFilterFormat);
         } elseif ($format === false) {
@@ -284,6 +289,8 @@ abstract class AbstractData
      *
      * @param string $value
      * @return string|true
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _validateInputRule($value)
     {
@@ -478,6 +485,7 @@ abstract class AbstractData
      * Return is AJAX Request
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsAjaxRequest()
     {

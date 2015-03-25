@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Block\Adminhtml\System\Design\Theme\Edit\Tab;
 
@@ -85,7 +86,7 @@ class Js extends \Magento\Theme\Block\Adminhtml\System\Design\Theme\Edit\Abstrac
     /**
      * Return Tab label
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
     {
@@ -108,7 +109,7 @@ class Js extends \Magento\Theme\Block\Adminhtml\System\Design\Theme\Edit\Abstrac
     /**
      * Get note string for js file to Upload
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     protected function _getUploadJsFileNote()
     {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Payment\Block;
 
@@ -25,13 +26,15 @@ class Info extends \Magento\Framework\View\Element\Template
      * Retrieve info model
      *
      * @return \Magento\Payment\Model\Info
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getInfo()
     {
         $info = $this->getData('info');
         if (!$info instanceof \Magento\Payment\Model\Info) {
-            throw new \Magento\Framework\Model\Exception(__('We cannot retrieve the payment info model object.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('We cannot retrieve the payment info model object.')
+            );
         }
         return $info;
     }
@@ -113,6 +116,7 @@ class Info extends \Magento\Framework\View\Element\Template
      * false => full information may be shown
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsSecureMode()
     {

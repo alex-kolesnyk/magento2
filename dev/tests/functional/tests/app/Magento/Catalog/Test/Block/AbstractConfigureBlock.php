@@ -1,15 +1,16 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\Block;
 
 use Magento\Catalog\Test\Block\Product\View\CustomOptions;
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
-use Mtf\Block\Form;
-use Mtf\Fixture\FixtureInterface;
-use Mtf\Fixture\InjectableFixture;
+use Magento\Mtf\Block\Form;
+use Magento\Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\InjectableFixture;
 
 /**
  * Class AbstractConfigureBlock
@@ -56,19 +57,17 @@ abstract class AbstractConfigureBlock extends Form
             $this->callRender($typeId, 'fillOptions', ['product' => $product]);
         }
 
-        if ($product instanceof InjectableFixture) {
-            /** @var CatalogProductSimple $product */
-            $checkoutData = $product->getCheckoutData();
-            $checkoutCustomOptions = isset($checkoutData['options']['custom_options'])
-                ? $checkoutData['options']['custom_options']
-                : [];
-            $customOptions = $product->hasData('custom_options')
-                ? $product->getDataFieldConfig('custom_options')['source']->getCustomOptions()
-                : [];
+        /** @var CatalogProductSimple $product */
+        $checkoutData = $product->getCheckoutData();
+        $checkoutCustomOptions = isset($checkoutData['options']['custom_options'])
+            ? $checkoutData['options']['custom_options']
+            : [];
+        $customOptions = $product->hasData('custom_options')
+            ? $product->getDataFieldConfig('custom_options')['source']->getCustomOptions()
+            : [];
 
-            $checkoutCustomOptions = $this->prepareCheckoutData($customOptions, $checkoutCustomOptions);
-            $this->getCustomOptionsBlock()->fillCustomOptions($checkoutCustomOptions);
-        }
+        $checkoutCustomOptions = $this->prepareCheckoutData($customOptions, $checkoutCustomOptions);
+        $this->getCustomOptionsBlock()->fillCustomOptions($checkoutCustomOptions);
     }
 
     /**
@@ -96,7 +95,7 @@ abstract class AbstractConfigureBlock extends Form
 
             if (isset($options[$attribute])) {
                 $result[] = [
-                    'type' => strtolower(preg_replace('/[^a-z]/i', '', $options[$attribute]['type'])),
+                    'type' => $options[$attribute]['type'],
                     'title' => isset($options[$attribute]['title'])
                             ? $options[$attribute]['title']
                             : $attribute,

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -8,7 +9,7 @@
  *
  * Note that some methods are not covered here, see the \Magento\Framework\View\LayoutDirectivesTest
  *
- * @see \Magento\Core\Model\LayoutDirectivesTest
+ * @see \Magento\Framework\View\LayoutDirectivesTest
  */
 namespace Magento\Framework\View;
 
@@ -29,6 +30,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
         $this->layoutFactory = $objectManager->get('Magento\Framework\View\LayoutFactory');
         $this->_layout = $this->layoutFactory->create();
+        $objectManager->get('Magento\Framework\App\Cache\Type\Layout')->clean();
     }
 
     public function testConstructorStructure()
@@ -90,7 +92,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
      * A smoke test for generating elements
      *
      * See sophisticated tests at \Magento\Framework\View\LayoutDirectivesTest
-     * @see \Magento\Core\Model\LayoutDirectivesTest
+     * @see \Magento\Framework\View\LayoutDirectivesTest
      * @magentoAppIsolation enabled
      */
     public function testGenerateGetAllBlocks()
@@ -202,7 +204,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider blockNotExistsDataProvider
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      */
     public function testCreateBlockNotExists($name)
     {
@@ -352,7 +354,7 @@ class LayoutTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Magento\Framework\Model\Exception
+     * @expectedException \Magento\Framework\Exception\LocalizedException
      */
     public function testAddBlockInvalidType()
     {

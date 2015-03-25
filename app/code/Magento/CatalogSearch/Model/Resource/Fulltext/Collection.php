@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Model\Resource\Fulltext;
 
@@ -10,6 +11,7 @@ use Magento\Framework\Search\Response\QueryResponse;
 
 /**
  * Fulltext Collection
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Collection extends \Magento\Catalog\Model\Resource\Product\Collection
 {
@@ -47,8 +49,8 @@ class Collection extends \Magento\Catalog\Model\Resource\Product\Collection
     private $order = null;
 
     /**
-     * @param \Magento\Core\Model\EntityFactory $entityFactory
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Data\Collection\EntityFactory $entityFactory
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
      * @param \Magento\Framework\Event\ManagerInterface $eventManager
      * @param \Magento\Eav\Model\Config $eavConfig
@@ -74,8 +76,8 @@ class Collection extends \Magento\Catalog\Model\Resource\Product\Collection
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        \Magento\Core\Model\EntityFactory $entityFactory,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Data\Collection\EntityFactory $entityFactory,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Eav\Model\Config $eavConfig,

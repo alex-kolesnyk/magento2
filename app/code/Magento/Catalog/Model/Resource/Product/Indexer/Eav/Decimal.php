@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Resource\Product\Indexer\Eav;
 
@@ -33,7 +34,7 @@ class Decimal extends AbstractEav
         $write = $this->_getWriteAdapter();
         $idxTable = $this->getIdxTable();
         // prepare select attributes
-        if (is_null($attributeId)) {
+        if ($attributeId === null) {
             $attrIds = $this->_getIndexableAttributes();
         } else {
             $attrIds = [$attributeId];
@@ -71,7 +72,7 @@ class Decimal extends AbstractEav
         $statusCond = $write->quoteInto('=?', \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
         $this->_addAttributeToSelect($select, 'status', 'pdd.entity_id', 'cs.store_id', $statusCond);
 
-        if (!is_null($entityIds)) {
+        if ($entityIds !== null) {
             $select->where('pdd.entity_id IN(?)', $entityIds);
         }
 

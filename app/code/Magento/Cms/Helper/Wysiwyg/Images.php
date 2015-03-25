@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Helper\Wysiwyg;
 
@@ -187,7 +188,7 @@ class Images extends \Magento\Framework\App\Helper\AbstractHelper
      * Try to create target directory if it doesn't exist
      *
      * @return string
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getCurrentPath()
     {
@@ -207,7 +208,7 @@ class Images extends \Magento\Framework\App\Helper\AbstractHelper
                 }
             } catch (\Magento\Framework\Filesystem\FilesystemException $e) {
                 $message = __('The directory %1 is not writable by server.', $currentPath);
-                throw new \Magento\Framework\Model\Exception($message);
+                throw new \Magento\Framework\Exception\LocalizedException($message);
             }
             $this->_currentPath = $currentPath;
         }

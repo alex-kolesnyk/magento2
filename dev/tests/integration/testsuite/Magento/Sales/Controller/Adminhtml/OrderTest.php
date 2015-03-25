@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml;
 
@@ -77,7 +78,7 @@ class OrderTest extends \Magento\Backend\Utility\Controller
         $order = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Sales\Model\Order');
         $order->load('100000001', 'increment_id');
 
-        $this->getRequest()->setPost(['history' => ['status' => $status, 'comment' => $comment]]);
+        $this->getRequest()->setPostValue(['history' => ['status' => $status, 'comment' => $comment]]);
         $this->dispatch('backend/sales/order/addComment/order_id/' . $order->getId());
         $html = $this->getResponse()->getBody();
 

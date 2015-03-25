@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\User\Controller\Adminhtml;
 
@@ -39,7 +40,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
         $userId = $user->getId();
         $this->assertNotEmpty($userId, 'Broken fixture');
         $user->delete();
-        $this->getRequest()->setPost('user_id', $userId);
+        $this->getRequest()->setPostValue('user_id', $userId);
         $this->dispatch('backend/admin/user/save');
         $this->assertSessionMessages(
             $this->equalTo(['This user no longer exists.']),
@@ -54,7 +55,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
     public function testSaveActionMissingCurrentAdminPassword()
     {
         $fixture = uniqid();
-        $this->getRequest()->setPost(
+        $this->getRequest()->setPostValue(
             [
                 'username' => $fixture,
                 'email' => "{$fixture}@example.com",
@@ -75,7 +76,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
     public function testSaveAction()
     {
         $fixture = uniqid();
-        $this->getRequest()->setPost(
+        $this->getRequest()->setPostValue(
             [
                 'username' => $fixture,
                 'email' => "{$fixture}@example.com",
@@ -100,7 +101,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
      */
     public function testSaveActionPasswordChange($postData, $isPasswordCorrect)
     {
-        $this->getRequest()->setPost($postData);
+        $this->getRequest()->setPostValue($postData);
         $this->dispatch('backend/admin/user/save');
 
         $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
@@ -192,7 +193,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
             'password_confirmation' => 'password123',
         ];
 
-        $this->getRequest()->setPost($data);
+        $this->getRequest()->setPostValue($data);
         $this->dispatch('backend/admin/user/validate');
         $body = $this->getResponse()->getBody();
 
@@ -213,7 +214,7 @@ class UserTest extends \Magento\Backend\Utility\Controller
         /**
          * set customer data
          */
-        $this->getRequest()->setPost($data);
+        $this->getRequest()->setPostValue($data);
         $this->dispatch('backend/admin/user/validate');
         $body = $this->getResponse()->getBody();
 

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ProductAlert\Model\Resource\Price;
 
@@ -29,7 +30,7 @@ class Collection extends \Magento\Framework\Model\Resource\Db\Collection\Abstrac
      */
     public function addWebsiteFilter($website)
     {
-        if (is_null($website) || $website == 0) {
+        if ($website === null || $website == 0) {
             return $this;
         }
         if (is_array($website)) {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Model\Locale;
 
@@ -68,7 +69,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
     {
         $request = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->get('Magento\Framework\App\RequestInterface');
-        $request->setPost(['locale' => 'de_DE']);
+        $request->setPostValue(['locale' => 'de_DE']);
         $this->_checkSetLocale('de_DE');
     }
 
@@ -81,7 +82,7 @@ class ResolverTest extends \PHPUnit_Framework_TestCase
     protected function _checkSetLocale($localeCodeToCheck)
     {
         $this->_model->setLocale();
-        $localeCode = $this->_model->getLocaleCode();
+        $localeCode = $this->_model->getLocale();
         $this->assertEquals($localeCode, $localeCodeToCheck);
     }
 }

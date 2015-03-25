@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Block\Onepage;
 
@@ -10,6 +11,7 @@ use Magento\Framework\Message\Collection;
 
 /**
  * One page checkout status
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Login extends AbstractOnepage
 {
@@ -37,7 +39,7 @@ class Login extends AbstractOnepage
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Core\Helper\Data $coreData
+     * @param \Magento\Directory\Helper\Data $directoryHelper
      * @param \Magento\Framework\App\Cache\Type\Config $configCacheType
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Checkout\Model\Session $resourceSession
@@ -53,10 +55,11 @@ class Login extends AbstractOnepage
      * @param \Magento\Customer\Model\Registration $registration
      * @param \Magento\Customer\Model\Address\Mapper $dataObjectConverter
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Core\Helper\Data $coreData,
+        \Magento\Directory\Helper\Data $directoryHelper,
         \Magento\Framework\App\Cache\Type\Config $configCacheType,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $resourceSession,
@@ -78,7 +81,7 @@ class Login extends AbstractOnepage
         $this->messageManager = $messageManager;
         parent::__construct(
             $context,
-            $coreData,
+            $directoryHelper,
             $configCacheType,
             $customerSession,
             $resourceSession,

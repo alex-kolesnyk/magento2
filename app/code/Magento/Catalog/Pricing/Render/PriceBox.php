@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Pricing\Render;
 
 use Magento\Catalog\Model\Product;
-use Magento\Core\Helper\Data;
+use Magento\Framework\Json\Helper\Data;
 use Magento\Framework\Math\Random;
 use Magento\Framework\Pricing\Price\PriceInterface;
 use Magento\Framework\Pricing\Render\PriceBox as PriceBoxRender;
@@ -21,9 +22,9 @@ use Magento\Framework\View\Element\Template\Context;
 class PriceBox extends PriceBoxRender
 {
     /**
-     * @var \Magento\Core\Helper\Data
+     * @var \Magento\Framework\Json\Helper\Data
      */
-    protected $coreDataHelper;
+    protected $jsonHelper;
 
     /**
      * @var \Magento\Framework\Math\Random
@@ -35,20 +36,21 @@ class PriceBox extends PriceBoxRender
      * @param Product $saleableItem
      * @param PriceInterface $price
      * @param RendererPool $rendererPool
-     * @param Data $coreDataHelper
+     * @param Data $jsonHelper
      * @param Random $mathRandom
      * @param array $data
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         Context $context,
         Product $saleableItem,
         PriceInterface $price,
         RendererPool $rendererPool,
-        Data $coreDataHelper,
+        Data $jsonHelper,
         Random $mathRandom,
         array $data = []
     ) {
-        $this->coreDataHelper = $coreDataHelper;
+        $this->jsonHelper = $jsonHelper;
         $this->mathRandom = $mathRandom;
         parent::__construct($context, $saleableItem, $price, $rendererPool);
     }
@@ -57,13 +59,11 @@ class PriceBox extends PriceBoxRender
      * Encode the mixed $valueToEncode into the JSON format
      *
      * @param mixed $valueToEncode
-     * @param boolean $cycleCheck Optional; whether or not to check for object recursion; off by default
-     * @param array $options Additional options used during encoding
      * @return string
      */
-    public function jsonEncode($valueToEncode, $cycleCheck = false, $options = [])
+    public function jsonEncode($valueToEncode)
     {
-        return $this->coreDataHelper->jsonEncode($valueToEncode, $cycleCheck, $options);
+        return $this->jsonHelper->jsonEncode($valueToEncode);
     }
 
     /**
@@ -83,6 +83,7 @@ class PriceBox extends PriceBoxRender
      *
      * @param Product $product
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getCanDisplayQty(Product $product)
     {

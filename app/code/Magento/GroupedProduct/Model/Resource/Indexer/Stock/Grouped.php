@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -88,7 +89,7 @@ class Grouped extends \Magento\CatalogInventory\Model\Resource\Indexer\Stock\Def
 
         $select->columns(['status' => $stockStatusExpr]);
 
-        if (!is_null($entityIds)) {
+        if ($entityIds !== null) {
             $select->where('e.entity_id IN(?)', $entityIds);
         }
 

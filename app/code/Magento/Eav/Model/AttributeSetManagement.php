@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model;
 
@@ -53,7 +54,7 @@ class AttributeSetManagement implements AttributeSetManagementInterface
             $attributeSet->setEntityTypeId($this->eavConfig->getEntityType($entityTypeCode)->getId());
             $attributeSet->validate();
         } catch (\Exception $exception) {
-            throw new InputException($exception->getMessage());
+            throw new InputException(__($exception->getMessage()));
         }
 
         $this->repository->save($attributeSet);

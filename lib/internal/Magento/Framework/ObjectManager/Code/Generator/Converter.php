@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\ObjectManager\Code\Generator;
 
@@ -46,8 +47,7 @@ class Converter extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getFactoryPropertyName()
     {
-        $parts = explode('\\', $this->_getSourceClassName());
-        return lcfirst(end($parts)) . 'Factory';
+        return lcfirst($this->getSourceClassNameWithoutNamespace()) . 'Factory';
     }
 
     /**
@@ -57,7 +57,7 @@ class Converter extends \Magento\Framework\Code\Generator\EntityAbstract
      */
     protected function _getFactoryClass()
     {
-        return $this->_getFullyQualifiedClassName($this->_getSourceClassName()) . 'Factory';
+        return $this->getSourceClassName() . 'Factory';
     }
 
     /**
@@ -83,7 +83,7 @@ class Converter extends \Magento\Framework\Code\Generator\EntityAbstract
                 'tags' => [
                     [
                         'name' => 'param',
-                        'description' => '\\' . $this->_getSourceClassName()
+                        'description' => $this->getSourceClassName()
                             . " \$" . $this->_getFactoryPropertyName(),
                     ],
                 ],
@@ -120,7 +120,7 @@ class Converter extends \Magento\Framework\Code\Generator\EntityAbstract
                     ],
                     [
                         'name' => 'return',
-                        'description' => $this->_getFullyQualifiedClassName($this->_getSourceClassName())
+                        'description' => $this->getSourceClassName()
                     ],
                 ],
             ],
@@ -137,7 +137,7 @@ class Converter extends \Magento\Framework\Code\Generator\EntityAbstract
             return false;
         }
 
-        $sourceClassName = $this->_getSourceClassName();
+        $sourceClassName = $this->getSourceClassName();
         $resultClassName = $this->_getResultClassName();
 
         if ($resultClassName !== $sourceClassName . 'Converter') {

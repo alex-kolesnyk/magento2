@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -18,11 +19,6 @@ class BaseImage extends \Magento\Framework\Data\Form\Element\AbstractElement
      * @var \Magento\Backend\Model\UrlInterface
      */
     protected $_url;
-
-    /**
-     * @var \Magento\Core\Helper\Data
-     */
-    protected $_coreHelper;
 
     /**
      * @var \Magento\Catalog\Helper\Data
@@ -71,7 +67,7 @@ class BaseImage extends \Magento\Framework\Data\Form\Element\AbstractElement
     /**
      * Get label
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getLabel()
     {
@@ -104,15 +100,19 @@ class BaseImage extends \Magento\Framework\Data\Form\Element\AbstractElement
         <img class="spacer" src="{$spacerImage}"/>
         <p class="image-placeholder-text">{$imagePlaceholderText}</p>
     </div>
-    <script id="{$htmlId}-template" class="image-template" type="text/x-jquery-tmpl">
+    <script id="{$htmlId}-template" class="image-template" type="text/x-magento-template">
         <div class="image">
             <img class="spacer" src="{$spacerImage}"/>
-            <img class="product-image" src="\${url}" data-position="\${position}" alt="\${label}" />
+            <img 
+                class="product-image"
+                src="<%- data.url %>"
+                data-position="<%- data.position %>"
+                alt="<%- data.label %>" />
             <div class="actions">
-                <button class="action-delete" data-role="delete-button" title="{$deleteImageText}">
+                <button type="button" class="action-delete" data-role="delete-button" title="{$deleteImageText}">
                     <span>{$deleteImageText}</span>
                 </button>
-                <button class="action-make-base" data-role="make-base-button" title="{$makeBaseText}">
+                <button type="button" class="action-make-base" data-role="make-base-button" title="{$makeBaseText}">
                     <span>{$makeBaseText}</span>
                 </button>
                 <div class="draggable-handle"></div>

@@ -1,15 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 \Magento\TestFramework\Helper\Bootstrap::getInstance()
     ->loadArea(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE);
 
-$installer = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create(
-    'Magento\Catalog\Model\Resource\Setup',
-    ['resourceName' => 'catalog_setup']
-);
 /**
  * After installation system has two categories: root one with ID:1 and Default category with ID:2
  */

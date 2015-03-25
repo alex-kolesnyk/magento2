@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -162,7 +163,7 @@ abstract class AbstractResource extends \Magento\Framework\Model\Resource\Db\Abs
      */
     public function useIdxTable($value = null)
     {
-        if (!is_null($value)) {
+        if ($value !== null) {
             $this->_isNeedUseIdxTable = (bool)$value;
         }
         return $this->_isNeedUseIdxTable;

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -29,12 +30,16 @@ class Wishlist extends \Magento\Wishlist\Block\AbstractBlock
      */
     protected $_formKey;
 
+    /** @var \Magento\Customer\Helper\Session\CurrentCustomer */
+    protected $currentCustomer;
+
     /**
      * @param \Magento\Catalog\Block\Product\Context $context
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Catalog\Helper\Product\ConfigurationPool $helperPool
      * @param \Magento\Framework\Data\Form\FormKey $formKey
+     * @param \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer
      * @param array $data
      */
     public function __construct(
@@ -43,16 +48,18 @@ class Wishlist extends \Magento\Wishlist\Block\AbstractBlock
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Catalog\Helper\Product\ConfigurationPool $helperPool,
         \Magento\Framework\Data\Form\FormKey $formKey,
+        \Magento\Customer\Helper\Session\CurrentCustomer $currentCustomer,
         array $data = []
     ) {
-        $this->_formKey = $formKey;
-        $this->_helperPool = $helperPool;
         parent::__construct(
             $context,
             $httpContext,
             $productRepository,
             $data
         );
+        $this->_formKey = $formKey;
+        $this->_helperPool = $helperPool;
+        $this->currentCustomer = $currentCustomer;
     }
 
     /**
@@ -207,5 +214,17 @@ class Wishlist extends \Magento\Wishlist\Block\AbstractBlock
             '*/*/allcart',
             ['wishlist_id' => $this->getWishlistInstance()->getId(), 'form_key' => $this->_formKey->getFormKey()]
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        if ($this->currentCustomer->getCustomerId()) {
+            return parent::_toHtml();
+        } else {
+            return '';
+        }
     }
 }

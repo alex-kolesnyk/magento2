@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\View\Layout;
 
@@ -74,10 +75,12 @@ class ReaderPool implements ReaderInterface
      */
     protected function prepareReader($readers)
     {
-        /** @var $reader Layout\ReaderInterface */
-        foreach ($readers as $readerClass) {
-            $reader = $this->readerFactory->create($readerClass);
-            $this->addReader($reader);
+        if (empty($this->nodeReaders)) {
+            /** @var $reader Layout\ReaderInterface */
+            foreach ($readers as $readerClass) {
+                $reader = $this->readerFactory->create($readerClass);
+                $this->addReader($reader);
+            }
         }
     }
 

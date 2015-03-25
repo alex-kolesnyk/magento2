@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Flat\Action;
 
@@ -18,6 +19,7 @@ class Full extends \Magento\Catalog\Model\Indexer\Product\Flat\AbstractAction
      * @return \Magento\Catalog\Model\Indexer\Product\Flat\Action\Full
      * @throws \Magento\Framework\Exception
      * @throws \Exception
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function execute($ids = null)
     {
@@ -26,7 +28,7 @@ class Full extends \Magento\Catalog\Model\Indexer\Product\Flat\AbstractAction
                 $this->_reindex($store->getId());
             }
         } catch (\Exception $e) {
-            throw new \Magento\Framework\Model\Exception($e->getMessage(), $e->getCode(), $e);
+            throw new \Magento\Framework\Exception\LocalizedException(__($e->getMessage()), $e);
         }
         return $this;
     }

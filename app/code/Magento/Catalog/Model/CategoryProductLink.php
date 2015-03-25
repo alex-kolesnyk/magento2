@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model;
@@ -11,12 +12,20 @@ namespace Magento\Catalog\Model;
 class CategoryProductLink extends \Magento\Framework\Api\AbstractExtensibleObject implements
     \Magento\Catalog\Api\Data\CategoryProductLinkInterface
 {
+    /**#@+
+     * Constant for confirmation status
+     */
+    const KEY_SKU = 'sku';
+    const KEY_POSITION = 'position';
+    const KEY_CATEGORY_ID = 'category_id';
+    /**#@-*/
+
     /**
      * {@inheritdoc}
      */
     public function getSku()
     {
-        return $this->_get('sku');
+        return $this->_get(self::KEY_SKU);
     }
 
     /**
@@ -24,7 +33,7 @@ class CategoryProductLink extends \Magento\Framework\Api\AbstractExtensibleObjec
      */
     public function getPosition()
     {
-        return $this->_get('position');
+        return $this->_get(self::KEY_POSITION);
     }
 
     /**
@@ -32,6 +41,57 @@ class CategoryProductLink extends \Magento\Framework\Api\AbstractExtensibleObjec
      */
     public function getCategoryId()
     {
-        return $this->_get('category_id');
+        return $this->_get(self::KEY_CATEGORY_ID);
+    }
+
+    /**
+     * @param string $sku
+     * @return $this
+     */
+    public function setSku($sku)
+    {
+        return $this->setData(self::KEY_SKU, $sku);
+    }
+
+    /**
+     * @param int $position
+     * @return $this
+     */
+    public function setPosition($position)
+    {
+        return $this->setData(self::KEY_POSITION, $position);
+    }
+
+    /**
+     * Set category id
+     *
+     * @param string $categoryId
+     * @return $this
+     */
+    public function setCategoryId($categoryId)
+    {
+        return $this->setData(self::KEY_CATEGORY_ID, $categoryId);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Magento\Catalog\Api\Data\CategoryProductLinkExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Magento\Catalog\Api\Data\CategoryProductLinkExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(
+        \Magento\Catalog\Api\Data\CategoryProductLinkExtensionInterface $extensionAttributes
+    ) {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 }

@@ -1,7 +1,10 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
 
 /**
  * Most viewed product report aggregate resource model
@@ -38,26 +41,36 @@ class Viewed extends \Magento\Sales\Model\Resource\Report\AbstractReport
     protected $_resourceHelper;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
      * @param \Magento\Reports\Model\FlagFactory $reportsFlagFactory
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
      * @param \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator
      * @param \Magento\Catalog\Model\Resource\Product $productResource
      * @param \Magento\Reports\Model\Resource\Helper $resourceHelper
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
         \Magento\Reports\Model\FlagFactory $reportsFlagFactory,
         \Magento\Framework\Stdlib\DateTime $dateTime,
         \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator,
         \Magento\Catalog\Model\Resource\Product $productResource,
-        \Magento\Reports\Model\Resource\Helper $resourceHelper
+        \Magento\Reports\Model\Resource\Helper $resourceHelper,
+        $resourcePrefix = null
     ) {
-        parent::__construct($resource, $logger, $localeDate, $reportsFlagFactory, $dateTime, $timezoneValidator);
+        parent::__construct(
+            $context,
+            $logger,
+            $localeDate,
+            $reportsFlagFactory,
+            $dateTime,
+            $timezoneValidator,
+            $resourcePrefix
+        );
         $this->_productResource = $productResource;
         $this->_resourceHelper = $resourceHelper;
     }
@@ -78,6 +91,7 @@ class Viewed extends \Magento\Sales\Model\Resource\Report\AbstractReport
      * @param null|mixed $from
      * @param null|mixed $to
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function aggregate($from = null, $to = null)
     {
@@ -87,8 +101,6 @@ class Viewed extends \Magento\Sales\Model\Resource\Report\AbstractReport
         // convert input dates to UTC to be comparable with DATETIME fields in DB
         $from = $this->_dateToUtc($from);
         $to = $this->_dateToUtc($to);
-
-        $this->_checkDates($from, $to);
 
         if ($from !== null || $to !== null) {
             $subSelect = $this->_getTableDateRangeSelect(

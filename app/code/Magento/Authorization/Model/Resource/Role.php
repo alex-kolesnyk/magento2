@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Authorization\Model\Resource;
 
@@ -31,17 +32,19 @@ class Role extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $dateTime;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\App\CacheInterface $cache
      * @param \Magento\Framework\Stdlib\DateTime $dateTime
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Framework\App\CacheInterface $cache,
-        \Magento\Framework\Stdlib\DateTime $dateTime
+        \Magento\Framework\Stdlib\DateTime $dateTime,
+        $resourcePrefix = null
     ) {
         $this->dateTime = $dateTime;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
         $this->_cache = $cache->getFrontend();
     }
 

@@ -2,7 +2,8 @@
 /**
  * @category    Magento
  * @package     Magento_Code
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Api\Code\Generator;
 
@@ -50,7 +51,7 @@ class SearchResults extends EntityAbstract
                 'tags' => [
                     [
                         'name' => 'return',
-                        'description' => $this->_getFullyQualifiedClassName($this->_getSourceClassName()) . '[]',
+                        'description' => $this->getSourceClassName() . '[]',
                     ],
                 ],
             ],

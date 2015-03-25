@@ -2,7 +2,8 @@
 /**
  * Catalog super product attribute resource model
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\ConfigurableProduct\Model\Resource\Product\Type\Configurable;
 
@@ -39,18 +40,20 @@ class Attribute extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_storeManager;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Catalog\Helper\Data $catalogData
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Catalog\Helper\Data $catalogData
+        \Magento\Catalog\Helper\Data $catalogData,
+        $resourcePrefix = null
     ) {
         $this->_storeManager = $storeManager;
         $this->_catalogData = $catalogData;
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Model\Resource;
 
@@ -34,9 +35,9 @@ class Coupon extends \Magento\Framework\Model\Resource\Db\AbstractDb
     {
         if (!$object->getExpirationDate()) {
             $object->setExpirationDate(null);
-        } elseif ($object->getExpirationDate() instanceof \Zend_Date) {
+        } elseif ($object->getExpirationDate() instanceof \DateTimeInterface) {
             $object->setExpirationDate(
-                $object->getExpirationDate()->toString(\Magento\Framework\Stdlib\DateTime::DATETIME_INTERNAL_FORMAT)
+                $object->getExpirationDate()->format('Y-m-d H:i:s')
             );
         }
 
@@ -124,10 +125,10 @@ class Coupon extends \Magento\Framework\Model\Resource\Db\AbstractDb
             $updateArray['usage_per_customer'] = $rule->getUsesPerCustomer();
         }
 
-        $ruleNewDate = new \Magento\Framework\Stdlib\DateTime\Date($rule->getToDate());
-        $ruleOldDate = new \Magento\Framework\Stdlib\DateTime\Date($rule->getOrigData('to_date'));
+        $ruleNewDate = new \DateTime($rule->getToDate());
+        $ruleOldDate = new \DateTime($rule->getOrigData('to_date'));
 
-        if ($ruleNewDate->compare($ruleOldDate)) {
+        if ($ruleNewDate != $ruleOldDate) {
             $updateArray['expiration_date'] = $rule->getToDate();
         }
 

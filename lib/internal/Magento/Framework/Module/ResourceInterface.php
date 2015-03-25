@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Module;
 
@@ -12,34 +13,34 @@ interface ResourceInterface
     /**
      * Get Module version from DB
      *
-     * @param string $resName
+     * @param string $moduleName
      * @return false|string
      */
-    public function getDbVersion($resName);
+    public function getDbVersion($moduleName);
 
     /**
      * Get resource data version
      *
-     * @param string $resName
+     * @param string $moduleName
      * @return string|false
      */
-    public function getDataVersion($resName);
+    public function getDataVersion($moduleName);
 
     /**
      * Set Module version
      *
-     * @param string $resName
+     * @param string $moduleName
      * @param string $version
      * @return int
      */
-    public function setDbVersion($resName, $version);
+    public function setDbVersion($moduleName, $version);
 
     /**
      * Set resource data version
      *
-     * @param string $resName
+     * @param string $moduleName
      * @param string $version
      * @return void
      */
-    public function setDataVersion($resName, $version);
+    public function setDataVersion($moduleName, $version);
 }

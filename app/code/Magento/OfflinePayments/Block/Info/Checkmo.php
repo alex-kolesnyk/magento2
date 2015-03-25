@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\OfflinePayments\Block\Info;
 
@@ -28,7 +29,7 @@ class Checkmo extends \Magento\Payment\Block\Info
      */
     public function getPayableTo()
     {
-        if (is_null($this->_payableTo)) {
+        if ($this->_payableTo === null) {
             $this->_convertAdditionalData();
         }
         return $this->_payableTo;
@@ -41,7 +42,7 @@ class Checkmo extends \Magento\Payment\Block\Info
      */
     public function getMailingAddress()
     {
-        if (is_null($this->_mailingAddress)) {
+        if ($this->_mailingAddress === null) {
             $this->_convertAdditionalData();
         }
         return $this->_mailingAddress;

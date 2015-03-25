@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Sales\Block\Adminhtml\Order\Invoice;
 
 /**
@@ -53,6 +57,8 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
      * Constructor
      *
      * @return void
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _construct()
     {
@@ -178,7 +184,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
     /**
      * Get header text
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getHeaderText()
     {
@@ -192,7 +198,7 @@ class View extends \Magento\Backend\Block\Widget\Form\Container
             $this->getInvoice()->getIncrementId(),
             $this->getInvoice()->getStateName(),
             $emailSent,
-            $this->formatDate($this->getInvoice()->getCreatedAtDate(), 'medium', true)
+            $this->formatDate($this->getInvoice()->getCreatedAtDate(), \IntlDateFormatter::MEDIUM, true)
         );
     }
 

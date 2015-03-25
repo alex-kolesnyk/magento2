@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\ConfigurableProduct\Model;
@@ -54,7 +55,7 @@ class ConfigurableProductManagement implements \Magento\ConfigurableProduct\Api\
             $configurable = $this->objectToArray($option);
             /** @var \Magento\Catalog\Model\Resource\Eav\Attribute $attribute */
             $attribute = $this->attributeRepository->get($option->getAttributeId());
-            $attributeOptions = !is_null($attribute->getOptions()) ? $attribute->getOptions() : [];
+            $attributeOptions = $attribute->getOptions() !== null ? $attribute->getOptions() : [];
 
             foreach ($attributeOptions as $attributeOption) {
                 $configurable['options'][] = $this->objectToArray($attributeOption);

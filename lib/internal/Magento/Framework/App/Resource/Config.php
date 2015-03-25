@@ -2,7 +2,8 @@
 /**
  * Resource configuration. Uses application configuration to retrieve resource connection information.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Resource;
 
@@ -23,19 +24,19 @@ class Config extends \Magento\Framework\Config\Data\Scoped implements ConfigInte
      * @param Config\Reader $reader
      * @param \Magento\Framework\Config\ScopeInterface $configScope
      * @param \Magento\Framework\Config\CacheInterface $cache
+     * @param \Magento\Framework\App\DeploymentConfig $deploymentConfig
      * @param string $cacheId
-     * @param array $initialResources
      * @throws \InvalidArgumentException
      */
     public function __construct(
         Config\Reader $reader,
         \Magento\Framework\Config\ScopeInterface $configScope,
         \Magento\Framework\Config\CacheInterface $cache,
-        $cacheId = 'resourcesCache',
-        $initialResources = []
+        \Magento\Framework\App\DeploymentConfig $deploymentConfig,
+        $cacheId = 'resourcesCache'
     ) {
         parent::__construct($reader, $configScope, $cache, $cacheId);
-        foreach ($initialResources as $resourceName => $resourceData) {
+        foreach ($deploymentConfig->getSegment('resource') as $resourceName => $resourceData) {
             if (!isset($resourceData['connection'])) {
                 throw new \InvalidArgumentException('Invalid initial resource configuration');
             }
@@ -63,6 +64,7 @@ class Config extends \Magento\Framework\Config\Data\Scoped implements ConfigInte
                     break;
                 } elseif (isset($this->_connectionNames[$pointerResourceName])) {
                     $this->_connectionNames[$resourceName] = $this->_connectionNames[$pointerResourceName];
+                    $connectionName = $this->_connectionNames[$resourceName];
                     break;
                 } elseif (isset($resourcesConfig[$pointerResourceName]['extends'])) {
                     $pointerResourceName = $resourcesConfig[$pointerResourceName]['extends'];

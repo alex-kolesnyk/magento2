@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Controller;
 
@@ -33,7 +34,7 @@ class SubscriberTest extends AbstractController
     public function testNewActionUnusedEmail()
     {
         $this->getRequest()->setMethod('POST');
-        $this->getRequest()->setPost([
+        $this->getRequest()->setPostValue([
             'email' => 'not_used@example.com',
         ]);
 
@@ -49,7 +50,7 @@ class SubscriberTest extends AbstractController
     public function testNewActionUsedEmail()
     {
         $this->getRequest()->setMethod('POST');
-        $this->getRequest()->setPost([
+        $this->getRequest()->setPostValue([
             'email' => 'customer@example.com',
         ]);
 
@@ -67,7 +68,7 @@ class SubscriberTest extends AbstractController
     public function testNewActionOwnerEmail()
     {
         $this->getRequest()->setMethod('POST');
-        $this->getRequest()->setPost([
+        $this->getRequest()->setPostValue([
             'email' => 'customer@example.com',
         ]);
         $this->login(1);

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Reports\Model\Resource;
 
@@ -22,16 +23,18 @@ class Event extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_storeManager;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
+        \Magento\Framework\Model\Resource\Db\Context $context,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        $resourcePrefix = null
     ) {
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
         $this->_scopeConfig = $scopeConfig;
         $this->_storeManager = $storeManager;
     }
@@ -54,6 +57,7 @@ class Event extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param int $customerId
      * @param array $types
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function updateCustomerType(\Magento\Reports\Model\Event $model, $visitorId, $customerId, $types = [])
     {
@@ -168,6 +172,7 @@ class Event extends \Magento\Framework\Model\Resource\Db\AbstractDb
      *
      * @param \Magento\Reports\Model\Event $object
      * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function clean(\Magento\Reports\Model\Event $object)
     {

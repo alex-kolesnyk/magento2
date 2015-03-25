@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Log\Model;
 
@@ -62,6 +63,7 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
      * @param \Magento\Framework\Model\Resource\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\Db $resourceCollection
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\Model\Context $context,
@@ -151,7 +153,7 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
     public function getFirstVisitAt()
     {
         if (!$this->hasData('first_visit_at')) {
-            $this->setData('first_visit_at', $this->dateTime->now());
+            $this->setData('first_visit_at', (new \DateTime())->getTimestamp());
         }
         return $this->getData('first_visit_at');
     }
@@ -164,7 +166,7 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
     public function getLastVisitAt()
     {
         if (!$this->hasData('last_visit_at')) {
-            $this->setData('last_visit_at', $this->dateTime->now());
+            $this->setData('last_visit_at', (new \DateTime())->getTimestamp());
         }
         return $this->getData('last_visit_at');
     }
@@ -182,7 +184,7 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
         $visitor = $observer->getEvent()->getVisitor();
         $this->setData($visitor->getData());
         $this->initServerData();
-        $this->setFirstVisitAt($this->dateTime->now());
+        $this->setFirstVisitAt((new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT));
         $this->setIsNewVisitor(true);
         $this->save();
         $visitor->setData($this->getData());
@@ -204,12 +206,14 @@ class Visitor extends \Magento\Framework\Model\AbstractModel
             $this->setData($visitor->getData());
             if ($this->getId() && $this->getVisitorId()) {
                 $this->initServerData();
-                $this->setLastVisitAt($this->dateTime->now());
+                $this->setLastVisitAt(
+                    (new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT)
+                );
                 $this->save();
                 $visitor->setData($this->getData());
             }
         } catch (\Exception $e) {
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
         }
         return $this;
     }

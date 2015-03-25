@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Block\Html;
 
@@ -68,7 +69,7 @@ class Breadcrumbs extends \Magento\Framework\View\Element\Template
      */
     public function getCacheKeyInfo()
     {
-        if (is_null($this->_cacheKeyInfo)) {
+        if ($this->_cacheKeyInfo === null) {
             $this->_cacheKeyInfo = parent::getCacheKeyInfo() + [
                 'crumbs' => base64_encode(serialize($this->_crumbs)),
                 'name' => $this->getNameInLayout(),

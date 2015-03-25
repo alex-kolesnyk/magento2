@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Api;
@@ -30,12 +31,18 @@ class ExtensibleDataObjectConverter
      * Convert AbstractExtensibleObject into a nested array.
      *
      * @param ExtensibleDataInterface $dataObject
-     * @param string[] $skipCustomAttributes
+     * @param string[] $skipAttributes
+     * @param string $dataObjectType
      * @return array
      */
-    public function toNestedArray(ExtensibleDataInterface $dataObject, $skipCustomAttributes = [])
-    {
-        $dataObjectType = get_class($dataObject);
+    public function toNestedArray(
+        ExtensibleDataInterface $dataObject,
+        $skipAttributes = [],
+        $dataObjectType = null
+    ) {
+        if ($dataObjectType == null) {
+            $dataObjectType = get_class($dataObject);
+        }
         $dataObjectArray = $this->dataObjectProcessor->buildOutputDataArray($dataObject, $dataObjectType);
         //process custom attributes if present
         if (!empty($dataObjectArray[AbstractExtensibleObject::CUSTOM_ATTRIBUTES_KEY])) {
@@ -43,9 +50,19 @@ class ExtensibleDataObjectConverter
             $customAttributes = $dataObjectArray[AbstractExtensibleObject::CUSTOM_ATTRIBUTES_KEY];
             unset ($dataObjectArray[AbstractExtensibleObject::CUSTOM_ATTRIBUTES_KEY]);
             foreach ($customAttributes as $attributeValue) {
-                if (!in_array($attributeValue[AttributeValue::ATTRIBUTE_CODE], $skipCustomAttributes)) {
+                if (!in_array($attributeValue[AttributeValue::ATTRIBUTE_CODE], $skipAttributes)) {
                     $dataObjectArray[$attributeValue[AttributeValue::ATTRIBUTE_CODE]]
                         = $attributeValue[AttributeValue::VALUE];
+                }
+            }
+        }
+        if (!empty($dataObjectArray[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY])) {
+            /** @var array $extensionAttributes */
+            $extensionAttributes = $dataObjectArray[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY];
+            unset ($dataObjectArray[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]);
+            foreach ($extensionAttributes as $attributeKey => $attributeValue) {
+                if (!in_array($attributeKey, $skipAttributes)) {
+                    $dataObjectArray[$attributeKey] = $attributeValue;
                 }
             }
         }
@@ -57,11 +74,15 @@ class ExtensibleDataObjectConverter
      *
      * @param ExtensibleDataInterface $dataObject
      * @param string[] $skipCustomAttributes
+     * @param string $dataObjectType
      * @return array
      */
-    public function toFlatArray(ExtensibleDataInterface $dataObject, $skipCustomAttributes = [])
-    {
-        $dataObjectArray = $this->toNestedArray($dataObject, $skipCustomAttributes);
+    public function toFlatArray(
+        ExtensibleDataInterface $dataObject,
+        $skipCustomAttributes = [],
+        $dataObjectType = null
+    ) {
+        $dataObjectArray = $this->toNestedArray($dataObject, $skipCustomAttributes, $dataObjectType);
         return ConvertArray::toFlatArray($dataObjectArray);
     }
 

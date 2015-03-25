@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Block\Onepage;
 
@@ -9,10 +10,11 @@ use Magento\Customer\Model\Address\Config as AddressConfig;
 use Magento\Directory\Model\Resource\Country\Collection;
 use Magento\Directory\Model\Resource\Region\Collection as RegionCollection;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Model\Quote;
+use Magento\Quote\Model\Quote;
 
 /**
  * One page common functionality block
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
 {
@@ -62,9 +64,9 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
     protected $_countryCollectionFactory;
 
     /**
-     * @var \Magento\Core\Helper\Data
+     * @var \Magento\Directory\Helper\Data
      */
-    protected $_coreData;
+    protected $directoryHelper;
 
     /**
      * @var CustomerRepositoryInterface
@@ -88,7 +90,7 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
 
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
-     * @param \Magento\Core\Helper\Data $coreData
+     * @param \Magento\Directory\Helper\Data $directoryHelper
      * @param \Magento\Framework\App\Cache\Type\Config $configCacheType
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Checkout\Model\Session $resourceSession
@@ -99,10 +101,11 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
      * @param \Magento\Framework\App\Http\Context $httpContext
      * @param \Magento\Customer\Model\Address\Mapper $addressMapper
      * @param array $data
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Core\Helper\Data $coreData,
+        \Magento\Directory\Helper\Data $directoryHelper,
         \Magento\Framework\App\Cache\Type\Config $configCacheType,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Checkout\Model\Session $resourceSession,
@@ -114,7 +117,7 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
         \Magento\Customer\Model\Address\Mapper $addressMapper,
         array $data = []
     ) {
-        $this->_coreData = $coreData;
+        $this->directoryHelper = $directoryHelper;
         $this->_configCacheType = $configCacheType;
         $this->_customerSession = $customerSession;
         $this->_checkoutSession = $resourceSession;
@@ -278,8 +281,8 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
     public function getCountryHtmlSelect($type)
     {
         $countryId = $this->getAddress()->getCountryId();
-        if (is_null($countryId)) {
-            $countryId = $this->_coreData->getDefaultCountry();
+        if ($countryId === null) {
+            $countryId = $this->directoryHelper->getDefaultCountry();
         }
         $select = $this->getLayout()->createBlock(
             'Magento\Framework\View\Element\Html\Select'
@@ -365,10 +368,10 @@ abstract class AbstractOnepage extends \Magento\Framework\View\Element\Template
     /**
      * Return the html text for shipping price
      *
-     * @param \Magento\Sales\Model\Quote\Address\Rate $rate
+     * @param \Magento\Quote\Model\Quote\Address\Rate $rate
      * @return string
      */
-    public function getShippingPriceHtml(\Magento\Sales\Model\Quote\Address\Rate $rate)
+    public function getShippingPriceHtml(\Magento\Quote\Model\Quote\Address\Rate $rate)
     {
         /** @var \Magento\Checkout\Block\Shipping\Price $block */
         $block = $this->getLayout()->getBlock('checkout.shipping.price');

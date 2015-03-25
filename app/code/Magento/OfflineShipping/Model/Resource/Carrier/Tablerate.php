@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -13,6 +14,10 @@ namespace Magento\OfflineShipping\Model\Resource\Carrier;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Filesystem\DirectoryList;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyFields)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
 {
     /**
@@ -85,7 +90,7 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_coreConfig;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -117,26 +122,28 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
     protected $_filesystem;
 
     /**
-     * @param \Magento\Framework\App\Resource $resource
-     * @param \Magento\Framework\Logger $logger
+     * @param \Magento\Framework\Model\Resource\Db\Context $context
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $coreConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\OfflineShipping\Model\Carrier\Tablerate $carrierTablerate
      * @param \Magento\Directory\Model\Resource\Country\CollectionFactory $countryCollectionFactory
      * @param \Magento\Directory\Model\Resource\Region\CollectionFactory $regionCollectionFactory
      * @param \Magento\Framework\Filesystem $filesystem
+     * @param string|null $resourcePrefix
      */
     public function __construct(
-        \Magento\Framework\App\Resource $resource,
-        \Magento\Framework\Logger $logger,
+        \Magento\Framework\Model\Resource\Db\Context $context,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\App\Config\ScopeConfigInterface $coreConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\OfflineShipping\Model\Carrier\Tablerate $carrierTablerate,
         \Magento\Directory\Model\Resource\Country\CollectionFactory $countryCollectionFactory,
         \Magento\Directory\Model\Resource\Region\CollectionFactory $regionCollectionFactory,
-        \Magento\Framework\Filesystem $filesystem
+        \Magento\Framework\Filesystem $filesystem,
+        $resourcePrefix = null
     ) {
-        parent::__construct($resource);
+        parent::__construct($context, $resourcePrefix);
         $this->_coreConfig = $coreConfig;
         $this->_logger = $logger;
         $this->_storeManager = $storeManager;
@@ -159,10 +166,10 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
     /**
      * Return table rate array or false by rate request
      *
-     * @param \Magento\Sales\Model\Quote\Address\RateRequest $request
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
      * @return array|bool
      */
-    public function getRate(\Magento\Sales\Model\Quote\Address\RateRequest $request)
+    public function getRate(\Magento\Quote\Model\Quote\Address\RateRequest $request)
     {
         $adapter = $this->_getReadAdapter();
         $bind = [
@@ -236,10 +243,12 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * Upload table rate file and import data from it
      *
      * @param \Magento\Framework\Object $object
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return \Magento\OfflineShipping\Model\Resource\Carrier\Tablerate
      * @todo: this method should be refactored as soon as updated design will be provided
      * @see https://wiki.corp.x.com/display/MCOMS/Magento+Filesystem+Decisions
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function uploadAndImport(\Magento\Framework\Object $object)
     {
@@ -263,7 +272,7 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
         $headers = $stream->readCsv();
         if ($headers === false || count($headers) < 5) {
             $stream->close();
-            throw new \Magento\Framework\Model\Exception(__('Please correct Table Rates File Format.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Please correct Table Rates File Format.'));
         }
 
         if ($object->getData('groups/tablerate/fields/condition_name/inherit') == '1') {
@@ -309,15 +318,17 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
             }
             $this->_saveImportData($importData);
             $stream->close();
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $adapter->rollback();
             $stream->close();
-            throw new \Magento\Framework\Model\Exception($e->getMessage());
+            throw new \Magento\Framework\Exception\LocalizedException(__($e->getMessage()));
         } catch (\Exception $e) {
             $adapter->rollback();
             $stream->close();
-            $this->_logger->logException($e);
-            throw new \Magento\Framework\Model\Exception(__('Something went wrong while importing table rates.'));
+            $this->_logger->critical($e);
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Something went wrong while importing table rates.')
+            );
         }
 
         $adapter->commit();
@@ -327,7 +338,7 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
                 'We couldn\'t import this file because of these errors: %1',
                 implode(" \n", $this->_importErrors)
             );
-            throw new \Magento\Framework\Model\Exception($error);
+            throw new \Magento\Framework\Exception\LocalizedException($error);
         }
 
         return $this;
@@ -340,7 +351,7 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
      */
     protected function _loadDirectoryCountries()
     {
-        if (!is_null($this->_importIso2Countries) && !is_null($this->_importIso3Countries)) {
+        if ($this->_importIso2Countries !== null && $this->_importIso3Countries !== null) {
             return $this;
         }
 
@@ -364,7 +375,7 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
      */
     protected function _loadDirectoryRegions()
     {
-        if (!is_null($this->_importRegions)) {
+        if ($this->_importRegions !== null) {
             return $this;
         }
 
@@ -402,6 +413,8 @@ class Tablerate extends \Magento\Framework\Model\Resource\Db\AbstractDb
      * @param array $row
      * @param int $rowNumber
      * @return array|false
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function _getImportRow($row, $rowNumber = 0)
     {

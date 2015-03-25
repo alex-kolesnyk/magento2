@@ -1,13 +1,14 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Customer\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Customer\Test\Page\Adminhtml\CustomerIndex;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertCustomerInGrid
@@ -22,17 +23,17 @@ class AssertCustomerInGrid extends AbstractConstraint
     /**
      * Assert customer availability in Customer Grid
      *
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param CustomerIndex $pageCustomerIndex
-     * @param CustomerInjectable $initialCustomer [optional]
+     * @param Customer $initialCustomer [optional]
      * @return void
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function processAssert(
-        CustomerInjectable $customer,
+        Customer $customer,
         CustomerIndex $pageCustomerIndex,
-        CustomerInjectable $initialCustomer = null
+        Customer $initialCustomer = null
     ) {
         if ($initialCustomer) {
             $customer = $customer->hasData()

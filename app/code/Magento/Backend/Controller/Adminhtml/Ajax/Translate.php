@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Controller\Adminhtml\Ajax;
 
@@ -15,19 +16,19 @@ class Translate extends \Magento\Backend\App\Action
     protected $inlineParser;
 
     /**
-     * @var \Magento\Framework\Controller\Result\JSONFactory
+     * @var \Magento\Framework\Controller\Result\JsonFactory
      */
     protected $resultJsonFactory;
 
     /**
      * @param Action\Context $context
      * @param \Magento\Framework\Translate\Inline\ParserInterface $inlineParser
-     * @param \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
      */
     public function __construct(
         Action\Context $context,
         \Magento\Framework\Translate\Inline\ParserInterface $inlineParser,
-        \Magento\Framework\Controller\Result\JSONFactory $resultJsonFactory
+        \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
@@ -37,13 +38,13 @@ class Translate extends \Magento\Backend\App\Action
     /**
      * Ajax action for inline translation
      *
-     * @return \Magento\Framework\Controller\Result\JSON
+     * @return \Magento\Framework\Controller\Result\Json
      */
     public function execute()
     {
         $translate = (array)$this->getRequest()->getPost('translate');
 
-        /** @var \Magento\Framework\Controller\Result\JSON $resultJson */
+        /** @var \Magento\Framework\Controller\Result\Json $resultJson */
         $resultJson = $this->resultJsonFactory->create();
         try {
             $this->inlineParser->processAjaxPost($translate);

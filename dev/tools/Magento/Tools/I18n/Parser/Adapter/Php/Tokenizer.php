@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\I18n\Parser\Adapter\Php;
 
@@ -47,6 +48,43 @@ class Tokenizer
     {
         $this->_tokens = token_get_all(file_get_contents($filePath));
         $this->_tokensCount = count($this->_tokens);
+    }
+
+    /**
+     * Checks if the next set of tokens is a valid class identifier and it matches passed class name
+     *
+     * @param string $className
+     * @return bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    public function isMatchingClass($className)
+    {
+        /*
+         * 1 - beginning, class identifier can begin either with identifier or with namespace separator
+         * 2 - after namespace separator, identifier is expected
+         * 3 - after identifier, namespace separator or open brace is expected
+         * 4 - ending, tells that class identifier is valid
+         */
+        $state = 1;
+        $classString = '';
+        while ($token = $this->getNextRealToken()) {
+            if ($token->isNamespaceSeparator() && $state != 2) {
+                $classString .= $token->getValue();
+                $state = 2;
+            } elseif ($token->isIdentifier() && $state != 3) {
+                $classString .= $token->getValue();
+                $state = 3;
+            } elseif ($token->isOpenBrace() && $state == 3) {
+                $state = 4;
+                break;
+            } else {
+                return false;
+            }
+        }
+        if ($state == 4 && $className == substr($classString, -strlen($className))) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -138,13 +176,26 @@ class Tokenizer
     }
 
     /**
-     * Check is it last token
+     * Get next token skipping all whitespaces
+     *
+     * @return \Magento\Tools\I18n\Parser\Adapter\Php\Tokenizer\Token|false
+     */
+    public function getNextRealToken()
+    {
+        do {
+            $token = $this->getNextToken();
+        } while ($token && $token->isWhitespace());
+        return $token;
+    }
+
+    /**
+     * Check if it is end of loop
      *
      * @return bool
      */
-    public function isLastToken()
+    public function isEndOfLoop()
     {
-        return 0 == $this->_tokensCount || key($this->_tokens) + 1 == $this->_tokensCount;
+        return key($this->_tokens) === null;
     }
 
     /**

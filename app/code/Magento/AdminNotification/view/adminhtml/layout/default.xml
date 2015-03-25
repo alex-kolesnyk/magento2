@@ -1,13 +1,11 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
-    <head>
-        <css src="Magento_Core::prototype/magento.css"/>
-    </head>
     <body>
         <referenceContainer name="notifications">
             <block class="Magento\AdminNotification\Block\System\Messages" name="system_messages" as="system_messages" before="-" template="Magento_AdminNotification::system/messages.phtml"/>
@@ -15,7 +13,7 @@
             <block class="Magento\AdminNotification\Block\Window" name="notification_window" as="notification_window" acl="Magento_AdminNotification::show_toolbar" template="notification/window.phtml"/>
         </referenceContainer>
         <referenceContainer name="header">
-            <block class="Magento\AdminNotification\Block\ToolbarEntry" before="user" template="toolbar_entry.phtml"/>
+            <block class="Magento\AdminNotification\Block\ToolbarEntry" name="notification.messages" before="user" template="toolbar_entry.phtml"/>
         </referenceContainer>
     </body>
 </page>

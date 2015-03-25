@@ -1,11 +1,12 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor\Tools;
 
-use Magento\Framework\Model\Exception as CoreException;
+use Magento\Framework\Exception\LocalizedException as CoreException;
 
 class SaveImageSizing extends \Magento\DesignEditor\Controller\Adminhtml\System\Design\Editor\Tools
 {
@@ -35,13 +36,13 @@ class SaveImageSizing extends \Magento\DesignEditor\Controller\Adminhtml\System\
             $result = ['success' => true, 'message' => __('We saved the image sizes.')];
         } catch (CoreException $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => __('We can\'t save image sizes.')];
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
         $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
+            $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($result)
         );
     }
 }

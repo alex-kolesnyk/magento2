@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cron\Model\Backend\Config\Structure;
 
@@ -22,13 +23,14 @@ class Converter
     /**
      * Modify system configuration for cron
      *
-     * @param \Magento\Backend\Model\Config\Structure\Converter $subject
+     * @param \Magento\Config\Model\Config\Structure\Converter $subject
      * @param array $result
      *
      * @return array
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
-    public function afterConvert(\Magento\Backend\Model\Config\Structure\Converter $subject, array $result)
+    public function afterConvert(\Magento\Config\Model\Config\Structure\Converter $subject, array $result)
     {
         $groupIterator = 0;
         if (!isset($result['config']['system']['sections']['system']['children']['cron']['children']['template'])) {

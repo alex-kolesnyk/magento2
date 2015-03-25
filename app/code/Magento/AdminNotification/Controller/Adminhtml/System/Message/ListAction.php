@@ -1,30 +1,63 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\AdminNotification\Controller\Adminhtml\System\Message;
 
 class ListAction extends \Magento\Backend\App\AbstractAction
 {
     /**
+     * @var \Magento\Framework\Json\Helper\Data
+     */
+    protected $jsonHelper;
+
+    /**
+     * @var \Magento\AdminNotification\Model\Resource\System\Message\Collection
+     */
+    protected $messageCollection;
+
+    /**
+     * Initialize ListAction
+     *
+     * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Json\Helper\Data $jsonHelper
+     * @param \Magento\AdminNotification\Model\Resource\System\Message\Collection $messageCollection
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\Json\Helper\Data $jsonHelper,
+        \Magento\AdminNotification\Model\Resource\System\Message\Collection $messageCollection
+    ) {
+        $this->jsonHelper = $jsonHelper;
+        $this->messageCollection = $messageCollection;
+        parent::__construct($context);
+    }
+
+    /**
      * @return void
      */
     public function execute()
     {
         $severity = $this->getRequest()->getParam('severity');
-        $messageCollection = $this->_objectManager->get(
-            'Magento\AdminNotification\Model\Resource\System\Message\Collection'
-        );
         if ($severity) {
-            $messageCollection->setSeverity($severity);
+            $this->messageCollection->setSeverity($severity);
         }
         $result = [];
-        foreach ($messageCollection->getItems() as $item) {
-            $result[] = ['severity' => $item->getSeverity(), 'text' => $item->getText()];
+        foreach ($this->messageCollection->getItems() as $item) {
+            $result[] = [
+                'severity' => $item->getSeverity(),
+                'text' => $item->getText(),
+            ];
         }
-        $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
-        );
+        if (empty($result)) {
+            $result[] = [
+                'severity' => (string)\Magento\Framework\Notification\MessageInterface::SEVERITY_NOTICE,
+                'text' => 'You have viewed and resolved all recent system notices. '
+                    . 'Please refresh the web page to clear the notice alert.',
+            ];
+        }
+        $this->getResponse()->representJson($this->jsonHelper->jsonEncode($result));
     }
 }

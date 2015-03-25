@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -16,7 +17,7 @@ class Weight extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      * Validate
      *
      * @param \Magento\Catalog\Model\Product $object
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @return bool
      */
     public function validate($object)
@@ -24,7 +25,9 @@ class Weight extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
         $attrCode = $this->getAttribute()->getAttributeCode();
         $value = $object->getData($attrCode);
         if (!empty($value) && !\Zend_Validate::is($value, 'Between', ['min' => 0, 'max' => 99999999.9999])) {
-            throw new \Magento\Framework\Model\Exception(__('Please enter a number 0 or greater in this field.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('Please enter a number 0 or greater in this field.')
+            );
         }
         return true;
     }

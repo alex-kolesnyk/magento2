@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -53,7 +54,7 @@ class Copy
             return null;
         }
         $fields = $this->_fieldsetConfig->getFieldset($fieldset, $root);
-        if (is_null($fields)) {
+        if ($fields === null) {
             return $target;
         }
         $targetIsArray = is_array($target);
@@ -97,7 +98,7 @@ class Copy
             return null;
         }
         $fields = $this->_fieldsetConfig->getFieldset($fieldset, $root);
-        if (is_null($fields)) {
+        if ($fields === null) {
             return null;
         }
 

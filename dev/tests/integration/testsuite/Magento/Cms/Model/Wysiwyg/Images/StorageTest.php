@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  *
  */
 namespace Magento\Cms\Model\Wysiwyg\Images;
@@ -76,12 +77,14 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         $imageFactory = $objectManager->get('Magento\Framework\Image\AdapterFactory');
         $assetRepo = $objectManager->get('Magento\Framework\View\Asset\Repository');
         $imageHelper = $objectManager->get('Magento\Cms\Helper\Wysiwyg\Images');
-        $coreFileStorageDb = $objectManager->get('Magento\Core\Helper\File\Storage\Database');
+        $coreFileStorageDb = $objectManager->get('Magento\MediaStorage\Helper\File\Storage\Database');
         $storageCollectionFactory = $objectManager->get('Magento\Cms\Model\Wysiwyg\Images\Storage\CollectionFactory');
-        $storageFileFactory = $objectManager->get('Magento\Core\Model\File\Storage\FileFactory');
-        $storageDatabaseFactory = $objectManager->get('Magento\Core\Model\File\Storage\DatabaseFactory');
-        $directoryDatabaseFactory = $objectManager->get('Magento\Core\Model\File\Storage\Directory\DatabaseFactory');
-        $uploaderFactory = $objectManager->get('Magento\Core\Model\File\UploaderFactory');
+        $storageFileFactory = $objectManager->get('Magento\MediaStorage\Model\File\Storage\FileFactory');
+        $storageDatabaseFactory = $objectManager->get('Magento\MediaStorage\Model\File\Storage\DatabaseFactory');
+        $directoryDatabaseFactory = $objectManager->get(
+            'Magento\MediaStorage\Model\File\Storage\Directory\DatabaseFactory'
+        );
+        $uploaderFactory = $objectManager->get('Magento\MediaStorage\Model\File\UploaderFactory');
 
         $model = new \Magento\Cms\Model\Wysiwyg\Images\Storage(
             $session,

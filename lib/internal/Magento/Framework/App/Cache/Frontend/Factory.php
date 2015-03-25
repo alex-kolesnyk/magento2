@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -302,10 +303,10 @@ class Factory
             return $this->_resource->getConnection('core_write');
         };
         $options['data_table_callback'] = function () {
-            return $this->_resource->getTableName('core_cache');
+            return $this->_resource->getTableName('cache');
         };
         $options['tags_table_callback'] = function () {
-            return $this->_resource->getTableName('core_cache_tag');
+            return $this->_resource->getTableName('cache_tag');
         };
         return $options;
     }

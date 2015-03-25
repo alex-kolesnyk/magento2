@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tools\I18n\Parser\Adapter;
 
@@ -33,6 +34,7 @@ class Php extends AbstractAdapter
      */
     protected function _parse()
     {
+        $this->_phraseCollector->setIncludeObjects();
         $this->_phraseCollector->parse($this->_file);
 
         foreach ($this->_phraseCollector->getPhrases() as $phrase) {

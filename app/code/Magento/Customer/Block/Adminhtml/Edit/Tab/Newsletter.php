@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
 
@@ -61,7 +62,7 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
     /**
      * Return Tab label
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
     {
@@ -71,7 +72,7 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
     /**
      * Return Tab title
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
     {
@@ -191,7 +192,7 @@ class Newsletter extends \Magento\Backend\Block\Widget\Form\Generic implements T
         if ($subscriber->getChangeStatusAt()) {
             return $this->formatDate(
                 $subscriber->getChangeStatusAt(),
-                \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_MEDIUM,
+                \IntlDateFormatter::MEDIUM,
                 true
             );
         }

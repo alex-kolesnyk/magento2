@@ -1,20 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\TestCase\Product;
 
-use Magento\Catalog\Test\Fixture\CatalogCategory;
+use Magento\Catalog\Test\Fixture\Category;
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductIndex;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductNew;
-use Mtf\TestCase\Injectable;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
- * Test Creation for CreateSimpleProductEntity
- *
- * Test Flow:
+ * Steps:
  * 1. Login to the backend.
  * 2. Navigate to Products > Catalog.
  * 3. Start to create simple product.
@@ -27,34 +26,26 @@ use Mtf\TestCase\Injectable;
  */
 class CreateSimpleProductEntityTest extends Injectable
 {
-    /**
-     * Category fixture
-     *
-     * @var CatalogCategory
-     */
-    protected $category;
+    /* tags */
+    const TEST_TYPE = 'acceptance_test';
+    const MVP = 'yes';
+    const DOMAIN = 'MX';
+    /* end tags */
 
     /**
-     * Product page with a grid
+     * Configuration setting.
      *
-     * @var CatalogProductIndex
+     * @var string
      */
-    protected $productGrid;
+    protected $configData;
 
     /**
-     * Page to create a product
+     * Prepare data.
      *
-     * @var CatalogProductNew
-     */
-    protected $newProductPage;
-
-    /**
-     * Prepare data
-     *
-     * @param CatalogCategory $category
+     * @param Category $category
      * @return array
      */
-    public function __prepare(CatalogCategory $category)
+    public function __prepare(Category $category)
     {
         $category->persist();
 
@@ -64,36 +55,49 @@ class CreateSimpleProductEntityTest extends Injectable
     }
 
     /**
-     * Injection data
+     * Run create product simple entity test.
      *
-     * @param CatalogCategory $category
+     * @param CatalogProductSimple $product
+     * @param Category $category
      * @param CatalogProductIndex $productGrid
      * @param CatalogProductNew $newProductPage
-     * @return void
+     * @param string $configData
+     * @return array
      */
-    public function __inject(
-        CatalogCategory $category,
+    public function testCreate(
+        CatalogProductSimple $product,
+        Category $category,
         CatalogProductIndex $productGrid,
-        CatalogProductNew $newProductPage
+        CatalogProductNew $newProductPage,
+        $configData = null
     ) {
-        $this->category = $category;
-        $this->productGrid = $productGrid;
-        $this->newProductPage = $newProductPage;
+        $this->configData = $configData;
+
+        // Preconditions
+        $this->objectManager->create(
+            'Magento\Core\Test\TestStep\SetupConfigurationStep',
+            ['configData' => $this->configData]
+        )->run();
+
+        // Steps
+        $productGrid->open();
+        $productGrid->getGridPageActionBlock()->addProduct('simple');
+        $newProductPage->getProductForm()->fill($product, null, $category);
+        $newProductPage->getFormPageActions()->save();
+
+        return ['product' => $product];
     }
 
     /**
-     * Run create product simple entity test
+     * Clean data after running test.
      *
-     * @param CatalogProductSimple $product
-     * @param CatalogCategory $category
      * @return void
      */
-    public function testCreate(CatalogProductSimple $product, CatalogCategory $category)
+    public function tearDown()
     {
-        // Steps
-        $this->productGrid->open();
-        $this->productGrid->getGridPageActionBlock()->addProduct('simple');
-        $this->newProductPage->getProductForm()->fill($product, null, $category);
-        $this->newProductPage->getFormPageActions()->save();
+        $this->objectManager->create(
+            'Magento\Core\Test\TestStep\SetupConfigurationStep',
+            ['configData' => $this->configData, 'rollback' => true]
+        )->run();
     }
 }

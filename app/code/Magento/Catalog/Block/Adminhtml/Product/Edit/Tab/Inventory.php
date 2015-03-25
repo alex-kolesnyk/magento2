@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Adminhtml\Product\Edit\Tab;
+
+use Magento\Framework\Api\SimpleDataObjectConverter;
 
 /**
  * Product inventory data
@@ -132,7 +135,7 @@ class Inventory extends \Magento\Backend\Block\Widget
     {
         $stockItem = $this->getStockItem();
         if ($stockItem->getItemId()) {
-            $method = 'get' . \Magento\Framework\Api\SimpleDataObjectConverter::snakeCaseToUpperCamelCase($field);
+            $method = 'get' . SimpleDataObjectConverter::snakeCaseToUpperCamelCase($field);
             if (method_exists($stockItem, $method)) {
                 return $stockItem->{$method}();
             }
@@ -148,7 +151,7 @@ class Inventory extends \Magento\Backend\Block\Widget
     {
         $stockItem = $this->getStockItem();
         if ($stockItem->getItemId()) {
-            $method = 'getUseConfig' . \Magento\Framework\Api\SimpleDataObjectConverter::snakeCaseToUpperCamelCase(
+            $method = 'getUseConfig' . SimpleDataObjectConverter::snakeCaseToUpperCamelCase(
                 $field
             );
             if (method_exists($stockItem, $method)) {

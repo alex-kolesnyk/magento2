@@ -1,23 +1,19 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Sales\Test\Constraint;
 
-use Magento\Sales\Test\Page\Adminhtml\OrderView;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Sales\Test\Page\Adminhtml\SalesOrderView;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
- * Class AssertInvoiceWithShipmentSuccessMessage
  * Assert success created the invoice and shipment message presents
  */
 class AssertInvoiceWithShipmentSuccessMessage extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Text value to be checked
      */
@@ -26,14 +22,14 @@ class AssertInvoiceWithShipmentSuccessMessage extends AbstractConstraint
     /**
      * Assert success message presents
      *
-     * @param OrderView $orderView
+     * @param SalesOrderView $salesOrderView
      * @return void
      */
-    public function processAssert(OrderView $orderView)
+    public function processAssert(SalesOrderView $salesOrderView)
     {
         \PHPUnit_Framework_Assert::assertEquals(
             self::SUCCESS_MESSAGE,
-            $orderView->getMessagesBlock()->getSuccessMessages()
+            $salesOrderView->getMessagesBlock()->getSuccessMessages()
         );
     }
 

@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Adminhtml\Product;
 
@@ -43,13 +44,13 @@ class MassStatus extends \Magento\Catalog\Controller\Adminhtml\Product
      * @param array $productIds
      * @param int $status
      * @return void
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function _validateMassStatus(array $productIds, $status)
     {
         if ($status == \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED) {
             if (!$this->_objectManager->create('Magento\Catalog\Model\Product')->isProductsHasSku($productIds)) {
-                throw new \Magento\Framework\Model\Exception(
+                throw new \Magento\Framework\Exception\LocalizedException(
                     __('Please make sure to define SKU values for all processed products.')
                 );
             }
@@ -73,9 +74,9 @@ class MassStatus extends \Magento\Catalog\Controller\Adminhtml\Product
                 ->updateAttributes($productIds, ['status' => $status], $storeId);
             $this->messageManager->addSuccess(__('A total of %1 record(s) have been updated.', count($productIds)));
             $this->_productPriceIndexerProcessor->reindexList($productIds);
-        } catch (\Magento\Core\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception $e) {
             $this->messageManager->addError($e->getMessage());
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->_getSession()->addException($e, __('Something went wrong while updating the product(s) status.'));

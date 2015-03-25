@@ -2,7 +2,8 @@
 /**
  * Date/Time filter. Converts datetime from localized to internal format.
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Stdlib\DateTime\Filter;
 
@@ -17,7 +18,7 @@ class DateTime extends Date
         $this->_localToNormalFilter = new \Zend_Filter_LocalizedToNormalized(
             [
                 'date_format' => $this->_localeDate->getDateTimeFormat(
-                    \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_SHORT
+                    \IntlDateFormatter::SHORT
                 ),
             ]
         );

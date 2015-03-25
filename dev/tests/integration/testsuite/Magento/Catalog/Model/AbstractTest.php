@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model;
 
@@ -26,7 +27,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         if (!self::$_isStubClass) {
-            $this->getMockForAbstractClass('Magento\Catalog\Model\AbstractModel', [], self::STUB_CLASS, false);
+            $this->getMockForAbstractClass('Magento\Catalog\Model\AbstractModel\Stub', [], self::STUB_CLASS, false);
             self::$_isStubClass = true;
         }
 

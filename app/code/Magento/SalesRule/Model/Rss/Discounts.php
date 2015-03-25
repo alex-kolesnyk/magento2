@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Model\Rss;
 
@@ -41,7 +42,11 @@ class Discounts
     {
         /** @var $collection \Magento\SalesRule\Model\Resource\Rule\Collection */
         $collection = $this->collectionFactory->create();
-        $collection->addWebsiteGroupDateFilter($websiteId, $customerGroupId, $this->dateTime->now(true))
+        $collection->addWebsiteGroupDateFilter(
+            $websiteId,
+            $customerGroupId,
+            (new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT)
+        )
             ->addFieldToFilter('is_rss', 1)
             ->setOrder('from_date', 'desc');
         $collection->load();

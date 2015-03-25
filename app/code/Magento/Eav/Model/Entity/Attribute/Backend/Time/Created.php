@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute\Backend\Time;
 
@@ -25,14 +26,17 @@ class Created extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBacken
     /**
      * Set created date
      *
-     * @param \Magento\Core\Model\Object $object
+     * @param \Magento\Framework\Model\AbstractModel $object
      * @return $this
      */
     public function beforeSave($object)
     {
         $attributeCode = $this->getAttribute()->getAttributeCode();
-        if ($object->isObjectNew() && is_null($object->getData($attributeCode))) {
-            $object->setData($attributeCode, $this->dateTime->now());
+        if ($object->isObjectNew() && $object->getData($attributeCode) === null) {
+            $object->setData(
+                $attributeCode,
+                (new \DateTime())->format(\Magento\Framework\Stdlib\DateTime::DATETIME_PHP_FORMAT)
+            );
         }
 
         return $this;

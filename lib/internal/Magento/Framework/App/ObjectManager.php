@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App;
 
@@ -52,7 +53,7 @@ class ObjectManager extends \Magento\Framework\ObjectManager\ObjectManager
     public function __construct(
         FactoryInterface $factory,
         \Magento\Framework\ObjectManager\ConfigInterface $config,
-        array $sharedInstances = []
+        array &$sharedInstances = []
     ) {
         parent::__construct($factory, $config, $sharedInstances);
         self::$_instance = $this;

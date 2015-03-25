@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\ToolkitFramework\Helper;
@@ -44,7 +45,7 @@ class Cli
             return $default;
         }
         $value = static::$_getopt->getOption($key);
-        if (is_null($value)) {
+        if ($value === null) {
             return $default;
         }
         return $value;

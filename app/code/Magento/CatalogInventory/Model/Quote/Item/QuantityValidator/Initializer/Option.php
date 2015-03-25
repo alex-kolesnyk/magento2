@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model\Quote\Item\QuantityValidator\Initializer;
 
@@ -43,22 +44,24 @@ class Option
     /**
      * Init stock item
      *
-     * @param \Magento\Sales\Model\Quote\Item\Option $option
-     * @param \Magento\Sales\Model\Quote\Item $quoteItem
+     * @param \Magento\Quote\Model\Quote\Item\Option $option
+     * @param \Magento\Quote\Model\Quote\Item $quoteItem
      *
      * @return \Magento\CatalogInventory\Model\Stock\Item
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getStockItem(
-        \Magento\Sales\Model\Quote\Item\Option $option,
-        \Magento\Sales\Model\Quote\Item $quoteItem
+        \Magento\Quote\Model\Quote\Item\Option $option,
+        \Magento\Quote\Model\Quote\Item $quoteItem
     ) {
         $stockItem = $this->stockRegistry->getStockItem(
             $option->getProduct()->getId(),
             $quoteItem->getStore()->getWebsiteId()
         );
         if (!$stockItem->getItemId()) {
-            throw new \Magento\Framework\Model\Exception(__('The stock item for Product in option is not valid.'));
+            throw new \Magento\Framework\Exception\LocalizedException(
+                __('The stock item for Product in option is not valid.')
+            );
         }
         /**
          * define that stock item is child for composite product
@@ -75,16 +78,16 @@ class Option
     /**
      * Initialize item option
      *
-     * @param \Magento\Sales\Model\Quote\Item\Option $option
-     * @param \Magento\Sales\Model\Quote\Item $quoteItem
+     * @param \Magento\Quote\Model\Quote\Item\Option $option
+     * @param \Magento\Quote\Model\Quote\Item $quoteItem
      * @param int $qty
      *
      * @return \Magento\Framework\Object
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function initialize(
-        \Magento\Sales\Model\Quote\Item\Option $option,
-        \Magento\Sales\Model\Quote\Item $quoteItem,
+        \Magento\Quote\Model\Quote\Item\Option $option,
+        \Magento\Quote\Model\Quote\Item $quoteItem,
         $qty
     ) {
         $optionValue = $option->getValue();
@@ -106,7 +109,7 @@ class Option
             $option->getProduct()->getStore()->getWebsiteId()
         );
 
-        if (!is_null($result->getItemIsQtyDecimal())) {
+        if ($result->getItemIsQtyDecimal() !== null) {
             $option->setIsQtyDecimal($result->getItemIsQtyDecimal());
         }
 
@@ -119,11 +122,11 @@ class Option
              */
             $quoteItem->setData('qty', intval($qty));
         }
-        if (!is_null($result->getMessage())) {
+        if ($result->getMessage() !== null) {
             $option->setMessage($result->getMessage());
             $quoteItem->setMessage($result->getMessage());
         }
-        if (!is_null($result->getItemBackorders())) {
+        if ($result->getItemBackorders() !== null) {
             $option->setBackorders($result->getItemBackorders());
         }
 

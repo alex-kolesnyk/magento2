@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Model\Product;
@@ -30,5 +31,49 @@ class TierPrice extends \Magento\Framework\Model\AbstractExtensibleModel impleme
     public function getValue()
     {
         return $this->getData(self::VALUE);
+    }
+
+    /**
+     * Set tier qty
+     *
+     * @param float $qty
+     * @return $this
+     */
+    public function setQty($qty)
+    {
+        return $this->setData(self::QTY, $qty);
+    }
+
+    /**
+     * Set price value
+     *
+     * @param float $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        return $this->setData(self::VALUE, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Magento\Catalog\Api\Data\ProductTierPriceExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Magento\Catalog\Api\Data\ProductTierPriceExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(
+        \Magento\Catalog\Api\Data\ProductTierPriceExtensionInterface $extensionAttributes
+    ) {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Bundle\Model\Resource\Indexer;
 
@@ -124,6 +125,7 @@ class Price extends \Magento\Catalog\Model\Resource\Product\Indexer\Price\Defaul
      * @param int $priceType
      * @param int|array $entityIds the entity ids limitation
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _prepareBundlePriceByType($priceType, $entityIds = null)
     {
@@ -254,7 +256,7 @@ class Price extends \Magento\Catalog\Model\Resource\Product\Indexer\Price\Defaul
             ]
         );
 
-        if (!is_null($entityIds)) {
+        if ($entityIds !== null) {
             $select->where('e.entity_id IN(?)', $entityIds);
         }
 
@@ -372,6 +374,7 @@ class Price extends \Magento\Catalog\Model\Resource\Product\Indexer\Price\Defaul
      *
      * @param int $priceType
      * @return $this
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _calculateBundleSelectionPrice($priceType)
     {
@@ -525,27 +528,6 @@ class Price extends \Magento\Catalog\Model\Resource\Product\Indexer\Price\Defaul
         $this->_prepareBundlePriceTable();
         $this->_prepareBundlePriceByType(\Magento\Bundle\Model\Product\Price::PRICE_TYPE_FIXED, $entityIds);
         $this->_prepareBundlePriceByType(\Magento\Bundle\Model\Product\Price::PRICE_TYPE_DYNAMIC, $entityIds);
-
-        /**
-         * Add possibility modify prices from external events
-         */
-        $select = $this->_getWriteAdapter()->select()->join(
-            ['wd' => $this->_getWebsiteDateTable()],
-            'i.website_id = wd.website_id',
-            []
-        );
-        $this->_eventManager->dispatch(
-            'prepare_catalog_product_price_index_table',
-            [
-                'index_table' => ['i' => $this->_getBundlePriceTable()],
-                'select' => $select,
-                'entity_id' => 'i.entity_id',
-                'customer_group_id' => 'i.customer_group_id',
-                'website_id' => 'i.website_id',
-                'website_date' => 'wd.website_date',
-                'update_fields' => ['price', 'min_price', 'max_price']
-            ]
-        );
 
         $this->_calculateBundleOptionPrice();
         $this->_applyCustomOption();

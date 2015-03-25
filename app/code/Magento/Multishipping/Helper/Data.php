@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Multishipping\Helper;
 
 /**
@@ -19,13 +23,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**#@-*/
 
     /**
-     * Core store config
-     *
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    protected $scopeConfig;
-
-    /**
      * Checkout session
      *
      * @var \Magento\Checkout\Model\Session
@@ -36,15 +33,12 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * Construct
      *
      * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Checkout\Model\Session $checkoutSession
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Checkout\Model\Session $checkoutSession
     ) {
-        $this->scopeConfig = $scopeConfig;
         $this->checkoutSession = $checkoutSession;
         parent::__construct($context);
     }
@@ -52,7 +46,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve checkout quote
      *
-     * @return \Magento\Sales\Model\Quote
+     * @return \Magento\Quote\Model\Quote
      */
     public function getQuote()
     {
@@ -86,7 +80,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             true
         ) &&
             $quote->getItemsSummaryQty() - $quote->getItemVirtualQty() > 0 &&
-            $quote->getItemsSummaryQty() <= $this->getMaximumQty() &&
-            !$quote->hasNominalItems();
+            $quote->getItemsSummaryQty() <= $this->getMaximumQty();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Backend\Block\Widget\Grid\Column\Filter;
 
@@ -49,7 +50,7 @@ class Select extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFi
      */
     protected function _renderOption($option, $value)
     {
-        $selected = $option['value'] == $value && !is_null($value) ? ' selected="selected"' : '';
+        $selected = $option['value'] == $value && $value !== null ? ' selected="selected"' : '';
         return '<option value="' . $this->escapeHtml(
             $option['value']
         ) . '"' . $selected . '>' . $this->escapeHtml(
@@ -87,7 +88,7 @@ class Select extends \Magento\Backend\Block\Widget\Grid\Column\Filter\AbstractFi
      */
     public function getCondition()
     {
-        if (is_null($this->getValue())) {
+        if ($this->getValue() === null) {
             return null;
         }
         return ['eq' => $this->getValue()];

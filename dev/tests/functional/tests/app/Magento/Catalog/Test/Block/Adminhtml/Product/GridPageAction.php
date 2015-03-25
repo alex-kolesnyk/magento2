@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\Block\Adminhtml\Product;
 
 use Magento\Backend\Test\Block\GridPageActions as ParentGridPageActions;
-use Mtf\Client\Element\Locator;
+use Magento\Mtf\Client\Locator;
 
 /**
  * Class GridPageAction
@@ -29,6 +30,13 @@ class GridPageAction extends ParentGridPageActions
     protected $productItem = '[data-ui-id=products-list-add-new-product-button-item-%productType%]';
 
     /**
+     * Product type list
+     *
+     * @var string
+     */
+    protected $typeList = '[data-ui-id=products-list-add-new-product-button-dropdown-menu]';
+
+    /**
      * Add product using split button
      *
      * @param string $productType
@@ -41,5 +49,19 @@ class GridPageAction extends ParentGridPageActions
             str_replace('%productType%', $productType, $this->productItem),
             Locator::SELECTOR_CSS
         )->click();
+    }
+
+    /**
+     * Get product list
+     *
+     * @return array
+     */
+    public function getTypeList()
+    {
+        $this->_rootElement->find($this->toggleButton, Locator::SELECTOR_CSS)->click();
+        return $this->_rootElement->find(
+            $this->typeList,
+            Locator::SELECTOR_CSS
+        )->getText();
     }
 }

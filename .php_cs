@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -14,7 +15,6 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->exclude('dev/tests/functional/vendor')
     ->exclude('dev/tests/integration/tmp')
     ->exclude('dev/tests/integration/var')
-    ->exclude('lib/internal/Apache')
     ->exclude('lib/internal/CardinalCommerce')
     ->exclude('lib/internal/Cm')
     ->exclude('lib/internal/Credis')

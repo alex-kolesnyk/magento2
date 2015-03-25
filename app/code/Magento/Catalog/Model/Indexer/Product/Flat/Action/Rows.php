@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Indexer\Product\Flat\Action;
 
@@ -53,12 +54,12 @@ class Rows extends \Magento\Catalog\Model\Indexer\Product\Flat\AbstractAction
      * @param array $ids
      *
      * @return \Magento\Catalog\Model\Indexer\Product\Flat\Action\Rows
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function execute($ids)
     {
         if (empty($ids)) {
-            throw new \Magento\Framework\Model\Exception(__('Bad value was supplied.'));
+            throw new \Magento\Framework\Exception\LocalizedException(__('Bad value was supplied.'));
         }
         foreach ($this->_storeManager->getStores() as $store) {
             $tableExists = $this->_isFlatTableExists($store->getId());

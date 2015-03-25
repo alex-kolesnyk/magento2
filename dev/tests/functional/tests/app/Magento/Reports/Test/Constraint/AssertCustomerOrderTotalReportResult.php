@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
 
-use Magento\Customer\Test\Fixture\CustomerInjectable;
+use Magento\Customer\Test\Fixture\Customer;
 use Magento\Reports\Test\Page\Adminhtml\CustomerTotalsReport;
 
 /**
@@ -14,22 +15,18 @@ use Magento\Reports\Test\Page\Adminhtml\CustomerTotalsReport;
  */
 class AssertCustomerOrderTotalReportResult extends AbstractAssertCustomerOrderReportResult
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert OrderTotalReport grid for all params
      *
      * @param CustomerTotalsReport $customerTotalsReport
-     * @param CustomerInjectable $customer
+     * @param Customer $customer
      * @param array $columns
      * @param array $report
      * @return void
      */
     public function processAssert(
         CustomerTotalsReport $customerTotalsReport,
-        CustomerInjectable $customer,
+        Customer $customer,
         array $columns,
         array $report
     ) {

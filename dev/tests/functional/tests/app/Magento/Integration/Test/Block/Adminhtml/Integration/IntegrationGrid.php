@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Integration\Test\Block\Adminhtml\Integration;
@@ -8,7 +9,7 @@ namespace Magento\Integration\Test\Block\Adminhtml\Integration;
 use Magento\Backend\Test\Block\Widget\Grid;
 use Magento\Integration\Test\Block\Adminhtml\Integration\IntegrationGrid\ResourcesPopup;
 use Magento\Integration\Test\Block\Adminhtml\Integration\IntegrationGrid\TokensPopup;
-use Mtf\Client\Element\Locator;
+use Magento\Mtf\Client\Locator;
 
 /**
  * Class IntegrationGrid
@@ -123,11 +124,11 @@ class IntegrationGrid extends Grid
      */
     public function getResourcesPopup()
     {
+        /** @var ResourcesPopup $resourcesPopup */
         $resourcesPopup = $this->blockFactory->create(
             'Magento\Integration\Test\Block\Adminhtml\Integration\IntegrationGrid\ResourcesPopup',
             ['element' => $this->_rootElement->find($this->resourcesPopupSelector, Locator::SELECTOR_XPATH)]
         );
-        $this->waitForElementVisible($this->resourcesPopupSelector, Locator::SELECTOR_XPATH);
 
         return $resourcesPopup;
     }

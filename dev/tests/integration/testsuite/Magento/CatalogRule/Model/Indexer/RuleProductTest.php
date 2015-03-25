@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogRule\Model\Indexer;
 
@@ -41,13 +42,13 @@ class RuleProductTest extends \PHPUnit_Framework_TestCase
     public function testReindexAfterRuleCreation()
     {
         $this->product->load(1)->setData('test_attribute', 'test_attribute_value')->save();
-        $this->assertFalse($this->resourceRule->getRulePrice(true, 1, 1, 1));
+        $this->assertFalse($this->resourceRule->getRulePrice(new \DateTime(), 1, 1, 1));
 
         $this->saveRule();
         // apply all rules
         $this->indexBuilder->reindexFull();
 
-        $this->assertEquals(9.8, $this->resourceRule->getRulePrice(true, 1, 1, 1));
+        $this->assertEquals(9.8, $this->resourceRule->getRulePrice(new \DateTime(), 1, 1, 1));
     }
 
     protected function saveRule()

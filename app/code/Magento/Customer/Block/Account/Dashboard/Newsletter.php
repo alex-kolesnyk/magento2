@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Account\Dashboard;
 
@@ -59,7 +60,7 @@ class Newsletter extends \Magento\Framework\View\Element\Template
      */
     public function getSubscriptionObject()
     {
-        if (is_null($this->_subscription)) {
+        if ($this->_subscription === null) {
             $this->_subscription =
                 $this->_createSubscriber()->loadByCustomerId($this->_customerSession->getCustomerId());
         }

@@ -1,7 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+// @codingStandardsIgnoreFile
+
 namespace Magento\Downloadable\Block\Customer\Products;
 
 use Magento\Downloadable\Model\Link\Purchased\Item;
@@ -95,7 +99,7 @@ class ListProducts extends \Magento\Framework\View\Element\Template
             'downloadable.customer.products.pager'
         )->setCollection(
             $this->getItems()
-        );
+        )->setPath('downloadable/customer/products');
         $this->setChild('pager', $pager);
         $this->getItems()->load();
         foreach ($this->getItems() as $item) {
@@ -132,7 +136,7 @@ class ListProducts extends \Magento\Framework\View\Element\Template
      * Return number of left downloads or unlimited
      *
      * @param Item $item
-     * @return string
+     * @return \Magento\Framework\Phrase|int
      */
     public function getRemainingDownloads($item)
     {
@@ -151,13 +155,14 @@ class ListProducts extends \Magento\Framework\View\Element\Template
      */
     public function getDownloadUrl($item)
     {
-        return $this->getUrl('*/download/link', ['id' => $item->getLinkHash(), '_secure' => true]);
+        return $this->getUrl('downloadable/download/link', ['id' => $item->getLinkHash(), '_secure' => true]);
     }
 
     /**
      * Return true if target of link new window
      *
      * @return bool
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
      */
     public function getIsOpenInNewWindow()
     {

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Tax\Model\Sales\Order\Tax;
 
@@ -48,5 +49,71 @@ class Item extends \Magento\Framework\Model\AbstractExtensibleModel implements
     public function getAppliedTaxes()
     {
         return $this->getData(self::KEY_APPLIED_TAXES);
+    }
+
+    /**
+     * Set type (shipping, product, weee, gift wrapping, etc)
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        return $this->setData(self::KEY_TYPE, $type);
+    }
+
+    /**
+     * Set item id
+     *
+     * @param int $itemId
+     * @return $this
+     */
+    public function setItemId($itemId)
+    {
+        return $this->setData(self::KEY_ITEM_ID, $itemId);
+    }
+
+    /**
+     * Set associated item id
+     *
+     * @param int $associatedItemId
+     * @return $this
+     */
+    public function setAssociatedItemId($associatedItemId)
+    {
+        return $this->setData(self::KEY_ASSOCIATED_ITEM_ID, $associatedItemId);
+    }
+
+    /**
+     * Set applied taxes
+     *
+     * @param \Magento\Tax\Api\Data\OrderTaxDetailsAppliedTaxInterface[] $appliedTaxes
+     * @return $this
+     */
+    public function setAppliedTaxes(array $appliedTaxes = null)
+    {
+        return $this->setData(self::KEY_APPLIED_TAXES, $appliedTaxes);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Magento\Tax\Api\Data\OrderTaxDetailsItemExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Magento\Tax\Api\Data\OrderTaxDetailsItemExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(
+        \Magento\Tax\Api\Data\OrderTaxDetailsItemExtensionInterface $extensionAttributes
+    ) {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 }

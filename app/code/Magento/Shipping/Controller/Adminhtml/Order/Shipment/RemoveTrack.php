@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order\Shipment;
 
@@ -70,7 +71,7 @@ class RemoveTrack extends \Magento\Backend\App\Action
             $response = ['error' => true, 'message' => __('Cannot load track with retrieving identifier.')];
         }
         if (is_array($response)) {
-            $response = $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($response);
+            $response = $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($response);
             $this->getResponse()->representJson($response);
         } else {
             $this->getResponse()->setBody($response);

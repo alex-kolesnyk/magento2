@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Tax\Model\TaxClass\Source;
@@ -30,13 +31,6 @@ class Product extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     protected $_filterBuilder;
 
     /**
-     * Core data
-     *
-     * @var \Magento\Core\Helper\Data
-     */
-    protected $_coreData;
-
-    /**
      * @var \Magento\Eav\Model\Resource\Entity\Attribute\OptionFactory
      */
     protected $_optionFactory;
@@ -44,7 +38,6 @@ class Product extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
     /**
      * Initialize dependencies.
      *
-     * @param \Magento\Core\Helper\Data $coreData
      * @param \Magento\Tax\Model\Resource\TaxClass\CollectionFactory $classesFactory
      * @param \Magento\Eav\Model\Resource\Entity\Attribute\OptionFactory $optionFactory
      * @param \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassRepository
@@ -52,14 +45,12 @@ class Product extends \Magento\Eav\Model\Entity\Attribute\Source\AbstractSource
      * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
      */
     public function __construct(
-        \Magento\Core\Helper\Data $coreData,
         \Magento\Tax\Model\Resource\TaxClass\CollectionFactory $classesFactory,
         \Magento\Eav\Model\Resource\Entity\Attribute\OptionFactory $optionFactory,
         \Magento\Tax\Api\TaxClassRepositoryInterface $taxClassRepository,
         \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\Framework\Api\FilterBuilder $filterBuilder
     ) {
-        $this->_coreData = $coreData;
         $this->_classesFactory = $classesFactory;
         $this->_optionFactory = $optionFactory;
         $this->_taxClassRepository = $taxClassRepository;

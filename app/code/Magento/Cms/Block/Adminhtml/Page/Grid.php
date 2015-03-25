@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Block\Adminhtml\Page;
 
@@ -20,7 +21,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
     protected $_cmsPage;
 
     /**
-     * @var \Magento\Core\Model\PageLayout\Config\Builder
+     * @var \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface
      */
     protected $pageLayoutBuilder;
 
@@ -29,7 +30,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @param \Magento\Backend\Helper\Data $backendHelper
      * @param \Magento\Cms\Model\Page $cmsPage
      * @param \Magento\Cms\Model\Resource\Page\Grid\CollectionFactory $collectionFactory
-     * @param \Magento\Core\Model\PageLayout\Config\Builder $pageLayoutBuilder
+     * @param \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder
      * @param array $data
      */
     public function __construct(
@@ -37,7 +38,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Backend\Helper\Data $backendHelper,
         \Magento\Cms\Model\Page $cmsPage,
         \Magento\Cms\Model\Resource\Page\Grid\CollectionFactory $collectionFactory,
-        \Magento\Core\Model\PageLayout\Config\Builder $pageLayoutBuilder,
+        \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder,
         array $data = []
     ) {
         $this->_collectionFactory = $collectionFactory;
@@ -175,6 +176,7 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @param \Magento\Framework\Data\Collection $collection
      * @param \Magento\Framework\Object $column
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function _filterStoreCondition($collection, \Magento\Framework\Object $column)
     {

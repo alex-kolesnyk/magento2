@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Reports\Test\Constraint;
@@ -8,7 +9,7 @@ namespace Magento\Reports\Test\Constraint;
 use Magento\Catalog\Test\Fixture\CatalogProductSimple;
 use Magento\Reports\Test\Page\Adminhtml\OrderedProductsReport;
 use Magento\Sales\Test\Fixture\OrderInjectable;
-use Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Class AssertOrderedProductResult
@@ -18,10 +19,6 @@ use Mtf\Constraint\AbstractConstraint;
  */
 class AssertOrderedProductResult extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert product name and qty in Ordered Products report
      *

@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Product\Option\Type;
 
-use Magento\Framework\Model\Exception;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Catalog product option text type
@@ -47,7 +48,7 @@ class Text extends \Magento\Catalog\Model\Product\Option\Type\DefaultType
      *
      * @param array $values All product option values, i.e. array (option_id => mixed, option_id => mixed...)
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function validateUserValue($values)
     {
@@ -59,14 +60,14 @@ class Text extends \Magento\Catalog\Model\Product\Option\Type\DefaultType
         // Check requires option to have some value
         if (strlen($value) == 0 && $option->getIsRequire() && !$this->getSkipCheckRequiredOption()) {
             $this->setIsValid(false);
-            throw new Exception(__('Please specify the product\'s required option(s).'));
+            throw new LocalizedException(__('Please specify the product\'s required option(s).'));
         }
 
         // Check maximal length limit
         $maxCharacters = $option->getMaxCharacters();
         if ($maxCharacters > 0 && $this->string->strlen($value) > $maxCharacters) {
             $this->setIsValid(false);
-            throw new Exception(__('The text is too long.'));
+            throw new LocalizedException(__('The text is too long.'));
         }
 
         $this->setUserValue($value);

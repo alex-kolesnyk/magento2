@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <!--
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
@@ -26,13 +27,6 @@
                     <item name="msrp" xsi:type="string">msrp</item>
                     <item name="msrp_display_actual_price_type" xsi:type="string">msrp_display_actual_price_type</item>
                 </item>
-            </argument>
-        </arguments>
-    </type>
-    <type name="Magento\Framework\Module\Updater\SetupFactory">
-        <arguments>
-            <argument name="resourceTypes" xsi:type="array">
-                <item name="msrp_setup" xsi:type="string">Magento\Catalog\Model\Resource\Setup</item>
             </argument>
         </arguments>
     </type>

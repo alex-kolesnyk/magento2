@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -13,8 +14,6 @@
  * - last_id
  */
 namespace Magento\Eav\Model\Entity\Increment;
-
-use Magento\Eav\Exception;
 
 class Alphanum extends \Magento\Eav\Model\Entity\Increment\AbstractIncrement
 {
@@ -32,7 +31,7 @@ class Alphanum extends \Magento\Eav\Model\Entity\Increment\AbstractIncrement
      * Get next id
      *
      * @return string
-     * @throws Exception
+     * @throws \Magento\Eav\Exception
      */
     public function getNextId()
     {

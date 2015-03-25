@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Resource\Form;
 
@@ -37,7 +38,7 @@ class Type extends \Magento\Framework\Model\Resource\Db\AbstractDb
      */
     public function load(AbstractModel $object, $value, $field = null)
     {
-        if (is_null($field) && !is_numeric($value)) {
+        if ($field === null && !is_numeric($value)) {
             $field = 'code';
         }
         return parent::load($object, $value, $field);

@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data;
 
@@ -103,6 +104,16 @@ abstract class AbstractSearchResult extends AbstractDataObject implements Search
     }
 
     /**
+     * @param \Magento\Framework\Object[] $items
+     * @return $this
+     */
+    public function setItems(array $items = null)
+    {
+        $this->data['items'] = $items;
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getTotalCount()
@@ -114,6 +125,16 @@ abstract class AbstractSearchResult extends AbstractDataObject implements Search
     }
 
     /**
+     * @param int $totalCount
+     * @return $this
+     */
+    public function setTotalCount($totalCount)
+    {
+        $this->data['total_count'] = $totalCount;
+        return $this;
+    }
+
+    /**
      * @return \Magento\Framework\Api\CriteriaInterface
      */
     public function getSearchCriteria()
@@ -122,6 +143,16 @@ abstract class AbstractSearchResult extends AbstractDataObject implements Search
             $this->data['search_criteria'] = $this->query->getCriteria();
         }
         return $this->data['search_criteria'];
+    }
+
+    /**
+     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
+     * @return $this
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    {
+        return $this;
     }
 
     /**
@@ -228,7 +259,7 @@ abstract class AbstractSearchResult extends AbstractDataObject implements Search
     protected function addItem(\Magento\Framework\Object $item)
     {
         $itemId = $this->getItemId($item);
-        if (!is_null($itemId)) {
+        if ($itemId !== null) {
             if (isset($this->data['items'][$itemId])) {
                 throw new \Exception(
                     'Item (' . get_class($item) . ') with the same id "' . $item->getId() . '" already exist'

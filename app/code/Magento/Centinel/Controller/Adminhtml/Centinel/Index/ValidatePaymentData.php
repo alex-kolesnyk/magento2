@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Centinel\Controller\Adminhtml\Centinel\Index;
 
@@ -24,14 +25,14 @@ class ValidatePaymentData extends \Magento\Centinel\Controller\Adminhtml\Centine
             $validator->reset();
             $this->_getPayment()->importData($paymentData);
             $result['authenticationUrl'] = $validator->getAuthenticationStartUrl();
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $result['message'] = $e->getMessage();
         } catch (\Exception $e) {
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
             $result['message'] = __('Validation failed.');
         }
         $this->getResponse()->representJson(
-            $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
+            $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($result)
         );
     }
 }

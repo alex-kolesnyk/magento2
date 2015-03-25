@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Controller\Product;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Core\App\Action\FormKeyValidator;
+use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Controller\Result;
 use Magento\Framework\View\Result\PageFactory;
 
@@ -13,6 +14,7 @@ use Magento\Framework\View\Result\PageFactory;
  * Catalog compare controller
  *
  * @SuppressWarnings(PHPMD.LongVariable)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Compare extends \Magento\Framework\App\Action\Action
 {
@@ -71,7 +73,7 @@ class Compare extends \Magento\Framework\App\Action\Action
     protected $_storeManager;
 
     /**
-     * @var FormKeyValidator
+     * @var Validator
      */
     protected $_formKeyValidator;
 
@@ -101,10 +103,11 @@ class Compare extends \Magento\Framework\App\Action\Action
      * @param \Magento\Catalog\Model\Product\Compare\ListCompare $catalogProductCompareList
      * @param \Magento\Catalog\Model\Session $catalogSession
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param FormKeyValidator $formKeyValidator
+     * @param Validator $formKeyValidator
      * @param \Magento\Framework\Controller\Result\RedirectFactory $resultRedirectFactory
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param ProductRepositoryInterface $productRepository
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -115,7 +118,7 @@ class Compare extends \Magento\Framework\App\Action\Action
         \Magento\Catalog\Model\Product\Compare\ListCompare $catalogProductCompareList,
         \Magento\Catalog\Model\Session $catalogSession,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        FormKeyValidator $formKeyValidator,
+        Validator $formKeyValidator,
         Result\RedirectFactory $resultRedirectFactory,
         PageFactory $resultPageFactory,
         ProductRepositoryInterface $productRepository

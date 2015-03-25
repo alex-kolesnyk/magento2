@@ -1,5 +1,6 @@
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 /*jshint jquery:true*/
 define([
@@ -325,7 +326,7 @@ define([
                     }
                     return false;
                 }, this),
-                'class': 'primary'
+                'class': 'action-primary'
             };
             this._dialog.setButtons(buttons);
             this._dialog.open();

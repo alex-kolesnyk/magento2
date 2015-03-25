@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\SalesRule\Block\Adminhtml\Promo\Quote\Edit\Tab;
 
@@ -72,6 +73,6 @@ class Coupons extends \Magento\Backend\Block\Text\ListText implements \Magento\B
     protected function _isEditing()
     {
         $priceRule = $this->_coreRegistry->registry('current_promo_quote_rule');
-        return !is_null($priceRule->getRuleId());
+        return $priceRule->getRuleId() !== null;
     }
 }

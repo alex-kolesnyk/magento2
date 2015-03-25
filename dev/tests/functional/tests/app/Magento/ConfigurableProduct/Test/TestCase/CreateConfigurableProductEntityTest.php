@@ -1,14 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\ConfigurableProduct\Test\TestCase;
 
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductIndex;
 use Magento\Catalog\Test\Page\Adminhtml\CatalogProductNew;
-use Magento\ConfigurableProduct\Test\Fixture\ConfigurableProductInjectable;
-use Mtf\TestCase\Injectable;
+use Magento\ConfigurableProduct\Test\Fixture\ConfigurableProduct;
+use Magento\Mtf\TestCase\Injectable;
 
 /**
  * Test Coverage for CreateConfigurableProductEntity
@@ -37,6 +38,13 @@ use Mtf\TestCase\Injectable;
  */
 class CreateConfigurableProductEntityTest extends Injectable
 {
+    /* tags */
+    const TEST_TYPE = 'acceptance_test';
+    const STABLE = 'yes';
+    const MVP = 'yes';
+    const DOMAIN = 'MX';
+    /* end tags */
+
     /**
      * Product page with a grid
      *
@@ -67,10 +75,10 @@ class CreateConfigurableProductEntityTest extends Injectable
     /**
      * Test create catalog Configurable product run
      *
-     * @param ConfigurableProductInjectable $product
+     * @param ConfigurableProduct $product
      * @return void
      */
-    public function test(ConfigurableProductInjectable $product)
+    public function test(ConfigurableProduct $product)
     {
         // Steps
         $this->productIndex->open();

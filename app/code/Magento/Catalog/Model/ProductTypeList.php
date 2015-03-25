@@ -2,7 +2,8 @@
 /**
  * Product type provider
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model;
 
@@ -21,9 +22,9 @@ class ProductTypeList implements ProductTypeListInterface
     /**
      * Product type factory
      *
-     * @var \Magento\Catalog\Api\Data\ProductTypeDataBuilder
+     * @var \Magento\Catalog\Api\Data\ProductTypeInterfaceFactory
      */
-    private $productTypeBuilder;
+    private $productTypeFactory;
 
     /**
      * List of product types
@@ -34,14 +35,14 @@ class ProductTypeList implements ProductTypeListInterface
 
     /**
      * @param ConfigInterface $productTypeConfig
-     * @param \Magento\Catalog\Api\Data\ProductTypeDataBuilder $productTypeBuilder
+     * @param \Magento\Catalog\Api\Data\ProductTypeInterfaceFactory $productTypeFactory
      */
     public function __construct(
         ConfigInterface $productTypeConfig,
-        \Magento\Catalog\Api\Data\ProductTypeDataBuilder $productTypeBuilder
+        \Magento\Catalog\Api\Data\ProductTypeInterfaceFactory $productTypeFactory
     ) {
         $this->productTypeConfig = $productTypeConfig;
-        $this->productTypeBuilder = $productTypeBuilder;
+        $this->productTypeFactory = $productTypeFactory;
     }
 
     /**
@@ -49,15 +50,14 @@ class ProductTypeList implements ProductTypeListInterface
      */
     public function getProductTypes()
     {
-        if (is_null($this->productTypes)) {
+        if ($this->productTypes === null) {
             $productTypes = [];
             foreach ($this->productTypeConfig->getAll() as $productTypeData) {
-                $productTypes[] = $this->productTypeBuilder->populateWithArray(
-                    [
-                        'name' => $productTypeData['name'],
-                        'label' => $productTypeData['label'],
-                    ]
-                )->create();
+                /** @var \Magento\Catalog\Api\Data\ProductTypeInterface $productType */
+                $productType = $this->productTypeFactory->create();
+                $productType->setName($productTypeData['name'])
+                    ->setLabel($productTypeData['label']);
+                $productTypes[] = $productType;
             }
             $this->productTypes = $productTypes;
         }

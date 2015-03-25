@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wonderland\Model;
 
@@ -38,5 +39,27 @@ class FakeRegion extends AbstractExtensibleModel implements FakeRegionInterface
     public function getRegionId()
     {
         return $this->getData(self::REGION_ID);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return \Magento\Wonderland\Api\Data\FakeRegionExtensionInterface|null
+     */
+    public function getExtensionAttributes()
+    {
+        return $this->_getExtensionAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Magento\Wonderland\Api\Data\FakeRegionExtensionInterface $extensionAttributes
+     * @return $this
+     */
+    public function setExtensionAttributes(
+        \Magento\Wonderland\Api\Data\FakeRegionExtensionInterface $extensionAttributes
+    ) {
+        return $this->_setExtensionAttributes($extensionAttributes);
     }
 }

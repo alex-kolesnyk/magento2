@@ -2,7 +2,8 @@
 /**
  * Form Element File Data Model
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Model\Metadata\Form;
 
@@ -11,12 +12,15 @@ use Magento\Framework\Filesystem;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Api\ArrayObjectSearch;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class File extends AbstractData
 {
     /**
      * Validator for check not protected extensions
      *
-     * @var \Magento\Core\Model\File\Validator\NotProtectedExtension
+     * @var \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension
      */
     protected $_validatorNotProtectedExtensions;
 
@@ -28,7 +32,7 @@ class File extends AbstractData
     protected $urlEncoder;
 
     /**
-     * @var \Magento\Core\Model\File\Validator\NotProtectedExtension
+     * @var \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension
      */
     protected $_fileValidator;
 
@@ -44,27 +48,28 @@ class File extends AbstractData
 
     /**
      * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute
      * @param \Magento\Framework\Locale\ResolverInterface $localeResolver
      * @param null $value
      * @param string $entityTypeCode
      * @param bool $isAjax
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
-     * @param \Magento\Core\Model\File\Validator\NotProtectedExtension $fileValidator
+     * @param \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension $fileValidator
      * @param Filesystem $fileSystem
      * @param UploaderFactory $uploaderFactory
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $localeDate,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Customer\Api\Data\AttributeMetadataInterface $attribute,
         \Magento\Framework\Locale\ResolverInterface $localeResolver,
         $value,
         $entityTypeCode,
         $isAjax,
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
-        \Magento\Core\Model\File\Validator\NotProtectedExtension $fileValidator,
+        \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension $fileValidator,
         Filesystem $fileSystem,
         UploaderFactory $uploaderFactory
     ) {
@@ -77,6 +82,7 @@ class File extends AbstractData
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function extractValue(\Magento\Framework\App\RequestInterface $request)
     {
@@ -145,7 +151,7 @@ class File extends AbstractData
             $rules,
             'file_extensions'
         );
-        if (!is_null($fileExtensions)) {
+        if ($fileExtensions !== null) {
             $extensions = explode(',', $fileExtensions);
             $extensions = array_map('trim', $extensions);
             if (!in_array($extension, $extensions)) {
@@ -168,7 +174,7 @@ class File extends AbstractData
             $rules,
             'max_file_size'
         );
-        if (!is_null($maxFileSize)) {
+        if ($maxFileSize !== null) {
             $size = $value['size'];
             if ($maxFileSize < $size) {
                 return [__('"%1" exceeds the allowed file size.', $label)];
@@ -193,6 +199,8 @@ class File extends AbstractData
 
     /**
      * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function validateValue($value)
     {
@@ -270,7 +278,7 @@ class File extends AbstractData
                 $uploader->save($mediaDir->getAbsolutePath($this->_entityTypeCode), $value['name']);
                 $result = $uploader->getUploadedFileName();
             } catch (\Exception $e) {
-                $this->_logger->logException($e);
+                $this->_logger->critical($e);
             }
         }
 

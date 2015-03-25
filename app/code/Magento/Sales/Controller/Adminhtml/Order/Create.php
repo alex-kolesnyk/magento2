@@ -1,26 +1,65 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Sales\Controller\Adminhtml\Order;
 
 use Magento\Backend\App\Action;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\Model\View\Result\RedirectFactory;
+use Magento\Backend\Model\View\Result\ForwardFactory;
 
 /**
  * Adminhtml sales orders creation process controller
  *
  * @author      Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 class Create extends \Magento\Backend\App\Action
 {
     /**
+     * @var \Magento\Framework\Escaper
+     */
+    protected $escaper;
+
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
+
+    /**
+     * @var RedirectFactory
+     */
+    protected $resultRedirectFactory;
+
+    /**
+     * @var \Magento\Backend\Model\View\Result\ForwardFactory
+     */
+    protected $resultForwardFactory;
+
+    /**
      * @param Action\Context $context
      * @param \Magento\Catalog\Helper\Product $productHelper
+     * @param \Magento\Framework\Escaper $escaper
+     * @param PageFactory $resultPageFactory
+     * @param RedirectFactory $resultRedirectFactory
+     * @param ForwardFactory $resultForwardFactory
      */
-    public function __construct(Action\Context $context, \Magento\Catalog\Helper\Product $productHelper)
-    {
+    public function __construct(
+        Action\Context $context,
+        \Magento\Catalog\Helper\Product $productHelper,
+        \Magento\Framework\Escaper $escaper,
+        PageFactory $resultPageFactory,
+        RedirectFactory $resultRedirectFactory,
+        ForwardFactory $resultForwardFactory
+    ) {
         parent::__construct($context);
         $productHelper->setSkipSaleableCheck(true);
+        $this->escaper = $escaper;
+        $this->resultPageFactory = $resultPageFactory;
+        $this->resultRedirectFactory = $resultRedirectFactory;
+        $this->resultForwardFactory = $resultForwardFactory;
     }
 
     /**
@@ -36,7 +75,7 @@ class Create extends \Magento\Backend\App\Action
     /**
      * Retrieve quote object
      *
-     * @return \Magento\Sales\Model\Quote
+     * @return \Magento\Quote\Model\Quote
      */
     protected function _getQuote()
     {
@@ -109,6 +148,9 @@ class Create extends \Magento\Backend\App\Action
      *
      * @param string $action
      * @return $this
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function _processActionData($action = null)
     {
@@ -143,9 +185,8 @@ class Create extends \Magento\Backend\App\Action
         if (!$this->_getOrderCreateModel()->getQuote()->isVirtual()) {
             $syncFlag = $this->getRequest()->getPost('shipping_as_billing');
             $shippingMethod = $this->_getOrderCreateModel()->getShippingAddress()->getShippingMethod();
-            if (is_null(
-                $syncFlag
-            ) && $this->_getOrderCreateModel()->getShippingAddress()->getSameAsBilling() && empty($shippingMethod)
+            if ($syncFlag === null
+            && $this->_getOrderCreateModel()->getShippingAddress()->getSameAsBilling() && empty($shippingMethod)
             ) {
                 $this->_getOrderCreateModel()->setShippingAsBilling(1);
             } else {
@@ -182,7 +223,7 @@ class Create extends \Magento\Backend\App\Action
          * Adding product to quote from shopping cart, wishlist etc.
          */
         if ($productId = (int)$this->getRequest()->getPost('add_product')) {
-            $this->_getOrderCreateModel()->addProduct($productId, $this->getRequest()->getPost());
+            $this->_getOrderCreateModel()->addProduct($productId, $this->getRequest()->getPostValue());
         }
 
         /**
@@ -229,7 +270,7 @@ class Create extends \Magento\Backend\App\Action
 
         $eventData = [
             'order_create_model' => $this->_getOrderCreateModel(),
-            'request' => $this->getRequest()->getPost(),
+            'request' => $this->getRequest()->getPostValue(),
         ];
 
         $this->_eventManager->dispatch('adminhtml_sales_order_create_process_data', $eventData);
@@ -253,7 +294,7 @@ class Create extends \Magento\Backend\App\Action
          */
         if ($data = $this->getRequest()->getPost('add_products')) {
             $this->_getGiftmessageSaveModel()->importAllowQuoteItemsFromProducts(
-                $this->_objectManager->get('Magento\Core\Helper\Data')->jsonDecode($data)
+                $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonDecode($data)
             );
         }
 
@@ -270,16 +311,33 @@ class Create extends \Magento\Backend\App\Action
         if (isset($data) && isset($data['coupon']['code'])) {
             $couponCode = trim($data['coupon']['code']);
         }
+
         if (!empty($couponCode)) {
-            if ($this->_getQuote()->getCouponCode() !== $couponCode) {
+            $isApplyDiscount = false;
+            foreach ($this->_getQuote()->getAllItems() as $item) {
+                if (!$item->getNoDiscount()) {
+                    $isApplyDiscount = true;
+                    break;
+                }
+            }
+            if (!$isApplyDiscount) {
                 $this->messageManager->addError(
                     __(
-                        '"%1" coupon code is not valid.',
-                        $this->_objectManager->get('Magento\Framework\Escaper')->escapeHtml($couponCode)
+                        '"%1" coupon code was not applied. Do not apply discount is selected for item(s)',
+                        $this->escaper->escapeHtml($couponCode)
                     )
                 );
             } else {
-                $this->messageManager->addSuccess(__('The coupon code has been accepted.'));
+                if ($this->_getQuote()->getCouponCode() !== $couponCode) {
+                    $this->messageManager->addError(
+                        __(
+                            '"%1" coupon code is not valid.',
+                            $this->escaper->escapeHtml($couponCode)
+                        )
+                    );
+                } else {
+                    $this->messageManager->addSuccess(__('The coupon code has been accepted.'));
+                }
             }
         }
 

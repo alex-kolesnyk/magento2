@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework;
 
@@ -31,7 +32,7 @@ class ObjectManagerFactory extends \Magento\Framework\App\ObjectManagerFactory
     /**
      * @var string
      */
-    protected $envFactoryClassName = 'Magento\TestFramework\ObjectManager\EnvironmentFactory';
+    protected $envFactoryClassName = 'Magento\TestFramework\App\EnvironmentFactory';
 
     /**
      * @var array
@@ -56,6 +57,12 @@ class ObjectManagerFactory extends \Magento\Framework\App\ObjectManagerFactory
         $deploymentConfig = $this->createDeploymentConfig($directoryList, $arguments);
         $this->factory->setArguments($arguments);
         $objectManager->addSharedInstance($deploymentConfig, 'Magento\Framework\App\DeploymentConfig');
+        $objectManager->addSharedInstance(
+            $objectManager->get(
+                'Magento\Framework\App\ObjectManager\ConfigLoader'
+            ),
+            'Magento\Framework\ObjectManager\ConfigLoaderInterface'
+        );
         $objectManager->get('Magento\Framework\Interception\PluginListInterface')->reset();
         $objectManager->configure(
             $objectManager->get('Magento\Framework\App\ObjectManager\ConfigLoader')->load('global')

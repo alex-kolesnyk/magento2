@@ -1,14 +1,15 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Checkout\Controller\Onepage;
 
 class Failure extends \Magento\Checkout\Controller\Onepage
 {
     /**
-     * @return void
+     * @return \Magento\Framework\View\Result\Page|\Magento\Framework\Controller\Result\Redirect
      */
     public function execute()
     {
@@ -16,11 +17,9 @@ class Failure extends \Magento\Checkout\Controller\Onepage
         $lastOrderId = $this->getOnepage()->getCheckout()->getLastOrderId();
 
         if (!$lastQuoteId || !$lastOrderId) {
-            $this->_redirect('checkout/cart');
-            return;
+            return $this->resultRedirectFactory->create()->setPath('checkout/cart');
         }
 
-        $this->_view->loadLayout();
-        $this->_view->renderLayout();
+        return $this->resultPageFactory->create();
     }
 }

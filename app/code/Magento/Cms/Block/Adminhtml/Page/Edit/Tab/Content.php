@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Block\Adminhtml\Page\Edit\Tab;
 
@@ -105,7 +106,7 @@ class Content extends \Magento\Backend\Block\Widget\Form\Generic implements
     /**
      * Prepare label for tab
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabLabel()
     {
@@ -115,7 +116,7 @@ class Content extends \Magento\Backend\Block\Widget\Form\Generic implements
     /**
      * Prepare title for tab
      *
-     * @return string
+     * @return \Magento\Framework\Phrase
      */
     public function getTabTitle()
     {

@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Model\Layer;
 
 use Magento\Catalog\Model\Layer\Filter\Item;
-use Magento\Framework\Model\Exception;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Object;
 
 /**
@@ -34,12 +35,12 @@ class State extends Object
      *
      * @param  Item[] $filters
      * @return $this
-     * @throws Exception
+     * @throws LocalizedException
      */
     public function setFilters($filters)
     {
         if (!is_array($filters)) {
-            throw new Exception(__('The filters must be an array.'));
+            throw new LocalizedException(__('The filters must be an array.'));
         }
         $this->setData('filters', $filters);
         return $this;
@@ -53,7 +54,7 @@ class State extends Object
     public function getFilters()
     {
         $filters = $this->getData('filters');
-        if (is_null($filters)) {
+        if ($filters === null) {
             $filters = [];
             $this->setData('filters', $filters);
         }

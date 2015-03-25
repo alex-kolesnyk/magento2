@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -125,7 +126,7 @@ class Snapshot extends Filesystem
      */
     protected function _getDbBackupManager()
     {
-        if (is_null($this->_dbBackupManager)) {
+        if ($this->_dbBackupManager === null) {
             $this->_dbBackupManager = $this->_createDbBackupInstance();
         }
 

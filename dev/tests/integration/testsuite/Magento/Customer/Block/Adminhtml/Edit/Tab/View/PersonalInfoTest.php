@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab\View;
 
-use Magento\Customer\Api\Data\CustomerDataBuilder;
+use Magento\Customer\Api\Data\CustomerInterfaceFactory;
 use Magento\Customer\Controller\RegistryConstants;
 
 /**
@@ -21,8 +22,8 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
     /** @var  \Magento\Framework\Registry */
     private $_coreRegistry;
 
-    /** @var  CustomerDataBuilder */
-    private $_customerBuilder;
+    /** @var  CustomerInterfaceFactory */
+    private $_customerFactory;
 
     /** @var  \Magento\Customer\Api\CustomerRepositoryInterface */
     private $_customerRepository;
@@ -57,7 +58,7 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
             ['storeManager' => $this->_storeManager]
         );
 
-        $this->_customerBuilder = $this->_objectManager->get('Magento\Customer\Api\Data\CustomerDataBuilder');
+        $this->_customerFactory = $this->_objectManager->get('Magento\Customer\Api\Data\CustomerInterfaceFactory');
         $this->_coreRegistry = $this->_objectManager->get('Magento\Framework\Registry');
         $this->_customerRepository = $this->_objectManager->get(
             'Magento\Customer\Api\CustomerRepositoryInterface'
@@ -65,7 +66,7 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
         $this->_dataObjectProcessor = $this->_objectManager->get('Magento\Framework\Reflection\DataObjectProcessor');
 
         $this->_groupRepository = $this->_objectManager->get('Magento\Customer\Api\GroupRepositoryInterface');
-        $this->dateTime = $this->_objectManager->get('\Magento\Framework\Stdlib\DateTime');
+        $this->dateTime = $this->_objectManager->get('Magento\Framework\Stdlib\DateTime');
 
         $this->_block = $this->_objectManager->get(
             'Magento\Framework\View\LayoutInterface'
@@ -124,7 +125,7 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
     {
         $createdAt = $this->_block->formatDate(
             $this->_loadCustomer()->getCreatedAt(),
-            \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_MEDIUM,
+            \IntlDateFormatter::MEDIUM,
             true
         );
         $this->assertEquals($createdAt, $this->_block->getCreateDate());
@@ -136,14 +137,10 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
     public function testGetStoreCreateDate()
     {
         $customer = $this->_loadCustomer();
-        $date = $this->_context->getLocaleDate()->scopeDate(
-            $customer->getStoreId(),
-            $this->dateTime->toTimestamp($customer->getCreatedAt()),
-            true
-        );
+        $date = $this->_context->getLocaleDate()->scopeDate($customer->getStoreId(), $customer->getCreatedAt(), true);
         $storeCreateDate = $this->_block->formatDate(
             $date,
-            \Magento\Framework\Stdlib\DateTime\TimezoneInterface::FORMAT_TYPE_MEDIUM,
+            \IntlDateFormatter::MEDIUM,
             true
         );
         $this->assertEquals($storeCreateDate, $this->_block->getStoreCreateDate());
@@ -183,7 +180,7 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
     {
         $password = 'password';
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
-        $customer = $this->_customerBuilder->setConfirmation(
+        $customer = $this->_customerFactory->create()->setConfirmation(
             true
         )->setFirstname(
             'firstname'
@@ -191,7 +188,7 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
             'lastname'
         )->setEmail(
             'email@email.com'
-        )->create();
+        );
         $customer = $this->_customerRepository->save($customer, $password);
         $this->_coreRegistry->register(RegistryConstants::CURRENT_CUSTOMER_ID, $customer->getId());
         $this->assertEquals('Confirmation Not Required', $this->_block->getIsConfirmedStatus());
@@ -234,13 +231,13 @@ class PersonalInfoTest extends \PHPUnit_Framework_TestCase
     private function _createCustomer()
     {
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
-        $customer = $this->_customerBuilder->setFirstname(
+        $customer = $this->_customerFactory->create()->setFirstname(
             'firstname'
         )->setLastname(
             'lastname'
         )->setEmail(
             'email@email.com'
-        )->create();
+        );
         $data = ['account' => $this->_dataObjectProcessor
             ->buildOutputDataArray($customer, 'Magento\Customer\Api\Data\CustomerInterface'), ];
         $this->_context->getBackendSession()->setCustomerData($data);

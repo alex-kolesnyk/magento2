@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  *
  */
 namespace Magento\DesignEditor\Controller\Varien\Router;
@@ -8,7 +9,7 @@ namespace Magento\DesignEditor\Controller\Varien\Router;
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Standard extends \Magento\Core\App\Router\Base
+class Standard extends \Magento\Framework\App\Router\Base
 {
     /**
      * Routers that must not been matched
@@ -46,11 +47,9 @@ class Standard extends \Magento\Core\App\Router\Base
      * @param \Magento\Framework\App\ResponseFactory $responseFactory
      * @param \Magento\Framework\App\Route\Config $routeConfig
      * @param \Magento\Framework\UrlInterface $url
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Framework\Url\SecurityInfoInterface $urlSecurityInfo
      * @param string $routerId
      * @param \Magento\Framework\Code\NameBuilder $nameBuilder
+     * @param \Magento\Framework\App\Router\PathConfigInterface $pathConfig
      * @param \Magento\Framework\App\RouterListInterface $routerList
      * @param \Magento\DesignEditor\Helper\Data $designEditorHelper
      * @param \Magento\DesignEditor\Model\State $designEditorState
@@ -65,11 +64,9 @@ class Standard extends \Magento\Core\App\Router\Base
         \Magento\Framework\App\ResponseFactory $responseFactory,
         \Magento\Framework\App\Route\Config $routeConfig,
         \Magento\Framework\UrlInterface $url,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\Url\SecurityInfoInterface $urlSecurityInfo,
         $routerId,
         \Magento\Framework\Code\NameBuilder $nameBuilder,
+        \Magento\Framework\App\Router\PathConfigInterface $pathConfig,
         \Magento\Framework\App\RouterListInterface $routerList,
         \Magento\DesignEditor\Helper\Data $designEditorHelper,
         \Magento\DesignEditor\Model\State $designEditorState,
@@ -82,11 +79,9 @@ class Standard extends \Magento\Core\App\Router\Base
             $responseFactory,
             $routeConfig,
             $url,
-            $storeManager,
-            $scopeConfig,
-            $urlSecurityInfo,
             $routerId,
-            $nameBuilder
+            $nameBuilder,
+            $pathConfig
         );
         $this->_routerList = $routerList;
         $this->_designEditorHelper = $designEditorHelper;

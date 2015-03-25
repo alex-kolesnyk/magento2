@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogSearch\Model\Layer\Filter;
 
@@ -47,7 +48,7 @@ class Attribute extends AbstractFilter
      *
      * @param \Magento\Framework\App\RequestInterface $request
      * @return $this
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function apply(\Magento\Framework\App\RequestInterface $request)
     {
@@ -73,7 +74,7 @@ class Attribute extends AbstractFilter
      * Get data array for building attribute filter items
      *
      * @return array
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _getItemsData()
     {

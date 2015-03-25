@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\User\Controller\Adminhtml\User\Role;
 
@@ -78,7 +79,7 @@ class SaveRole extends \Magento\User\Controller\Adminhtml\User\Role
         }
 
         try {
-            $roleName = $this->getRequest()->getParam('rolename', false);
+            $roleName = $this->_filterManager->removeTags($this->getRequest()->getParam('rolename', false));
 
             $role->setName($roleName)
                 ->setPid($this->getRequest()->getParam('parent_id', false))
@@ -100,7 +101,7 @@ class SaveRole extends \Magento\User\Controller\Adminhtml\User\Role
                 $this->_addUserToRole($nRuid, $role->getId());
             }
             $this->messageManager->addSuccess(__('You saved the role.'));
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($e->getMessage());
         } catch (\Exception $e) {
             $this->messageManager->addError(__('An error occurred while saving this role.'));

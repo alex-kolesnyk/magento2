@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework;
 
@@ -28,7 +29,7 @@ class Debug
      */
     public static function getRootPath()
     {
-        if (is_null(self::$_filePath)) {
+        if (self::$_filePath === null) {
             if (defined('BP')) {
                 self::$_filePath = BP;
             } else {
@@ -60,6 +61,8 @@ class Debug
      * @param bool $html        output in HTML format
      * @param bool $withArgs    add short arguments of methods
      * @return string|bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public static function trace(array $trace, $return = false, $html = true, $withArgs = true)
     {
@@ -140,6 +143,7 @@ class Debug
      *
      * @param mixed $arg
      * @return string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected static function _formatCalledArgument($arg)
     {
@@ -166,7 +170,7 @@ class Debug
             } else {
                 $out .= 'array(' . join(', ', $args) . ')';
             }
-        } elseif (is_null($arg)) {
+        } elseif ($arg === null) {
             $out .= 'NULL';
         } elseif (is_numeric($arg) || is_float($arg)) {
             $out .= $arg;

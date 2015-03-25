@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Form;
 
@@ -49,7 +50,7 @@ class Edit extends \Magento\Customer\Block\Account\Dashboard
     protected function getFormData()
     {
         $data = $this->getData('form_data');
-        if (is_null($data)) {
+        if ($data === null) {
             $formData = $this->customerSession->getCustomerFormData(true);
             $data = [];
             if ($formData) {

@@ -2,7 +2,8 @@
 /**
  * Find "widget.xml" files and validate them
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Magento\Widget;
 
@@ -10,19 +11,19 @@ class WidgetConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testXmlFiles()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * @param string $configFile
              */
             function ($configFile) {
-                $schema = \Magento\Framework\Test\Utility\Files::init()->getPathToSource() .
+                $schema = \Magento\Framework\App\Utility\Files::init()->getPathToSource() .
                     '/app/code/Magento/Widget/etc/widget.xsd';
                 $this->_validateFileExpectSuccess($configFile, $schema);
             },
             array_merge(
-                \Magento\Framework\Test\Utility\Files::init()->getConfigFiles('widget.xml'),
-                \Magento\Framework\Test\Utility\Files::init()->getLayoutConfigFiles('widget.xml')
+                \Magento\Framework\App\Utility\Files::init()->getConfigFiles('widget.xml'),
+                \Magento\Framework\App\Utility\Files::init()->getLayoutConfigFiles('widget.xml')
             )
         );
     }
@@ -30,7 +31,7 @@ class WidgetConfigTest extends \PHPUnit_Framework_TestCase
     public function testSchemaUsingValidXml()
     {
         $xmlFile = __DIR__ . '/_files/widget.xml';
-        $schema = \Magento\Framework\Test\Utility\Files::init()->getPathToSource() .
+        $schema = \Magento\Framework\App\Utility\Files::init()->getPathToSource() .
             '/app/code/Magento/Widget/etc/widget.xsd';
         $this->_validateFileExpectSuccess($xmlFile, $schema);
     }
@@ -38,7 +39,7 @@ class WidgetConfigTest extends \PHPUnit_Framework_TestCase
     public function testSchemaUsingInvalidXml()
     {
         $xmlFile = __DIR__ . '/_files/invalid_widget.xml';
-        $schema = \Magento\Framework\Test\Utility\Files::init()->getPathToSource() .
+        $schema = \Magento\Framework\App\Utility\Files::init()->getPathToSource() .
             '/app/code/Magento/Widget/etc/widget.xsd';
         $this->_validateFileExpectFailure($xmlFile, $schema);
     }
@@ -46,7 +47,7 @@ class WidgetConfigTest extends \PHPUnit_Framework_TestCase
     public function testFileSchemaUsingXml()
     {
         $xmlFile = __DIR__ . '/_files/widget_file.xml';
-        $schema = \Magento\Framework\Test\Utility\Files::init()->getPathToSource() .
+        $schema = \Magento\Framework\App\Utility\Files::init()->getPathToSource() .
             '/app/code/Magento/Widget/etc/widget_file.xsd';
         $this->_validateFileExpectSuccess($xmlFile, $schema);
     }
@@ -54,7 +55,7 @@ class WidgetConfigTest extends \PHPUnit_Framework_TestCase
     public function testFileSchemaUsingInvalidXml()
     {
         $xmlFile = __DIR__ . '/_files/invalid_widget.xml';
-        $schema = \Magento\Framework\Test\Utility\Files::init()->getPathToSource() .
+        $schema = \Magento\Framework\App\Utility\Files::init()->getPathToSource() .
             '/app/code/Magento/Widget/etc/widget_file.xsd';
         $this->_validateFileExpectFailure($xmlFile, $schema);
     }

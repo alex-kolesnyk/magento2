@@ -1,12 +1,15 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
  * Locate all payment methods in the system and verify declaration of their blocks
  */
 namespace Magento\Test\Integrity\Magento\Payment;
+
+use Magento\Framework\App\State;
 
 class MethodsTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,6 +52,8 @@ class MethodsTest extends \PHPUnit_Framework_TestCase
             );
             $model->setInfoInstance($paymentInfo);
         }
+        \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\App\State')
+            ->setMode(State::MODE_DEVELOPER);
         $this->assertNotEmpty($model->getTitle());
         foreach ([$model->getFormBlockType(), $model->getInfoBlockType()] as $blockClass) {
             $message = "Block class: {$blockClass}";
@@ -80,6 +85,8 @@ class MethodsTest extends \PHPUnit_Framework_TestCase
                 }
             }
         }
+        \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\App\State')
+            ->setMode(State::MODE_DEFAULT);
     }
 
     /**

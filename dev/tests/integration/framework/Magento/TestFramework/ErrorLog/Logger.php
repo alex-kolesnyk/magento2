@@ -1,31 +1,36 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\TestFramework\ErrorLog;
 
-class Logger extends \Magento\Framework\Logger
+use Monolog\Handler\HandlerInterface;
+
+class Logger extends \Magento\Framework\Logger\Monolog
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $messages = [];
 
     /**
      * Minimum error level to log message
-     * Possible values: -1 ignore all errors, 2 - log errors with level 0, 1, 2
-     * \Zend_Log::EMERG(0) to \Zend_Log::DEBUG(7)
+     * Possible values: -1 ignore all errors, and level constants form http://tools.ietf.org/html/rfc5424 standard
      *
      * @var int
      */
     protected $minimumErrorLevel;
 
     /**
-     * @param \Magento\Framework\Filesystem $filesystem
-     * @param string $defaultFile
+     * @param string             $name       The logging channel
+     * @param HandlerInterface[] $handlers   Optional stack of handlers, the first one in the array is called first, etc
+     * @param callable[]         $processors Optional array of processors
      */
-    public function __construct(\Magento\Framework\Filesystem $filesystem, $defaultFile = '')
+    public function __construct($name, array $handlers = [], array $processors = [])
     {
-        parent::__construct($filesystem, $defaultFile);
         $this->minimumErrorLevel = defined('TESTS_ERROR_LOG_LISTENER_LEVEL') ? TESTS_ERROR_LOG_LISTENER_LEVEL : -1;
+        parent::__construct($name, $handlers, $processors);
     }
 
     /**
@@ -45,19 +50,21 @@ class Logger extends \Magento\Framework\Logger
     }
 
     /**
-     * @param string $message
-     * @param int $level
-     * @param string $loggerKey
+     * @{inheritDoc}
+     *
+     * @param  integer $level   The logging level
+     * @param  string  $message The log message
+     * @param  array   $context The log context
+     * @return Boolean Whether the record has been processed
      */
-    public function log($message, $level = \Zend_Log::DEBUG, $loggerKey = \Magento\Framework\Logger::LOGGER_SYSTEM)
+    public function addRecord($level, $message, array $context = [])
     {
         if ($level <= $this->minimumErrorLevel) {
             $this->messages[] = [
-                'logger' => $loggerKey,
-                'level' => $level,
+                'level' => $this->getLevelName($level),
                 'message' => $message,
             ];
         }
-        parent::log($message, $level, $loggerKey);
+        return parent::addRecord($level, $message, $context);
     }
 }

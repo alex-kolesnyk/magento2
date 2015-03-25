@@ -2,7 +2,8 @@
 /**
  * Abstract helper context
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\App\Helper;
 
@@ -24,7 +25,7 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
     protected $_eventManager;
 
     /**
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -64,9 +65,14 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
     protected $urlDecoder;
 
     /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
+
+    /**
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
      * @param \Magento\Framework\Url\DecoderInterface $urlDecoder
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\Translate\InlineInterface $translateInline
      * @param \Magento\Framework\Module\Manager $moduleManager
      * @param \Magento\Framework\App\RequestInterface $httpRequest
@@ -75,13 +81,14 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
      * @param \Magento\Framework\UrlInterface $urlBuilder
      * @param \Magento\Framework\HTTP\Header $httpHeader
      * @param \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         \Magento\Framework\Url\EncoderInterface $urlEncoder,
         \Magento\Framework\Url\DecoderInterface $urlDecoder,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Translate\InlineInterface $translateInline,
         \Magento\Framework\Module\Manager $moduleManager,
         \Magento\Framework\App\RequestInterface $httpRequest,
@@ -89,7 +96,8 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
         \Magento\Framework\Event\ManagerInterface $eventManager,
         \Magento\Framework\UrlInterface $urlBuilder,
         \Magento\Framework\HTTP\Header $httpHeader,
-        \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress
+        \Magento\Framework\HTTP\PhpEnvironment\RemoteAddress $remoteAddress,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->translateInline = $translateInline;
         $this->_moduleManager = $moduleManager;
@@ -102,6 +110,7 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
         $this->_remoteAddress = $remoteAddress;
         $this->urlEncoder = $urlEncoder;
         $this->urlDecoder = $urlDecoder;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -153,7 +162,7 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
     }
 
     /**
-     * @return \Magento\Framework\Logger
+     * @return \Psr\Log\LoggerInterface
      */
     public function getLogger()
     {
@@ -190,5 +199,13 @@ class Context implements \Magento\Framework\ObjectManager\ContextInterface
     public function getUrlDecoder()
     {
         return $this->urlDecoder;
+    }
+
+    /**
+     * @return \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    public function getScopeConfig()
+    {
+        return $this->scopeConfig;
     }
 }

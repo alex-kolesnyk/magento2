@@ -1,12 +1,13 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Controller\Adminhtml\Integration;
 
 use Magento\Integration\Block\Adminhtml\Integration\Edit\Tab\Info;
-use Magento\Integration\Exception as IntegrationException;
+use Magento\Framework\Exception\IntegrationException;
 
 class Save extends \Magento\Integration\Controller\Adminhtml\Integration
 {
@@ -29,7 +30,6 @@ class Save extends \Magento\Integration\Controller\Adminhtml\Integration
      * Save integration action.
      *
      * @return void
-     * @todo: Fix cyclomatic complexity.
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function execute()
@@ -46,16 +46,15 @@ class Save extends \Magento\Integration\Controller\Adminhtml\Integration
                     $this->_redirect('*/*/');
                     return;
                 } catch (\Exception $e) {
-                    $this->_logger->logException($e);
+                    $this->_logger->critical($e);
                     $this->messageManager->addError(__('Internal error. Check exception log for details.'));
                     $this->_redirect('*/*');
                     return;
                 }
             }
             /** @var array $data */
-            $data = $this->getRequest()->getPost();
+            $data = $this->getRequest()->getPostValue();
             if (!empty($data)) {
-                // TODO: Move out work with API permissions to Web API module
                 if (!isset($data['resource'])) {
                     $integrationData['resource'] = [];
                 }
@@ -76,7 +75,7 @@ class Save extends \Magento\Integration\Controller\Adminhtml\Integration
                 if ($this->getRequest()->isXmlHttpRequest()) {
                     $isTokenExchange = $integration->getEndpoint() && $integration->getIdentityLinkUrl() ? '1' : '0';
                     $this->getResponse()->representJson(
-                        $this->_coreHelper->jsonEncode(
+                        $this->jsonHelper->jsonEncode(
                             ['integrationId' => $integration->getId(), 'isTokenExchange' => $isTokenExchange]
                         )
                     );
@@ -90,11 +89,11 @@ class Save extends \Magento\Integration\Controller\Adminhtml\Integration
             $this->messageManager->addError($this->escaper->escapeHtml($e->getMessage()));
             $this->_getSession()->setIntegrationData($integrationData);
             $this->_redirectOnSaveError();
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError($this->escaper->escapeHtml($e->getMessage()));
             $this->_redirectOnSaveError();
         } catch (\Exception $e) {
-            $this->_logger->logException($e);
+            $this->_logger->critical($e);
             $this->messageManager->addError($this->escaper->escapeHtml($e->getMessage()));
             $this->_redirectOnSaveError();
         }

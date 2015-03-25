@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Framework\Data;
 
@@ -184,6 +185,7 @@ class Structure
                 }
             }
         }
+        $this->unsetChild($elementId);
         $wasFound = isset($this->_elements[$elementId]);
         unset($this->_elements[$elementId]);
         return $wasFound;
@@ -601,7 +603,7 @@ class Structure
     private function _assertElementExists($elementId)
     {
         if (!isset($this->_elements[$elementId])) {
-            throw new Exception("No element found with ID '{$elementId}'.");
+            throw new \OutOfBoundsException("No element found with ID '{$elementId}'.");
         }
     }
 

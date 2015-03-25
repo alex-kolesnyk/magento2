@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Theme\Controller\Adminhtml\System\Design\Wysiwyg\Files;
 
@@ -20,7 +21,7 @@ class DeleteFiles extends \Magento\Theme\Controller\Adminhtml\System\Design\Wysi
                 throw new \Exception('Wrong request');
             }
             $files = $this->_objectManager->get(
-                'Magento\Core\Helper\Data'
+                'Magento\Framework\Json\Helper\Data'
             )->jsonDecode(
                 $this->getRequest()->getParam('files')
             );
@@ -30,7 +31,7 @@ class DeleteFiles extends \Magento\Theme\Controller\Adminhtml\System\Design\Wysi
         } catch (\Exception $e) {
             $result = ['error' => true, 'message' => $e->getMessage()];
             $this->getResponse()->representJson(
-                $this->_objectManager->get('Magento\Core\Helper\Data')->jsonEncode($result)
+                $this->_objectManager->get('Magento\Framework\Json\Helper\Data')->jsonEncode($result)
             );
         }
     }

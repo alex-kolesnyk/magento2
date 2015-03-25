@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\UrlRewrite\Block\Catalog\Edit;
 
@@ -87,7 +88,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getEntityStoresDataProvider
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      *
      * @param array $productData
      * @param array $categoryData
@@ -116,7 +117,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
      * Check exception is thrown when product does not associated with stores
      *
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      */
     public function testGetEntityStoresProductStoresException()
     {
@@ -138,7 +139,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
      * Check exception is thrown when product stores in intersection with category stores is empty
      *
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      *
      */
     public function testGetEntityStoresProductCategoryStoresException()
@@ -165,7 +166,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
      * Check exception is thrown when category does not associated with stores
      *
      * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Core/_files/store.php
+     * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
      */
     public function testGetEntityStoresCategoryStoresException()
     {

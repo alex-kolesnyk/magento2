@@ -1,14 +1,15 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Eav\Model\Entity\Attribute;
 
 /**
  * @codeCoverageIgnore
  */
-class ValidationRule extends \Magento\Framework\Model\AbstractExtensibleModel implements
+class ValidationRule extends \Magento\Framework\Model\AbstractModel implements
     \Magento\Eav\Api\Data\AttributeValidationRuleInterface
 {
     /**
@@ -25,5 +26,27 @@ class ValidationRule extends \Magento\Framework\Model\AbstractExtensibleModel im
     public function getValue()
     {
         return $this->getData(self::VALUE);
+    }
+
+    /**
+     * Set object key
+     *
+     * @param string $key
+     * @return $this
+     */
+    public function setKey($key)
+    {
+        return $this->setData(self::KEY, $key);
+    }
+
+    /**
+     * Set object value
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        return $this->setData(self::VALUE, $value);
     }
 }

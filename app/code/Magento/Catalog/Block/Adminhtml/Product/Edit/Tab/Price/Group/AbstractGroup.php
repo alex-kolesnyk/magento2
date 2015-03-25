@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Catalog\Block\Adminhtml\Product\Edit\Tab\Price\Group;
 
@@ -65,9 +66,9 @@ abstract class AbstractGroup extends Widget implements RendererInterface
     protected $_groupManagement;
 
     /**
-     * @var \Magento\Framework\Api\SearchCriteriaDataBuilder
+     * @var \Magento\Framework\Api\SearchCriteriaBuilder
      */
-    protected $_searchCriteriaDataBuilder;
+    protected $_searchCriteriaBuilder;
 
     /**
      * @param \Magento\Backend\Block\Template\Context $context
@@ -76,7 +77,7 @@ abstract class AbstractGroup extends Widget implements RendererInterface
      * @param \Magento\Framework\Module\Manager $moduleManager
      * @param \Magento\Framework\Registry $registry
      * @param GroupManagementInterface $groupManagement
-     * @param \Magento\Framework\Api\SearchCriteriaDataBuilder $searchCriteriaDataBuilder
+     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
      * @param array $data
      */
     public function __construct(
@@ -86,7 +87,7 @@ abstract class AbstractGroup extends Widget implements RendererInterface
         \Magento\Framework\Module\Manager $moduleManager,
         \Magento\Framework\Registry $registry,
         GroupManagementInterface $groupManagement,
-        \Magento\Framework\Api\SearchCriteriaDataBuilder $searchCriteriaDataBuilder,
+        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
         array $data = []
     ) {
         $this->_groupRepository = $groupRepository;
@@ -94,7 +95,7 @@ abstract class AbstractGroup extends Widget implements RendererInterface
         $this->moduleManager = $moduleManager;
         $this->_coreRegistry = $registry;
         $this->_groupManagement = $groupManagement;
-        $this->_searchCriteriaDataBuilder = $searchCriteriaDataBuilder;
+        $this->_searchCriteriaBuilder = $searchCriteriaBuilder;
         parent::__construct($context, $data);
     }
 
@@ -190,7 +191,7 @@ abstract class AbstractGroup extends Widget implements RendererInterface
             }
             $this->_customerGroups = $this->_getInitialCustomerGroups();
             /** @var \Magento\Customer\Api\Data\GroupInterface[] $groups */
-            $groups = $this->_groupRepository->getList($this->_searchCriteriaDataBuilder->create());
+            $groups = $this->_groupRepository->getList($this->_searchCriteriaBuilder->create());
             foreach ($groups->getItems() as $group) {
                 $this->_customerGroups[$group->getId()] = $group->getCode();
             }
@@ -240,7 +241,7 @@ abstract class AbstractGroup extends Widget implements RendererInterface
      */
     public function getWebsites()
     {
-        if (!is_null($this->_websites)) {
+        if ($this->_websites !== null) {
             return $this->_websites;
         }
 

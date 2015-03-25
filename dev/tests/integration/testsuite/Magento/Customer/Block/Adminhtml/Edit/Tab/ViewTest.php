@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Customer\Block\Adminhtml\Edit\Tab;
 
 use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Api\Data\CustomerDataBuilder;
+use Magento\Customer\Api\Data\CustomerInterfaceFactory;
 use Magento\Customer\Controller\RegistryConstants;
 
 /**
@@ -23,7 +24,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     private $_coreRegistry;
 
     /** @var  CustomerDataBuilder */
-    private $_customerBuilder;
+    private $_customerFactory;
 
     /** @var  CustomerRepositoryInterface */
     private $_customerRepository;
@@ -50,7 +51,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             ['storeManager' => $this->_storeManager]
         );
 
-        $this->_customerBuilder = $this->_objectManager->get('Magento\Customer\Api\Data\CustomerDataBuilder');
+        $this->_customerFactory = $this->_objectManager->get('Magento\Customer\Api\Data\CustomerInterfaceFactory');
         $this->_coreRegistry = $this->_objectManager->get('Magento\Framework\Registry');
         $this->_customerRepository = $this->_objectManager->get(
             'Magento\Customer\Api\CustomerRepositoryInterface'
@@ -120,13 +121,13 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     private function _createCustomer()
     {
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
-        $customer = $this->_customerBuilder->setFirstname(
+        $customer = $this->_customerFactory->create()->setFirstname(
             'firstname'
         )->setLastname(
             'lastname'
         )->setEmail(
             'email@email.com'
-        )->create();
+        );
         $data = ['account' => $this->_dataObjectProcessor
             ->buildOutputDataArray($customer, 'Magento\Customer\Api\Data\CustomerInterface'), ];
         $this->_context->getBackendSession()->setCustomerData($data);

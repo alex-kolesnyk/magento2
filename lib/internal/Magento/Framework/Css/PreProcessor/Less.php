@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Css\PreProcessor;
@@ -37,7 +38,7 @@ class Less implements PreProcessorInterface
     public function process(\Magento\Framework\View\Asset\PreProcessor\Chain $chain)
     {
         $chain->setContentType('less');
-        $tmpLessFile = $this->fileGenerator->generateLessFileTree($chain);
+        $tmpLessFile = $this->fileGenerator->generateFileTree($chain);
         $cssContent = $this->adapter->process($tmpLessFile);
         $cssTrimmedContent = trim($cssContent);
         if (!empty($cssTrimmedContent)) {

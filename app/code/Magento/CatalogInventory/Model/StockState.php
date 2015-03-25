@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogInventory\Model;
 
@@ -51,7 +52,7 @@ class StockState implements StockStateInterface
      */
     public function verifyStock($productId, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -65,7 +66,7 @@ class StockState implements StockStateInterface
      */
     public function verifyNotification($productId, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -78,12 +79,12 @@ class StockState implements StockStateInterface
      * @param int $productId
      * @param float $qty
      * @param int $websiteId
-     * @exception \Magento\Framework\Model\Exception
+     * @exception \Magento\Framework\Exception\LocalizedException
      * @return bool
      */
     public function checkQty($productId, $qty, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -101,7 +102,7 @@ class StockState implements StockStateInterface
      */
     public function suggestQty($productId, $qty, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -117,7 +118,7 @@ class StockState implements StockStateInterface
      */
     public function getStockQty($productId, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -132,7 +133,7 @@ class StockState implements StockStateInterface
      */
     public function checkQtyIncrements($productId, $qty, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);
@@ -149,7 +150,7 @@ class StockState implements StockStateInterface
      */
     public function checkQuoteItemQty($productId, $itemQty, $qtyToCheck, $origQty, $websiteId = null)
     {
-        if (is_null($websiteId)) {
+        if ($websiteId === null) {
             $websiteId = $this->stockConfiguration->getDefaultWebsiteId();
         }
         $stockItem = $this->stockRegistryProvider->getStockItem($productId, $websiteId);

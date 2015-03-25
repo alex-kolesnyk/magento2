@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\GoogleShopping\Test\Constraint;
@@ -8,8 +9,8 @@ namespace Magento\GoogleShopping\Test\Constraint;
 use Magento\Catalog\Test\Fixture\CatalogAttributeSet;
 use Magento\GoogleShopping\Test\Page\Adminhtml\GoogleShoppingTypesIndex;
 use Magento\GoogleShopping\Test\Page\Adminhtml\GoogleShoppingTypesNew;
-use Mtf\Constraint\AbstractConstraint;
-use Mtf\Fixture\FixtureFactory;
+use Magento\Mtf\Constraint\AbstractConstraint;
+use Magento\Mtf\Fixture\FixtureFactory;
 
 /**
  * Class AssertProductAttributeAbsenceForAttributeMapping
@@ -17,10 +18,6 @@ use Mtf\Fixture\FixtureFactory;
  */
 class AssertProductAttributeAbsenceForAttributeMapping extends AbstractConstraint
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Assert that deleted attribute can't be mapped to Google Attribute (attribute doesn't appear in Attributes
      * Mapping -> Google Content - Attributes after selecting attribute set)

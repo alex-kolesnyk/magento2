@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Shipping\Controller\Adminhtml\Order;
 
@@ -99,7 +100,7 @@ class ShipmentLoader extends Object
      * Initialize shipment model instance
      *
      * @return bool|\Magento\Sales\Model\Order\Shipment
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function load()
     {
@@ -138,7 +139,9 @@ class ShipmentLoader extends Object
             if ($this->getTracking()) {
                 foreach ((array)$this->getTracking() as $data) {
                     if (empty($data['number'])) {
-                        throw new \Magento\Framework\Model\Exception(__('Please enter a tracking number.'));
+                        throw new \Magento\Framework\Exception\LocalizedException(
+                            __('Please enter a tracking number.')
+                        );
                     }
                     $track = $this->trackFactory->create()->addData($data);
                     $shipment->addTrack($track);

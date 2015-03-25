@@ -1,7 +1,8 @@
 <?php
 /**
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Wishlist\Controller\Index;
 
@@ -51,6 +52,9 @@ class Add extends Action\Action implements IndexInterface
      *
      * @return void
      * @throws NotFoundException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
     public function execute()
     {
@@ -92,7 +96,7 @@ class Add extends Action\Action implements IndexInterface
 
             $result = $wishlist->addNewItem($product, $buyRequest);
             if (is_string($result)) {
-                throw new \Magento\Framework\Model\Exception($result);
+                throw new \Magento\Framework\Exception\LocalizedException(__($result));
             }
             $wishlist->save();
 
@@ -108,10 +112,6 @@ class Add extends Action\Action implements IndexInterface
                 $referer = $this->_redirect->getRefererUrl();
             }
 
-            /**
-             *  Set referer to avoid referring to the compare popup window
-             */
-            $session->setAddActionReferer($referer);
 
             /** @var $helper \Magento\Wishlist\Helper\Data */
             $helper = $this->_objectManager->get('Magento\Wishlist\Helper\Data')->calculate();
@@ -121,13 +121,13 @@ class Add extends Action\Action implements IndexInterface
                 $this->_objectManager->get('Magento\Framework\Escaper')->escapeUrl($referer)
             );
             $this->messageManager->addSuccess($message);
-        } catch (\Magento\Framework\Model\Exception $e) {
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $this->messageManager->addError(
                 __('An error occurred while adding item to wish list: %1', $e->getMessage())
             );
         } catch (\Exception $e) {
             $this->messageManager->addError(__('An error occurred while adding item to wish list.'));
-            $this->_objectManager->get('Magento\Framework\Logger')->logException($e);
+            $this->_objectManager->get('Psr\Log\LoggerInterface')->critical($e);
         }
 
         $this->_redirect('*', ['wishlist_id' => $wishlist->getId()]);

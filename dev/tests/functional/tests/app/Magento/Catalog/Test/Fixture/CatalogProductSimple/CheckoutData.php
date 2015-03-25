@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Catalog\Test\Fixture\CatalogProductSimple;
 
-use Mtf\Fixture\FixtureInterface;
+use Magento\Mtf\Fixture\FixtureInterface;
 
 /**
  * Class CheckoutData
@@ -172,7 +173,10 @@ class CheckoutData implements FixtureInterface
             ],
             'order_default' => [
                 'qty' => 1,
-                'cartItem' => [],
+                'cartItem' => [
+                    'price' => 560,
+                    'subtotal' => 560,
+                ],
             ],
             'two_products' => [
                 'qty' => 2,
@@ -192,6 +196,20 @@ class CheckoutData implements FixtureInterface
                 ],
                 'cartItem' => [],
             ],
+            'order_special_price' => [
+                'qty' => 1,
+                'cartItem' => [
+                    'price' => 9,
+                    'subtotal' => 9,
+                ],
+            ],
+            'order_10_dollar_product' => [
+                'qty' => 1,
+                'cartItem' => [
+                    'price' => 10,
+                    'subtotal' => 10,
+                ],
+            ]
         ];
         return isset($presets[$name]) ? $presets[$name] : [];
     }

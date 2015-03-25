@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Tax\Api\Data;
@@ -13,4 +14,12 @@ interface TaxClassSearchResultsInterface extends \Magento\Framework\Api\SearchRe
      * @return \Magento\Tax\Api\Data\TaxClassInterface[]
      */
     public function getItems();
+
+    /**
+     * Set items.
+     *
+     * @param \Magento\Tax\Api\Data\TaxClassInterface[] $items
+     * @return $this
+     */
+    public function setItems(array $items = null);
 }

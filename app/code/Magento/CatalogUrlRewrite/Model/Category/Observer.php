@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\CatalogUrlRewrite\Model\Category;
 
@@ -14,6 +15,9 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\UrlRewrite\Model\UrlPersistInterface;
 use Magento\UrlRewrite\Service\V1\Data\UrlRewrite;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Observer
 {
     /** @var \Magento\CatalogUrlRewrite\Model\Category\ChildrenCategoriesProvider */

@@ -1,16 +1,18 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\GoogleShopping\Model;
 
-use Magento\Framework\Model\Exception as CoreException;
+use Magento\Framework\Exception\LocalizedException as CoreException;
 use Magento\GoogleShopping\Model\Resource\Item\Collection as ItemCollection;
 
 /**
  * Controller for mass opertions with items
  *
  * @author     Magento Core Team <core@magentocommerce.com>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class MassOperations
 {
@@ -69,10 +71,11 @@ class MassOperations
      * @param \Magento\Catalog\Api\ProductRepositoryInterface $productRepository
      * @param \Magento\Framework\Notification\NotifierInterface $notifier
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Magento\Framework\Logger $logger
+     * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\GoogleShopping\Helper\Data $gleShoppingData
      * @param \Magento\GoogleShopping\Helper\Category $gleShoppingCategory
      * @param array $data
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function __construct(
         \Magento\GoogleShopping\Model\Resource\Item\CollectionFactory $collectionFactory,
@@ -80,7 +83,7 @@ class MassOperations
         \Magento\Catalog\Api\ProductRepositoryInterface $productRepository,
         \Magento\Framework\Notification\NotifierInterface $notifier,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Logger $logger,
+        \Psr\Log\LoggerInterface $logger,
         \Magento\GoogleShopping\Helper\Data $gleShoppingData,
         \Magento\GoogleShopping\Helper\Category $gleShoppingCategory,
         array $data = []
@@ -119,7 +122,7 @@ class MassOperations
     /**
      * Logger
      *
-     * @var \Magento\Framework\Logger
+     * @var \Psr\Log\LoggerInterface
      */
     protected $_logger;
 
@@ -142,6 +145,8 @@ class MassOperations
      * @param int $storeId
      * @return $this
      * @throws \Exception|\Zend_Gdata_App_CaptchaRequiredException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function addProducts($productIds, $storeId)
     {
@@ -180,7 +185,7 @@ class MassOperations
                         $e->getMessage()
                     );
                 } catch (\Exception $e) {
-                    $this->_logger->logException($e);
+                    $this->_logger->critical($e);
                     $errors[] = __('The product "%1" hasn\'t been added to Google Content.', $product->getName());
                 }
             }
@@ -216,6 +221,7 @@ class MassOperations
      * @param int[]|ItemCollection $items
      * @return $this
      * @throws \Exception|\Zend_Gdata_App_CaptchaRequiredException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function synchronizeItems($items)
     {
@@ -268,7 +274,7 @@ class MassOperations
                     );
                     $totalFailed++;
                 } catch (\Exception $e) {
-                    $this->_logger->logException($e);
+                    $this->_logger->critical($e);
                     $errors[] = __('The item "%1" hasn\'t been updated.', $item->getProduct()->getName());
                     $totalFailed++;
                 }
@@ -302,6 +308,7 @@ class MassOperations
      * @param int[]|ItemCollection $items
      * @return $this
      * @throws \Exception|\Zend_Gdata_App_CaptchaRequiredException
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function deleteItems($items)
     {
@@ -329,7 +336,7 @@ class MassOperations
                         $item->getProduct()
                     );
                 } catch (\Exception $e) {
-                    $this->_logger->logException($e);
+                    $this->_logger->critical($e);
                     $errors[] = __('The item "%1" hasn\'t been deleted.', $item->getProduct()->getName());
                 }
             }

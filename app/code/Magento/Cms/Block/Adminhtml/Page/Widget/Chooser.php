@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Cms\Block\Adminhtml\Page\Widget;
 
@@ -27,7 +28,7 @@ class Chooser extends \Magento\Backend\Block\Widget\Grid\Extended
     protected $_collectionFactory;
 
     /**
-     * @var \Magento\Core\Model\PageLayout\Config\Builder
+     * @var \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface
      */
     protected $pageLayoutBuilder;
 
@@ -37,7 +38,7 @@ class Chooser extends \Magento\Backend\Block\Widget\Grid\Extended
      * @param \Magento\Cms\Model\Page $cmsPage
      * @param \Magento\Cms\Model\PageFactory $pageFactory
      * @param \Magento\Cms\Model\Resource\Page\Grid\CollectionFactory $collectionFactory
-     * @param \Magento\Core\Model\PageLayout\Config\Builder $pageLayoutBuilder
+     * @param \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder
      * @param array $data
      */
     public function __construct(
@@ -46,7 +47,7 @@ class Chooser extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Cms\Model\Page $cmsPage,
         \Magento\Cms\Model\PageFactory $pageFactory,
         \Magento\Cms\Model\Resource\Page\Grid\CollectionFactory $collectionFactory,
-        \Magento\Core\Model\PageLayout\Config\Builder $pageLayoutBuilder,
+        \Magento\Framework\View\Model\PageLayout\Config\BuilderInterface $pageLayoutBuilder,
         array $data = []
     ) {
         $this->pageLayoutBuilder = $pageLayoutBuilder;

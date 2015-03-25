@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Core\Test\Constraint;
@@ -9,7 +10,7 @@ use Magento\Core\Test\Fixture\SystemVariable;
 use Magento\Core\Test\Page\Adminhtml\SystemVariableIndex;
 use Magento\Core\Test\Page\Adminhtml\SystemVariableNew;
 use Magento\Store\Test\Fixture\Store;
-use Mtf\Constraint\AbstractAssertForm;
+use Magento\Mtf\Constraint\AbstractAssertForm;
 
 /**
  * Class AssertCustomVariableForm
@@ -17,10 +18,6 @@ use Mtf\Constraint\AbstractAssertForm;
  */
 class AssertCustomVariableForm extends AbstractAssertForm
 {
-    /* tags */
-    const SEVERITY = 'low';
-    /* end tags */
-
     /**
      * Skipped fields for verify data
      *
@@ -69,13 +66,13 @@ class AssertCustomVariableForm extends AbstractAssertForm
         $systemVariableIndex->open();
         $systemVariableIndex->getSystemVariableGrid()->searchAndOpen(['code' => $data['code']]);
 
-        $formData = $systemVariableNew->getSystemVariableForm()->getData($customVariable);
+        $formData = $systemVariableNew->getSystemVariableForm()->getData();
         $errors = $this->verifyData($dataOrigin, $formData);
         \PHPUnit_Framework_Assert::assertEmpty($errors, $errors);
 
         if ($storeOrigin !== null) {
             $systemVariableNew->getFormPageActions()->selectStoreView($storeOrigin->getName());
-            $formData = $systemVariableNew->getSystemVariableForm()->getData($customVariable);
+            $formData = $systemVariableNew->getSystemVariableForm()->getData();
             $errors = $this->verifyData($data, $formData);
             \PHPUnit_Framework_Assert::assertEmpty($errors, $errors);
         }

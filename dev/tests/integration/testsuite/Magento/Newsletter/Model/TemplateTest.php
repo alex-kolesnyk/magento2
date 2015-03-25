@@ -1,11 +1,12 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Newsletter\Model;
 
 /**
- * @magentoDataFixture Magento/Core/_files/store.php
+ * @magentoDataFixture Magento/Store/_files/core_fixturestore.php
  */
 class TemplateTest extends \PHPUnit_Framework_TestCase
 {
@@ -37,7 +38,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
             \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
                 'Magento\Framework\App\Config\MutableScopeConfigInterface'
             )->setValue(
-                \Magento\Core\Model\View\Design::XML_PATH_THEME_ID,
+                \Magento\Theme\Model\View\Design::XML_PATH_THEME_ID,
                 $design,
                 'store',
                 $store

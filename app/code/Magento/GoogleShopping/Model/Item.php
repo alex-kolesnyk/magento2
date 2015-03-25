@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\GoogleShopping\Model;
 
@@ -100,7 +101,7 @@ class Item extends \Magento\Framework\Model\AbstractModel
      */
     public function getServiceItem()
     {
-        if (is_null($this->_serviceItem)) {
+        if ($this->_serviceItem === null) {
             $this->_serviceItem = $this->_itemFactory->create()->setStoreId($this->getStoreId());
         }
         return $this->_serviceItem;
@@ -211,7 +212,7 @@ class Item extends \Magento\Framework\Model\AbstractModel
      */
     public function getProduct()
     {
-        if (is_null($this->getData('product')) && !is_null($this->getProductId())) {
+        if ($this->getData('product') === null && $this->getProductId() !== null) {
             $product = $this->productRepository->getById($this->getProductId(), false, $this->getStoreId());
             $this->setData('product', $product);
         }

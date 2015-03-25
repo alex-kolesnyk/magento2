@@ -2,7 +2,8 @@
 /**
  * Test format of layout files
  *
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Test\Integrity\Layout;
 
@@ -13,7 +14,7 @@ class HandlesTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandleDeclarations()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * Test dependencies between handle attributes that is out of coverage by XSD
@@ -35,13 +36,13 @@ class HandlesTest extends \PHPUnit_Framework_TestCase
                     $this->fail("Issues found in handle declaration:\n" . implode("\n", $issues) . "\n");
                 }
             },
-            \Magento\Framework\Test\Utility\Files::init()->getLayoutFiles()
+            \Magento\Framework\App\Utility\Files::init()->getLayoutFiles()
         );
     }
 
     public function testContainerDeclarations()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
             /**
              * Test dependencies between container attributes that is out of coverage by XSD
@@ -69,13 +70,13 @@ class HandlesTest extends \PHPUnit_Framework_TestCase
                     );
                 }
             },
-            \Magento\Framework\Test\Utility\Files::init()->getLayoutFiles()
+            \Magento\Framework\App\Utility\Files::init()->getLayoutFiles()
         );
     }
 
     public function testHeadBlockUsage()
     {
-        $invoker = new \Magento\Framework\Test\Utility\AggregateInvoker($this);
+        $invoker = new \Magento\Framework\App\Utility\AggregateInvoker($this);
         $invoker(
         /**
          * Test validate that head block doesn't exist in layout
@@ -90,7 +91,7 @@ class HandlesTest extends \PHPUnit_Framework_TestCase
                     $this->fail('Following file contains deprecated head block. File Path:' . "\n" . $layoutFile);
                 }
             },
-            \Magento\Framework\Test\Utility\Files::init()->getLayoutFiles()
+            \Magento\Framework\App\Utility\Files::init()->getLayoutFiles()
         );
     }
 }

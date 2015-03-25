@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 namespace Magento\Framework\Search\Request;
@@ -106,7 +107,7 @@ class Builder
      * Bind data to placeholder
      *
      * @param string $placeholder
-     * @param string $value
+     * @param mixed $value
      * @return $this
      */
     public function bind($placeholder, $value)
@@ -128,7 +129,7 @@ class Builder
         $requestName = $this->data['requestName'];
         /** @var array $data */
         $data = $this->config->get($requestName);
-        if (is_null($data)) {
+        if ($data === null) {
             throw new \InvalidArgumentException("Request name '{$requestName}' doesn't exist.");
         }
 

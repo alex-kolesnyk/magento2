@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 namespace Magento\Integration\Service\V1;
 
@@ -22,7 +23,7 @@ interface OauthInterface
      * )
      * </pre>
      * @return \Magento\Integration\Model\Oauth\Consumer
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Oauth\Exception
      */
     public function createConsumer($consumerData);
@@ -50,7 +51,7 @@ interface OauthInterface
      * @param int $consumerId
      * @return \Magento\Integration\Model\Oauth\Consumer
      * @throws \Magento\Framework\Oauth\Exception
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function loadConsumer($consumerId);
 
@@ -60,7 +61,7 @@ interface OauthInterface
      * @param string $key
      * @return \Magento\Integration\Model\Oauth\Consumer
      * @throws \Magento\Framework\Oauth\Exception
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function loadConsumerByKey($key);
 
@@ -70,7 +71,7 @@ interface OauthInterface
      * @param int $consumerId - The consumer Id.
      * @param string $endpointUrl - The integration endpoint Url (for HTTP Post)
      * @return string - The oauth_verifier.
-     * @throws \Magento\Framework\Model\Exception
+     * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Oauth\Exception
      */
     public function postToConsumer($consumerId, $endpointUrl);

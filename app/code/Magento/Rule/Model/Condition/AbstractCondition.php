@@ -1,6 +1,7 @@
 <?php
 /**
- * @copyright Copyright (c) 2014 X.commerce, Inc. (http://www.magentocommerce.com)
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
  */
 
 /**
@@ -13,6 +14,10 @@ namespace Magento\Rule\Model\Condition;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 abstract class AbstractCondition extends \Magento\Framework\Object implements ConditionInterface
 {
     /**
@@ -216,6 +221,7 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
     /**
      * @param array $arr
      * @return $this
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function loadArray($arr)
     {
@@ -391,14 +397,7 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
         if ($this->getInputType() == 'date' && !$this->getIsValueParsed()) {
             // date format intentionally hard-coded
             $this->setValue(
-                $this->_localeDate->date(
-                    $this->getData('value'),
-                    \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT,
-                    null,
-                    false
-                )->toString(
-                    \Magento\Framework\Stdlib\DateTime::DATE_INTERNAL_FORMAT
-                )
+                (new \DateTime($this->getData('value')))->format('Y-m-d H:i:s')
             );
             $this->setIsValueParsed(true);
         }
@@ -407,11 +406,12 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
 
     /**
      * @return array|string
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getValueName()
     {
         $value = $this->getValue();
-        if (is_null($value) || '' === $value) {
+        if ($value === null || '' === $value) {
             return '...';
         }
 
@@ -551,7 +551,7 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
     public function getOperatorElement()
     {
         $options = $this->getOperatorSelectOptions();
-        if (is_null($this->getOperator())) {
+        if ($this->getOperator() === null) {
             foreach ($options as $option) {
                 $this->setOperator($option['value']);
                 break;
@@ -701,6 +701,9 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
      *
      * @param   object|array|int|string|float|bool $validatedValue product attribute value
      * @return  bool
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function validateAttribute($validatedValue)
     {
@@ -832,12 +835,17 @@ abstract class AbstractCondition extends \Magento\Framework\Object implements Co
     }
 
     /**
-     * @param \Magento\Framework\Object $object
+     * @param \Magento\Framework\Model\AbstractModel $model
      * @return bool
      */
-    public function validate(\Magento\Framework\Object $object)
+    public function validate(\Magento\Framework\Model\AbstractModel $model)
     {
-        return $this->validateAttribute($object->getData($this->getAttribute()));
+        if (!$model->hasData($this->getAttribute())) {
+            $model->load($model->getId());
+        }
+        $attributeValue = $model->getData($this->getAttribute());
+
+        return $this->validateAttribute($attributeValue);
     }
 
     /**
